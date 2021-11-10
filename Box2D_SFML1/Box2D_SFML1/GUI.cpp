@@ -119,6 +119,28 @@ void GUI::InitBattleUI()
 void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 {
 	m_RenderWindow->setView(_uiView);
+
+	if (m_PlayersTurn == true)
+	{
+		m_EnemyTurnTimer.restart();
+	}
+	else if (m_PlayersTurn == false)
+	{
+		if (m_EnemyTurnTimer.getElapsedTime().asSeconds() >= 0.5f)
+		{
+			if (m_EnemyAttackTimer.getElapsedTime().asSeconds() >= 2.0f)
+			{
+				m_FriendlyCubemon->TakeDamage(5 * m_EnemyCubemon->GetLvl());
+				m_EnemyAttackTimer.restart();
+			}
+			
+			if (m_EnemyTurnTimer.getElapsedTime().asSeconds() >= 2)
+			{
+				m_PlayersTurn = true;
+			}
+		}
+	}
+
 	for (auto& item : m_BattleSceneMenuShapes)
 	{
 		m_RenderWindow->draw(item);
@@ -407,32 +429,32 @@ void GUI::InitButtonPosScaleTexture(sf::Vector2f _position, sf::Vector2f _scale,
 
 void GUI::HandleKindlingGUIShapes(sf::RectangleShape& _item)
 {
-	if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
+	if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING )
 	{
 		if (_item.getTexture() == &m_FireDeminishAttack)
 		{
-			if (m_BattleSceneAttackButtons[0]->m_bIsHovering)
+			if (m_BattleSceneAttackButtons[0]->m_bIsHovering && m_PlayersTurn)
 			{
 				m_RenderWindow->draw(_item);
 			}
 		}
 		else if (_item.getTexture() == &m_FireBurnAttack)
 		{
-			if (m_BattleSceneAttackButtons[1]->m_bIsHovering)
+			if (m_BattleSceneAttackButtons[1]->m_bIsHovering && m_PlayersTurn)
 			{
 				m_RenderWindow->draw(_item);
 			}
 		}
 		else if (_item.getTexture() == &m_FireEmberAttack)
 		{
-			if (m_BattleSceneAttackButtons[2]->m_bIsHovering)
+			if (m_BattleSceneAttackButtons[2]->m_bIsHovering && m_PlayersTurn)
 			{
 				m_RenderWindow->draw(_item);
 			}
 		}
 		else if (_item.getTexture() == &m_FireIncinerateAttack)
 		{
-			if (m_BattleSceneAttackButtons[3]->m_bIsHovering)
+			if (m_BattleSceneAttackButtons[3]->m_bIsHovering && m_PlayersTurn)
 			{
 				m_RenderWindow->draw(_item);
 			}
@@ -491,27 +513,53 @@ void GUI::HandleButtonInteractions()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		if (m_ButtonRegulator.getElapsedTime().asSeconds() >= 0.25f)
+		if (m_ButtonRegulator.getElapsedTime().asSeconds() >= 0.25f && m_PlayersTurn)
 		{
 			if (m_BattleSceneButtons[0]->m_bIsHovering)
 			{
 				m_bAttack = !m_bAttack;
+
+				m_PlayersTurn = false;
+			}
+			else if (m_BattleSceneAttackButtons[0]->m_bIsHovering)
+			{
+				m_PlayerAttackBuff = 0;
+
+				m_PlayersTurn = false;
 			}
 			else if (m_BattleSceneAttackButtons[1]->m_bIsHovering)
 			{
-				m_EnemyCubemon->TakeDamage(5 * m_FriendlyCubemon->GetLvl());
+				float damage = m_PlayerAttackBuff + (5 * m_FriendlyCubemon->GetLvl());
+				m_EnemyCubemon->TakeDamage(damage);
 				if (m_EnemyCubemon->GetCurrentHealth() <= 0)
 				{
 					InterceptSceneChange(1);
 				}
+
+				m_PlayerAttackBuff = 0;
+				std::cout << damage << std::endl;
+
+				m_PlayersTurn = false;
+			}
+			else if (m_BattleSceneAttackButtons[2]->m_bIsHovering)
+			{
+				m_PlayerAttackBuff = 2;
+
+				m_PlayersTurn = false;
 			}
 			else if (m_BattleSceneAttackButtons[3]->m_bIsHovering)
 			{
-				m_EnemyCubemon->TakeDamage(10 * m_FriendlyCubemon->GetLvl());
+				float damage = m_PlayerAttackBuff + (10 * m_FriendlyCubemon->GetLvl());
+				m_EnemyCubemon->TakeDamage(damage);
 				if (m_EnemyCubemon->GetCurrentHealth() <= 0)
 				{
 					InterceptSceneChange(1);
 				}
+
+				m_PlayerAttackBuff = 0;
+				std::cout << damage << std::endl;
+
+				m_PlayersTurn = false;
 			}
 			else if (m_BattleSceneButtons[3]->m_bIsHovering && m_bFlee)
 			{
@@ -527,6 +575,8 @@ void GUI::HandleButtonInteractions()
 				}
 				m_bFlee = false;
 				m_BattleSceneButtons[3]->m_bIsHovering = false;
+
+				m_PlayersTurn = false;
 			}
 
 			m_ButtonRegulator.restart();

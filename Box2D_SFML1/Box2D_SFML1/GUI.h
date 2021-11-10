@@ -70,10 +70,17 @@ private:
 	bool m_bCubemon = false;
 	bool m_bFlee = true;
 
+	int m_PlayerAttackBuff = 0;
+	int m_PlayerArmourBuff = 0;
+
+	bool m_PlayersTurn = true;
+
 	ICubemon* m_FriendlyCubemon = nullptr;
 	ICubemon* m_EnemyCubemon = nullptr;
 
 	sf::Clock m_ButtonRegulator;
+	sf::Clock m_EnemyTurnTimer;
+	sf::Clock m_EnemyAttackTimer;
 
 	sf::Texture m_AttackButton;
 	sf::Texture m_BackpackButton;
