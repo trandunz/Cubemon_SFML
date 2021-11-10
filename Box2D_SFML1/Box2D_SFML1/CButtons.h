@@ -1,0 +1,100 @@
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) Media Design School
+//
+// File Name : CButtons.h
+// Description : CButtons Header file.
+// Author : William Inman
+// Mail : william.inman@mds.ac.nz
+//
+
+#pragma once
+#ifndef _BUTTONS_H__
+#define _BUTTONS_H__
+
+#include "NumptyBehavior.h"
+
+class CButtons : public NumptyBehavior
+{
+public:
+	enum STATE
+	{
+		Idle,
+		Hover,
+		Click,
+	};
+
+	bool m_bIsHovering = false;
+	bool m_bIsPressed = false;
+	bool m_bIsClicked = false;
+
+	bool m_HasChangedIdle = false;
+	bool m_HasChangedHover = false;
+	bool m_HasChangedClick = false;
+
+	std::string m_Label;
+	std::string m_OnClickLabel;
+	std::string m_HoverLabel;
+
+	sf::Sprite Sprite;
+
+	sf::Text m_tLabel;
+
+	CButtons(sf::RenderWindow* _renderWindow);
+	virtual ~CButtons();
+
+	virtual void Update();
+	virtual void Render();
+
+	void RenderOnlyLabel();
+
+	void SetMousePosition(sf::Vector2f _position);
+	sf::Vector2f GetMousePosition();
+
+	void SetPosition(float _newX, float _newY);
+	sf::Vector2f GetPosition();
+
+	void SetLabel(std::string _newLabel);
+	void SetLabel(std::string _newLabel, unsigned int _fontSize);
+	 
+	void SetState(std::string type);
+
+	bool bIsinBounds(sf::Vector2f _vMousePosition);
+
+	void SetHoverTex(sf::Texture* _newTexture);
+	void SetIdleTex(sf::Texture* _newTexture);
+	void SetClickTex(sf::Texture* _newTexture);
+
+	void SetFontSize(unsigned int _size);
+
+	inline sf::Texture* GetHoverText()
+	{
+		return m_HoverTexture;
+	}
+	inline sf::Texture* GetClickText()
+	{
+		return m_ClickTexture;
+	}
+
+	int GetHeight();
+	int GetWidth();
+
+	inline void SetSpritePos(sf::Vector2f _pos) { Sprite.setPosition(_pos); };
+	inline void SetSpritePos(float _x, float _y) { Sprite.setPosition(_x, _y); };
+
+private:
+	sf::RenderWindow* m_RenderWindow = nullptr;
+
+	sf::Texture* m_IdleTexture = nullptr;
+	sf::Texture* m_HoverTexture = nullptr;
+	sf::Texture* m_ClickTexture = nullptr;
+
+	sf::Font m_Font;
+
+	sf::Vector2f m_vMousePosition;
+};
+#endif
