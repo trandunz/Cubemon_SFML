@@ -1,5 +1,8 @@
-﻿  ICubemon.cpp
-C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.cpp(8,52): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.cpp(22,19): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.cpp(47,10): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+﻿  CBattleScene.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(159,88): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(335): warning C4715: 'CBattleScene::GrabCubemonLevelBasedOnType': not all control paths return a value
   Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe
