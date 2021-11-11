@@ -1,7 +1,8 @@
 #include "CThallic.h"
 
-CThallic::CThallic(sf::RenderWindow* _renderWindow)
+CThallic::CThallic(sf::RenderWindow* _renderWindow, AudioManager* _audioManager)
 {
+	m_AudioManager = _audioManager;
 	m_RenderWindow = _renderWindow;
 	m_SpriteTexture = new sf::Texture();
 	m_CubeType = CUBEMONTYPE::THALLIC;

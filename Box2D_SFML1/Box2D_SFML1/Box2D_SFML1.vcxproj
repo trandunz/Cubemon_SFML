@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="CBattleScene.cpp" />
+    <ClCompile Include="CBrutus.cpp" />
     <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CContactListener.cpp" />
     <ClCompile Include="CKindling.cpp" />
@@ -163,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="CBattleScene.h" />
+    <ClInclude Include="CBrutus.h" />
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CContactListener.h" />
     <ClInclude Include="CKindling.h" />

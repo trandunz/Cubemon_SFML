@@ -19,6 +19,7 @@ public:
 
 		THALLIC = 1,
 		KINDLING = 2,
+		BRUTUS = 3,
 	};
 
 	virtual ~ICubemon() { };
@@ -41,6 +42,12 @@ public:
 	int GetLvl() { return m_Lvl; }
 
 	void LevelUp();
+	void SetLevel(int _value);
+
+	AudioManager* GetAudioManager();
+
+	float GetWeakAttack();
+	float GetStrongAttack();
 	
 	CUBEMONTYPE m_CubeType = CUBEMONTYPE::UNASSIGNED;
 
@@ -54,6 +61,9 @@ protected:
 
 	std::string m_Name = "UNASSIGNED";
 	int m_Lvl = 1;
+
+	float m_Attack1 = 5;
+	float m_Attack2 = 10;
 private:
 	sf::Clock m_DamageTimer;
 };

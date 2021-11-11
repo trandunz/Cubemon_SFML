@@ -14,6 +14,10 @@ AudioManager::AudioManager()
 
     m_BowBuffer->loadFromFile("Resources/Audio/FireBow.wav");
 
+    m_DamageSoundBuffer->loadFromFile("Resources/Audio/Damage.wav");
+
+    m_FireAttackSoundBuffer->loadFromFile("Resources/Audio/FireAttack.wav");
+
     SlimeHurtBuffers[0] = *m_SlimeHurt1;
     SlimeHurtBuffers[1] = *m_SlimeHurt2;
 }
@@ -71,6 +75,20 @@ void AudioManager::PlayMusic(int _track)
     }
 }
 
+void AudioManager::PlayDamage(float _volume)
+{
+    m_DamageSound->setBuffer(*m_DamageSoundBuffer);
+    m_DamageSound->setVolume(_volume);
+    m_DamageSound->play();
+}
+
+void AudioManager::PlayFireAttack(float _volume)
+{
+    m_FireAttackSound->setBuffer(*m_FireAttackSoundBuffer);
+    m_FireAttackSound->setVolume(_volume);
+    m_FireAttackSound->play();
+}
+
 void AudioManager::CreatePointers()
 {
     {
@@ -89,6 +107,12 @@ void AudioManager::CreatePointers()
 
         m_BowBuffer = new sf::SoundBuffer();
         m_BowShotSound = new sf::Sound;
+
+        m_DamageSoundBuffer = new sf::SoundBuffer();
+        m_DamageSound = new sf::Sound;
+
+        m_FireAttackSoundBuffer = new sf::SoundBuffer();
+        m_FireAttackSound = new sf::Sound;
     }
 }
 
@@ -114,6 +138,14 @@ void AudioManager::CleanupPointers()
     m_BowBuffer = nullptr;
     DeletePointer(m_BowShotSound);
     m_BowShotSound = nullptr;
+    DeletePointer(m_DamageSoundBuffer);
+    m_DamageSoundBuffer = nullptr;
+    DeletePointer(m_DamageSound);
+    m_DamageSound = nullptr;
+    DeletePointer(m_FireAttackSoundBuffer);
+    m_FireAttackSoundBuffer = nullptr;
+    DeletePointer(m_FireAttackSound);
+    m_FireAttackSound = nullptr;
     delete[] SlimeHurtBuffers;
     SlimeHurtBuffers = nullptr;
 }

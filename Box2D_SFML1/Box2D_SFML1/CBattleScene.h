@@ -26,6 +26,9 @@ private:
 	void InitWorldView();
 	void InitBackground();
 
+	void SaveCubemonValues();
+	char GrabCubemonLevelBasedOnType();
+
 	sf::Event* m_Event = nullptr;
 	sf::View m_UIView;
 	sf::View m_WorldView;

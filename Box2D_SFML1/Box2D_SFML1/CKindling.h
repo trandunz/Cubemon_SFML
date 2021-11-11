@@ -4,7 +4,7 @@
 class CKindling : public ICubemon
 {
 public:
-	CKindling(sf::RenderWindow* _renderWindow);
+	CKindling(sf::RenderWindow* _renderWindow, AudioManager* _audioManager);
 	CKindling(sf::RenderWindow* _renderWindow, b2World* _world, b2Body& _playerBody);
 	virtual ~CKindling();
 

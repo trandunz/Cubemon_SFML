@@ -126,19 +126,7 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 	}
 	else if (m_PlayersTurn == false)
 	{
-		if (m_EnemyTurnTimer.getElapsedTime().asSeconds() >= 0.5f)
-		{
-			if (m_EnemyAttackTimer.getElapsedTime().asSeconds() >= 2.0f)
-			{
-				m_FriendlyCubemon->TakeDamage(5 * m_EnemyCubemon->GetLvl());
-				m_EnemyAttackTimer.restart();
-			}
-			
-			if (m_EnemyTurnTimer.getElapsedTime().asSeconds() >= 2)
-			{
-				m_PlayersTurn = true;
-			}
-		}
+		HandleEnemyTurn();
 	}
 
 	for (auto& item : m_BattleSceneMenuShapes)
@@ -511,55 +499,70 @@ void GUI::HandleKindlingGUIButtons(int _iter, CButtons* _button)
 
 void GUI::HandleButtonInteractions()
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if (m_PlayersTurn && m_ButtonRegulator.getElapsedTime().asSeconds() >= 0.25f)
 	{
-		if (m_ButtonRegulator.getElapsedTime().asSeconds() >= 0.25f && m_PlayersTurn)
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			if (m_BattleSceneButtons[0]->m_bIsHovering)
 			{
 				m_bAttack = !m_bAttack;
-
-				m_PlayersTurn = false;
+				m_ButtonRegulator.restart();
 			}
 			else if (m_BattleSceneAttackButtons[0]->m_bIsHovering)
 			{
 				m_PlayerAttackBuff = 0;
 
 				m_PlayersTurn = false;
+				m_EnemyAttackTimer.restart();
+				m_EnemyTurnTimer.restart();
+				m_ButtonRegulator.restart();
 			}
 			else if (m_BattleSceneAttackButtons[1]->m_bIsHovering)
 			{
-				float damage = m_PlayerAttackBuff + (5 * m_FriendlyCubemon->GetLvl());
+				float damage = m_PlayerAttackBuff + (m_FriendlyCubemon->GetWeakAttack() * m_FriendlyCubemon->GetLvl());
 				m_EnemyCubemon->TakeDamage(damage);
+				m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 				if (m_EnemyCubemon->GetCurrentHealth() <= 0)
 				{
 					InterceptSceneChange(1);
+					m_FriendlyCubemon->LevelUp();
 				}
 
 				m_PlayerAttackBuff = 0;
 				std::cout << damage << std::endl;
 
 				m_PlayersTurn = false;
+				m_EnemyAttackTimer.restart();
+				m_EnemyTurnTimer.restart();
+				m_ButtonRegulator.restart();
 			}
 			else if (m_BattleSceneAttackButtons[2]->m_bIsHovering)
 			{
 				m_PlayerAttackBuff = 2;
 
 				m_PlayersTurn = false;
+				m_EnemyAttackTimer.restart();
+				m_EnemyTurnTimer.restart();
+				m_ButtonRegulator.restart();
 			}
 			else if (m_BattleSceneAttackButtons[3]->m_bIsHovering)
 			{
-				float damage = m_PlayerAttackBuff + (10 * m_FriendlyCubemon->GetLvl());
+				float damage = m_PlayerAttackBuff + (m_FriendlyCubemon->GetStrongAttack() * m_FriendlyCubemon->GetLvl());
 				m_EnemyCubemon->TakeDamage(damage);
+				m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 				if (m_EnemyCubemon->GetCurrentHealth() <= 0)
 				{
 					InterceptSceneChange(1);
+					m_FriendlyCubemon->LevelUp();
 				}
 
 				m_PlayerAttackBuff = 0;
 				std::cout << damage << std::endl;
 
 				m_PlayersTurn = false;
+				m_EnemyAttackTimer.restart();
+				m_EnemyTurnTimer.restart();
+				m_ButtonRegulator.restart();
 			}
 			else if (m_BattleSceneButtons[3]->m_bIsHovering && m_bFlee)
 			{
@@ -577,15 +580,45 @@ void GUI::HandleButtonInteractions()
 				m_BattleSceneButtons[3]->m_bIsHovering = false;
 
 				m_PlayersTurn = false;
+				m_EnemyAttackTimer.restart();
+				m_EnemyTurnTimer.restart();
+				m_ButtonRegulator.restart();
 			}
-
-			m_ButtonRegulator.restart();
 		}
 	}
+	
 }
 
 void GUI::HandleKindlingButtonInteractions()
 {
+}
+
+void GUI::HandleEnemyTurn()
+{
+	if (m_EnemyTurnTimer.getElapsedTime().asSeconds() >= 1)
+	{
+		if (m_EnemyAttackTimer.getElapsedTime().asSeconds() >= 1.1)
+		{
+			int ran = INT_MAX;
+			srand((unsigned)time(NULL));
+			ran = rand() % 2;
+			if (ran == 0)
+			{
+				m_FriendlyCubemon->TakeDamage(m_EnemyCubemon->GetStrongAttack() * m_EnemyCubemon->GetLvl());
+			}
+			else if (ran == 1)
+			{
+				m_FriendlyCubemon->TakeDamage(m_EnemyCubemon->GetWeakAttack() * m_EnemyCubemon->GetLvl());
+			}
+			
+			m_EnemyAttackTimer.restart();
+		}
+
+		if (m_EnemyTurnTimer.getElapsedTime().asSeconds() >= 2)
+		{
+			m_PlayersTurn = true;
+		}
+	}
 }
 
 void GUI::HandleCubemonHUD(sf::View& _uiView, sf::View& _worldView)

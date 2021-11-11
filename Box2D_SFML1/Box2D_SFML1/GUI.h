@@ -129,6 +129,8 @@ private:
 	void HandleKindlingGUIButtons(int _iter, CButtons* _button);
 	void HandleButtonInteractions();
 	void HandleKindlingButtonInteractions();
+
+	void HandleEnemyTurn();
 };
 #endif
 

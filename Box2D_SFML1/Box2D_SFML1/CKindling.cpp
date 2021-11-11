@@ -1,8 +1,9 @@
 #include "CKindling.h"
 
-CKindling::CKindling(sf::RenderWindow* _renderWindow)
+CKindling::CKindling(sf::RenderWindow* _renderWindow, AudioManager* _audioManager)
 {
 	m_RenderWindow = _renderWindow;
+	m_AudioManager = _audioManager;
 
 	m_SpriteTexture = new sf::Texture();
 	m_CubeType = CUBEMONTYPE::KINDLING;

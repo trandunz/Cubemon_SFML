@@ -135,6 +135,9 @@
     <ClCompile Include="CKindling.cpp">
       <Filter>Source Files\Entities\Cubermon</Filter>
     </ClCompile>
+    <ClCompile Include="CBrutus.cpp">
+      <Filter>Source Files\Entities\Cubermon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WorldManager.h">
@@ -207,6 +210,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CKindling.h">
+      <Filter>Header Files\Entities\Cubemon</Filter>
+    </ClInclude>
+    <ClInclude Include="CBrutus.h">
       <Filter>Header Files\Entities\Cubemon</Filter>
     </ClInclude>
   </ItemGroup>

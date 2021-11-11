@@ -89,19 +89,17 @@ void CSceneManager::ChangeScenes()
 {
 	if (m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay && m_LastFramesScene != ReturnSceneChange())
 	{
+		CleanupAllScenes();
 		if (ReturnSceneChange() == 1)
 		{
-			CleanupAllScenes();
 			m_GameSceneVector.push_back(new CGameScene(m_RenderWindow, m_TextureMaster, *m_Event));
 		}
 		else if (ReturnSceneChange() == -1)
 		{
-			CleanupAllScenes();
 			m_BattleScene = new CBattleScene(m_RenderWindow, m_TextureMaster, *m_Event);
 		}
 		else if (ReturnSceneChange() == 0)
 		{
-			CleanupAllScenes();
 			m_MainMenuSceneVector.push_back(new CMainMenuScene(m_RenderWindow, *m_Event));
 		}
 

@@ -10,6 +10,7 @@
 #include "ParticleSystem.h"
 #include "CThallic.h"
 #include "CKindling.h"
+#include "CBrutus.h"
 
 class Player : public IEntity
 {
@@ -52,7 +53,6 @@ private:
 
 	sf::Vector2f GrabPlayerData();
 	void WritePlayerData();
-
 
 	void BattleTransition();
 

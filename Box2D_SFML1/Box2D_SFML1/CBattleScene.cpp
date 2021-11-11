@@ -10,6 +10,8 @@ CBattleScene::CBattleScene(sf::RenderWindow* _renderWindow, TextureMaster* _text
 
 CBattleScene::~CBattleScene()
 {
+	SaveCubemonValues();
+	
 	CleanupAllPointers();
 }
 
@@ -47,7 +49,6 @@ void CBattleScene::PolledUpdate()
 		if (m_Event->type == sf::Event::Closed)
 		{
 			m_RenderWindow->close();
-			CleanupAllPointers();
 			return;
 		}
 	}
@@ -82,56 +83,74 @@ void CBattleScene::InitCubemon(ICubemon::CUBEMONTYPE _friendly, ICubemon::CUBEMO
 {
 	if (_enemy == ICubemon::CUBEMONTYPE::THALLIC)
 	{
-		m_EnemyCubemon = new CThallic(m_RenderWindow);
+		m_EnemyCubemon = new CThallic(m_RenderWindow, m_AudioManager);
 	}
 	else if (_enemy == ICubemon::CUBEMONTYPE::KINDLING)
 	{
-		m_EnemyCubemon = new CKindling(m_RenderWindow);
+		m_EnemyCubemon = new CKindling(m_RenderWindow, m_AudioManager);
+	}
+	else if (_enemy == ICubemon::CUBEMONTYPE::BRUTUS)
+	{
+		m_EnemyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
 	}
 	else
 	{
 		int ran = INT_MAX;
 		srand((unsigned)time(NULL));
-		ran = rand() % 2;
+		ran = rand() % 3;
 		if (ran == 0)
 		{
-			m_EnemyCubemon = new CThallic(m_RenderWindow);
+			m_EnemyCubemon = new CThallic(m_RenderWindow, m_AudioManager);
+			m_EnemyCubemon->SetLevel(ran + 1);
 		}
 		else if (ran == 1)
 		{
-			m_EnemyCubemon = new CKindling(m_RenderWindow);
+			m_EnemyCubemon = new CKindling(m_RenderWindow, m_AudioManager);
+			m_EnemyCubemon->SetLevel(ran + 1);
+		}
+		else if (ran == 2)
+		{
+			m_EnemyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
+			m_EnemyCubemon->SetLevel(ran + 1);
 		}
 	}
 
 	if (_friendly == ICubemon::CUBEMONTYPE::THALLIC)
 	{
-		m_FriendlyCubemon = new CThallic(m_RenderWindow);
+		m_FriendlyCubemon = new CThallic(m_RenderWindow, m_AudioManager);
 	}
 	else if (_friendly == ICubemon::CUBEMONTYPE::KINDLING)
 	{
-		m_FriendlyCubemon = new CKindling(m_RenderWindow);
+		m_FriendlyCubemon = new CKindling(m_RenderWindow, m_AudioManager);
+	}
+	else if (_friendly == ICubemon::CUBEMONTYPE::BRUTUS)
+	{
+		m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
 	}
 	else
 	{
 		if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::THALLIC)
 		{
-			m_FriendlyCubemon = new CThallic(m_RenderWindow);
+			m_FriendlyCubemon = new CThallic(m_RenderWindow, m_AudioManager);
 		}
 		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::KINDLING)
 		{
-			m_FriendlyCubemon = new CKindling(m_RenderWindow);
+			m_FriendlyCubemon = new CKindling(m_RenderWindow, m_AudioManager);
+		}
+		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BRUTUS)
+		{
+			m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
 		}
 	}
 
 	if (m_EnemyCubemon != nullptr)
 	{
-		
 		m_EnemyCubemon->SetSpritePos(sf::Vector2f(m_RenderWindow->getView().getCenter().x + m_RenderWindow->getView().getSize().x / 6, m_RenderWindow->getView().getCenter().y - m_RenderWindow->getView().getSize().y / 6));
 		m_EnemyCubemon->SetSpriteScale(sf::Vector2f(1.5, 1.5));
 	}
 	if (m_FriendlyCubemon != nullptr)
 	{
-		
+		m_FriendlyCubemon->SetLevel(GrabCubemonLevelBasedOnType());
 		m_FriendlyCubemon->SetSpritePos(sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_RenderWindow->getView().getSize().x / 3.5, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 7));
 		m_FriendlyCubemon->SetSpriteScale(sf::Vector2f(3, 3));
 	}
@@ -190,4 +209,122 @@ void CBattleScene::InitBackground()
 	m_Background.setPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y);
 	m_Background.setTexture(&m_BackgroundTex);
 	m_Background.setScale(1, 1);
+}
+
+void CBattleScene::SaveCubemonValues()
+{
+	std::ifstream file;
+	std::vector<int> m_Types{};
+	std::vector<int> m_Lvls{};
+	char type = 0;
+	char lvl = 0;
+	file.open("Resources/Output/CubemonData.ini");
+	if (file.is_open())
+	{
+		while (file.get(type))
+		{
+			if (type == ',')
+			{
+			}
+			else
+			{
+				m_Types.push_back(((int)type) - ASCIIOFFSET);
+			}
+		}
+		
+	}
+	file.close();
+	file.open("Resources/Output/CubemonLvlData.ini");
+	if (file.is_open())
+	{
+		while (file.get(lvl))
+		{
+			if (lvl == ',')
+			{
+			}
+			else
+			{
+				m_Lvls.push_back(((int)lvl) - ASCIIOFFSET);
+			}
+		}
+		
+	}
+	file.close();
+	for (int i = 0; i < m_Types.size(); i++)
+	{
+		if (m_Types[i] == (int)m_FriendlyCubemon->m_CubeType)
+		{
+			m_Lvls[i] = m_FriendlyCubemon->GetLvl();
+		}
+	}
+
+	std::ofstream oFile;
+
+	oFile.open("Resources/Output/CubemonData.ini");
+	if (oFile.is_open())
+	{
+		oFile.clear();
+		for (auto& cubemon : m_Types)
+		{
+			oFile << cubemon << ",";
+		}
+	}
+	oFile.close();
+
+	oFile.open("Resources/Output/CubemonLvlData.ini");
+	if (oFile.is_open())
+	{
+		oFile.clear();
+		for (auto& cubemon : m_Lvls)
+		{
+			oFile << cubemon << ",";
+		}
+	}
+	oFile.close();
+}
+
+char CBattleScene::GrabCubemonLevelBasedOnType()
+{
+	std::ifstream file;
+	std::vector<int> m_Types;
+	std::vector<int> m_Lvls;
+	char type = 0;
+	char lvl = 0;
+	file.open("Resources/Output/CubemonData.ini");
+	if (file.is_open())
+	{
+		while (file.get(type))
+		{
+			if (type == ',')
+			{
+			}
+			else
+			{
+				m_Types.push_back(((int)type) - ASCIIOFFSET);
+			}
+		}
+		file.close();
+	}
+	file.open("Resources/Output/CubemonLvlData.ini");
+	if (file.is_open())
+	{
+		while (file.get(lvl))
+		{
+			if (lvl == ',')
+			{
+			}
+			else
+			{
+				m_Lvls.push_back(((int)lvl) - ASCIIOFFSET);
+			}
+		}
+		file.close();
+	}
+	for (int i = 0; i < m_Types.size(); i++)
+	{
+		if (m_Types[i] == (int)m_FriendlyCubemon->m_CubeType)
+		{
+			return m_Lvls[i];
+		}
+	}
 }

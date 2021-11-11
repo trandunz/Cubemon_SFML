@@ -4,6 +4,7 @@ int ICubemon::TakeDamage(float _amount)
 {
 	if (m_DamageTimer.getElapsedTime().asSeconds() >= 0.1f)
 	{
+		m_AudioManager->PlayDamage();
 		for (int i = 0; i < _amount; i++)
 		{
 			if (m_CurrentHealth >= 1)
@@ -68,4 +69,24 @@ void ICubemon::LevelUp()
 	{
 		m_Lvl++;
 	}
+}
+
+void ICubemon::SetLevel(int _value)
+{
+	m_Lvl = _value;
+}
+
+AudioManager* ICubemon::GetAudioManager()
+{
+	return m_AudioManager;
+}
+
+float ICubemon::GetWeakAttack()
+{
+	return m_Attack1;
+}
+
+float ICubemon::GetStrongAttack()
+{
+	return m_Attack2;
 }

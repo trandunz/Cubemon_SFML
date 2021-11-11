@@ -4,7 +4,7 @@
 class CThallic : public ICubemon
 {
 public:
-	CThallic(sf::RenderWindow* _renderWindow);
+	CThallic(sf::RenderWindow* _renderWindow, AudioManager* _audioManager);
 	CThallic(sf::RenderWindow* _renderWindow, b2World* _world, b2Body& _playerBody);
 	virtual ~CThallic();
 

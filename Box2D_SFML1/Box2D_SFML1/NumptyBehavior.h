@@ -93,22 +93,7 @@ public:
 		{
 			file.clear();
 
-			if (_change == 1) // Game Scene
-			{
-				file << 1;
-			}
-			else if (_change == -1) // Battle Scene
-			{
-				file << -1;
-			}
-			else if (_change == 2) // Cave Scene
-			{
-				file << 0;
-			}
-			else if (_change == 0) // Main Menu
-			{
-				file << 0;
-			}
+			file << _change;
 		}
 		file.close();
 	}

@@ -16,6 +16,8 @@ public:
 	void SlimeDeath(float _volume);
 	void SlimeDamage(float _volume);
 	void PlayMusic(int _track = 0);
+	void PlayDamage(float _volume = 24.0f);
+	void PlayFireAttack(float _volume = 24.0f);
 
 private:
 	void CreatePointers();
@@ -35,5 +37,11 @@ private:
 
 	sf::SoundBuffer* m_BowBuffer = nullptr;
 	sf::Sound* m_BowShotSound = nullptr;
+
+	sf::SoundBuffer* m_DamageSoundBuffer = nullptr;
+	sf::Sound* m_DamageSound = nullptr;
+
+	sf::SoundBuffer* m_FireAttackSoundBuffer = nullptr;
+	sf::Sound* m_FireAttackSound = nullptr;
 };
 #endif

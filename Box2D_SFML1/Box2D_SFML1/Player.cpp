@@ -444,7 +444,9 @@ void Player::GrabCubmonData()
 	CleanupCubemon();
 	std::ifstream file;
 	std::string currentLine;
+
 	char m_Type = 0;
+
 	file.open("Resources/Output/CubemonData.ini");
 	if (file.is_open())
 	{
@@ -457,6 +459,10 @@ void Player::GrabCubmonData()
 			else if (m_Type == (int)ICubemon::CUBEMONTYPE::KINDLING + ASCIIOFFSET)
 			{
 				AddCubemon(new CKindling(m_RenderWindow, m_World, *m_Body));
+			}
+			else if (m_Type == (int)ICubemon::CUBEMONTYPE::BRUTUS + ASCIIOFFSET)
+			{
+				AddCubemon(new CBrutus(m_RenderWindow, m_World, *m_Body));
 			}
 		}
 		file.close();
