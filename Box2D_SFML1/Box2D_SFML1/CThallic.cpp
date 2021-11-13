@@ -53,6 +53,7 @@ void CThallic::Start()
 
 void CThallic::Update()
 {
+	EXPLvlUpCheck();
 	if (m_Body != nullptr)
 	{
 		SetShapeToB2Body();

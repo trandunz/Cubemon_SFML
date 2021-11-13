@@ -131,6 +131,14 @@ private:
 	void HandleKindlingButtonInteractions();
 
 	void HandleEnemyTurn();
+
+	inline void EndTurn()
+	{
+		m_PlayersTurn = false;
+		m_EnemyAttackTimer.restart();
+		m_EnemyTurnTimer.restart();
+		m_ButtonRegulator.restart();
+	}
 };
 #endif
 

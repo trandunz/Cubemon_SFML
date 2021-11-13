@@ -54,6 +54,7 @@ void CBrutus::Start()
 
 void CBrutus::Update()
 {
+	EXPLvlUpCheck();
 	if (m_Body != nullptr)
 	{
 		SetShapeToB2Body();

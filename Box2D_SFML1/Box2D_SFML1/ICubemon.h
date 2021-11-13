@@ -48,10 +48,24 @@ public:
 
 	float GetWeakAttack();
 	float GetStrongAttack();
+
+	inline void AddXP(float _amount)
+	{
+		m_EXP += _amount;
+	}
 	
 	CUBEMONTYPE m_CubeType = CUBEMONTYPE::UNASSIGNED;
 
 protected:
+	inline void EXPLvlUpCheck()
+	{
+		if (m_EXP >= 100 * m_Lvl)
+		{
+			m_EXP = 0;
+			m_Lvl++;
+		}
+	}
+
 	CUBEMONSTATE m_CubeState = CUBEMONSTATE::UNASSIGNED;
 
 	float m_CurrentHealth = 100.0f;
@@ -61,6 +75,7 @@ protected:
 
 	std::string m_Name = "UNASSIGNED";
 	int m_Lvl = 1;
+	float m_EXP = 0;
 
 	float m_Attack1 = 5;
 	float m_Attack2 = 10;

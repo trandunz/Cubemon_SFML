@@ -97,6 +97,7 @@ void CBattleScene::InitCubemon(ICubemon::CUBEMONTYPE _friendly, ICubemon::CUBEMO
 	{
 		int ran = INT_MAX;
 		srand((unsigned)time(NULL));
+		srand(rand());
 		ran = rand() % 3;
 		if (ran == 0)
 		{
@@ -223,15 +224,12 @@ void CBattleScene::SaveCubemonValues()
 	{
 		while (file.get(type))
 		{
-			if (type == ',')
-			{
-			}
+			if (type == ',') {}
 			else
 			{
 				m_Types.push_back(((int)type) - ASCIIOFFSET);
 			}
 		}
-		
 	}
 	file.close();
 	file.open("Resources/Output/CubemonLvlData.ini");
@@ -239,9 +237,7 @@ void CBattleScene::SaveCubemonValues()
 	{
 		while (file.get(lvl))
 		{
-			if (lvl == ',')
-			{
-			}
+			if (lvl == ',') {}
 			else
 			{
 				m_Lvls.push_back(((int)lvl) - ASCIIOFFSET);
@@ -295,9 +291,7 @@ char CBattleScene::GrabCubemonLevelBasedOnType()
 	{
 		while (file.get(type))
 		{
-			if (type == ',')
-			{
-			}
+			if (type == ',') {}
 			else
 			{
 				m_Types.push_back(((int)type) - ASCIIOFFSET);
@@ -310,9 +304,7 @@ char CBattleScene::GrabCubemonLevelBasedOnType()
 	{
 		while (file.get(lvl))
 		{
-			if (lvl == ',')
-			{
-			}
+			if (lvl == ',') {}
 			else
 			{
 				m_Lvls.push_back(((int)lvl) - ASCIIOFFSET);

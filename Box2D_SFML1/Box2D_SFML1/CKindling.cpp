@@ -54,6 +54,7 @@ void CKindling::Start()
 
 void CKindling::Update()
 {
+	EXPLvlUpCheck();
 	if (m_Body != nullptr)
 	{
 		SetShapeToB2Body();
