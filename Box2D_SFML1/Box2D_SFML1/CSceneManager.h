@@ -3,6 +3,7 @@
 #include "CGameScene.h"
 #include "CMainMenuScene.h"
 #include "CBattleScene.h"
+#include "CIndoorScene.h"
 
 class CSceneManager : NumptyBehavior
 {

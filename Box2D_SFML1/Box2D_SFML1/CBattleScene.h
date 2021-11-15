@@ -29,6 +29,8 @@ private:
 	void SaveCubemonValues();
 	char GrabCubemonLevelBasedOnType();
 
+	int GrabCubemonHealthBasedOnType();
+
 	sf::Event* m_Event = nullptr;
 	sf::View m_UIView;
 	sf::View m_WorldView;

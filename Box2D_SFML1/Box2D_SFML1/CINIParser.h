@@ -28,8 +28,9 @@ class CINIParser : NumptyBehavior
 					std::cout << FirstInventorySlot << std::endl;
 				}
 			}
-			file.close();
+			
 		}
+		file.close();
 	}
 };
 

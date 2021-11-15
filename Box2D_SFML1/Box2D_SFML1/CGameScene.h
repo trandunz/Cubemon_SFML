@@ -8,6 +8,7 @@
 class CGameScene : public IScene
 {
 public:
+	CGameScene();
 	CGameScene(sf::RenderWindow* _renderWindow, TextureMaster* _textureMaster, sf::Event& _event);
 	virtual ~CGameScene();
 
@@ -18,7 +19,7 @@ public:
 
 	virtual void CheckForMARKASDESTROY();
 
-private:
+protected:
 	void CreateB2World();
 	void CreateWorldManager();
 	void CreatePlayer();

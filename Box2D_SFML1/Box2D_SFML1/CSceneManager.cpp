@@ -102,6 +102,10 @@ void CSceneManager::ChangeScenes()
 		{
 			m_MainMenuSceneVector.push_back(new CMainMenuScene(m_RenderWindow, *m_Event));
 		}
+		else if (ReturnSceneChange() == 2)
+		{
+			m_GameSceneVector.push_back(new CIndoorScene(m_RenderWindow, m_TextureMaster, *m_Event));
+		}
 
 		Start();
 		m_SceneTimer.restart();
@@ -122,6 +126,11 @@ void CSceneManager::ChangeScenes()
 	else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::F3 && m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay)
 	{
 		InterceptSceneChange(-1);
+		return;
+	}
+	else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::F4 && m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay)
+	{
+		InterceptSceneChange(2);
 		return;
 	}
 	else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::Numpad2 && m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay)

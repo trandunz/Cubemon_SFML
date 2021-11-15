@@ -167,6 +167,7 @@
     <ClInclude Include="CBrutus.h" />
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CContactListener.h" />
+    <ClInclude Include="CIndoorScene.h" />
     <ClInclude Include="CKindling.h" />
     <ClInclude Include="CMainMenuScene.h" />
     <ClInclude Include="CThallic.h" />

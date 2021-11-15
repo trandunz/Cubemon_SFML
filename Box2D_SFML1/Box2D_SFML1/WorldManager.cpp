@@ -24,11 +24,11 @@ WorldManager::~WorldManager()
 	m_TextureMaster = nullptr;
 }
 
-void WorldManager::Start(AudioManager* _audioManager)
+void WorldManager::Start(AudioManager* _audioManager, std::string _path)
 {
 	InitBackground(*m_TextureMaster->m_BackgroundTexture);
 
-	ImportWorldFromINI();
+	ImportWorldFromINI(_path);
 }
 
 void WorldManager::Update()
@@ -340,12 +340,12 @@ void WorldManager::SelectFirstFromSheet(Tile* _tile)
 	_tile->GetShape()->setOrigin(50, 50);
 }
 
-void WorldManager::ImportWorldFromINI()
+void WorldManager::ImportWorldFromINI(std::string _path)
 {
 	CleanupTiles();
 
 	std::vector<char> m_TileTypes;
-	GrabTileTypes(m_TileTypes, "Level_Ash.ini");
+	GrabTileTypes(m_TileTypes, _path);
 
 	ProcessTileTypes(m_TileTypes);
 }

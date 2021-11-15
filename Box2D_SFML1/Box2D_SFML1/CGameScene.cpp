@@ -1,5 +1,10 @@
 #include "CGameScene.h"
 
+
+CGameScene::CGameScene()
+{
+}
+
 CGameScene::CGameScene(sf::RenderWindow* _renderWindow, TextureMaster* _textureMaster, sf::Event& _event)
 {
 	m_RenderWindow = _renderWindow;
@@ -25,7 +30,7 @@ void CGameScene::Start()
 	InitUIView();
 	InitView();
 	m_Player->Start();
-	m_WorldManager->Start(m_AudioManager);
+	m_WorldManager->Start(m_AudioManager, "Level_Ash.ini");
 	m_GUI->Start();
 
 	m_ContactListener = new CContactListener();
@@ -97,11 +102,6 @@ void CGameScene::PolledUpdate()
 			if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::N)
 			{
 				m_WorldManager->CleanupTiles();
-				break;
-			}
-			else if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::M)
-			{
-				m_WorldManager->ImportWorldFromINI();
 				break;
 			}
 		}

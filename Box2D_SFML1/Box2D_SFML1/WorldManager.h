@@ -18,14 +18,14 @@ public:
 	WorldManager(sf::RenderWindow* _renderWindow, b2World& _world, TextureMaster* _texturemaste);
 	virtual ~WorldManager();
 
-	virtual void Start(AudioManager* _audioManager);
+	virtual void Start(AudioManager* _audioManager, std::string _path);
 	virtual void Update();
 	virtual void Render(sf::Shader* _defaultshader = NULL);
 	void RenderOnTop();
 
 	void InitBackground(sf::Texture& _texture); 
 
-	void ImportWorldFromINI();
+	void ImportWorldFromINI(std::string _path);
 	void CleanupTiles();
 	void CleanupTrees();
 	void CleanupGrass();

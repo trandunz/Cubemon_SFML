@@ -215,6 +215,9 @@
     <ClInclude Include="CBrutus.h">
       <Filter>Header Files\Entities\Cubemon</Filter>
     </ClInclude>
+    <ClInclude Include="CIndoorScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Output\World.ini">

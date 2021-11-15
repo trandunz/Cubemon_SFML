@@ -30,10 +30,10 @@ public:
 	virtual void Movement() = 0;
 	virtual void Attack() = 0;
 
-	virtual int TakeDamage(float _amount);
-	inline void SetCurrentHealth(float _amount) { m_CurrentHealth = _amount; }
-	inline float GetCurrentHealth() { return m_CurrentHealth; }
-	virtual int Heal(float _amount);
+	virtual int TakeDamage(int _amount);
+	inline void SetCurrentHealth(int _amount) { m_CurrentHealth = _amount; }
+	inline int GetCurrentHealth() { return m_CurrentHealth; }
+	virtual int Heal(int _amount);
 
 	void SetSpritePos(sf::Vector2f _pos);
 	void SetSpriteScale(sf::Vector2f _scale);
@@ -68,8 +68,8 @@ protected:
 
 	CUBEMONSTATE m_CubeState = CUBEMONSTATE::UNASSIGNED;
 
-	float m_CurrentHealth = 100.0f;
-	float m_MaxHealth = 100.0f;
+	int m_CurrentHealth = 100;
+	int m_MaxHealth = 100;
 
 	sf::Texture* m_SpriteTexture = nullptr;
 
