@@ -29,6 +29,8 @@ TextureMaster::TextureMaster()
 	m_Church = new sf::Texture();
 	m_IndoorFloor = new sf::Texture();
 	m_IndoorWall = new sf::Texture();
+	m_IndoorDoor = new sf::Texture();
+	m_BlackBG = new sf::Texture();
 
 	if (m_BackgroundTexture->loadFromFile("Resources/Images/Backgrounds/OriBG.jpg"))
 	{
@@ -100,6 +102,14 @@ TextureMaster::TextureMaster()
 	{
 		std::cout << "WaterToGrassSheet Texture Loaded!" << std::endl;
 	}
+	if (m_IndoorDoor->loadFromFile("Resources/Images/Custom Sprites/FloorDoorway.png"))
+	{
+		std::cout << "WaterToGrassSheet Texture Loaded!" << std::endl;
+	}
+	if (m_BlackBG->loadFromFile("Resources/Images/Custom Sprites/Black.png"))
+	{
+		std::cout << "WaterToGrassSheet Texture Loaded!" << std::endl;
+	}
 }
 
 TextureMaster::~TextureMaster()
@@ -140,4 +150,8 @@ TextureMaster::~TextureMaster()
 	m_IndoorFloor = nullptr;
 	DeletePointer(m_IndoorWall);
 	m_IndoorWall = nullptr;
+	DeletePointer(m_IndoorDoor);
+	m_IndoorDoor = nullptr;
+	DeletePointer(m_BlackBG);
+	m_BlackBG = nullptr;
 }

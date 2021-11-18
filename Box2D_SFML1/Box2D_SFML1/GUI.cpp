@@ -167,14 +167,7 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 		}
 	}
 
-	if (!m_bChangePokemon)
-	{
-		HandleButtonInteractions();
-	}
-	else if (m_bChangePokemon)
-	{
-
-	}
+	HandleButtonInteractions();
 
 	m_RenderWindow->setView(_worldView);
 }
@@ -510,18 +503,18 @@ void GUI::HandleButtonInteractions()
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			if (m_BattleSceneButtons[0]->m_bIsHovering)
+			if (m_BattleSceneButtons[0]->m_bIsHovering && !m_bChangePokemon)
 			{
 				m_bAttack = !m_bAttack;
 				m_ButtonRegulator.restart();
 			}
-			else if (m_BattleSceneAttackButtons[0]->m_bIsHovering)
+			else if (m_BattleSceneAttackButtons[0]->m_bIsHovering && !m_bChangePokemon)
 			{
 				m_PlayerAttackBuff = 0;
 
 				EndTurn();
 			}
-			else if (m_BattleSceneAttackButtons[1]->m_bIsHovering)
+			else if (m_BattleSceneAttackButtons[1]->m_bIsHovering && !m_bChangePokemon)
 			{
 				float damage = m_PlayerAttackBuff + (m_FriendlyCubemon->GetWeakAttack() * m_FriendlyCubemon->GetLvl());
 				m_EnemyCubemon->TakeDamage(damage);
@@ -538,13 +531,13 @@ void GUI::HandleButtonInteractions()
 				EndTurn();
 				
 			}
-			else if (m_BattleSceneAttackButtons[2]->m_bIsHovering)
+			else if (m_BattleSceneAttackButtons[2]->m_bIsHovering && !m_bChangePokemon)
 			{
 				m_PlayerAttackBuff = 2;
 
 				EndTurn();
 			}
-			else if (m_BattleSceneAttackButtons[3]->m_bIsHovering)
+			else if (m_BattleSceneAttackButtons[3]->m_bIsHovering && !m_bChangePokemon)
 			{
 				float damage = m_PlayerAttackBuff + (m_FriendlyCubemon->GetStrongAttack() * m_FriendlyCubemon->GetLvl());
 				m_EnemyCubemon->TakeDamage(damage);

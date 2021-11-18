@@ -89,20 +89,19 @@ void Player::Update(sf::Vector2f _mousepos)
 				if (m_EncounterClock.getElapsedTime().asSeconds() >= 5.0f)
 				{
 					srand((unsigned)time(0));
-					int bushEncounter = rand() % 12;
+					int bushEncounter = rand() % 6;
 
 					if (bushEncounter == 0)
 					{
 						m_Encounter = true;
-						m_EncounterClock.restart();
 						break;
 					}
-					else if (bushEncounter == 6)
+					else if (bushEncounter == 3)
 					{
 						m_Encounter = true;
-						m_EncounterClock.restart();
 						break;
 					}
+					m_EncounterClock.restart();
 				}
 				else
 				{

@@ -21,6 +21,8 @@ public:
 	sf::Texture* m_Church = nullptr;
 	sf::Texture* m_IndoorFloor = nullptr;
 	sf::Texture* m_IndoorWall = nullptr;
+	sf::Texture* m_IndoorDoor = nullptr;
+	sf::Texture* m_BlackBG = nullptr;
 
 	sf::Texture* DirtToGrassSheet = nullptr;
 	sf::Texture* GrassToDirtSheet = nullptr;

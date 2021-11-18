@@ -311,11 +311,15 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 		}
 		else if (*it == 'C') // Indoor Wall
 		{
-			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Church, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Door"));
+			m_Trees.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Church, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Door"));
 		}
 		else if (*it == 'E') // Indoor Door
 		{
-			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Church, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "IndoorDoor"));
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_IndoorDoor, sf::Vector2f((float)iteratorX* TILESIZE, (float)iteratorY* TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "IndoorDoor"));
+		}
+		else if (*it == 'b') // Indoor Door
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_BlackBG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
 		}
 
 		if (iteratorX == INISIZE)
