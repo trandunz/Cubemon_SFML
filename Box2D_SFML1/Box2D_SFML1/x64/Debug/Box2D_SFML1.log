@@ -1,3 +1,9 @@
-﻿  CSceneManager.cpp
-C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CGameScene.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+﻿  CBattleScene.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(170,88): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(372): warning C4715: 'CBattleScene::GrabCubemonLevelBasedOnType': not all control paths return a value
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(415): warning C4715: 'CBattleScene::GrabCubemonHealthBasedOnType': not all control paths return a value
   Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe

@@ -301,6 +301,23 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 			m_Tiles.back()->GetShape()->setOrigin(50, 50);
 		}
 
+		else if (*it == 'F') // Indoor Floor
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_IndoorFloor, sf::Vector2f((float)iteratorX* TILESIZE, (float)iteratorY* TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+		}
+		else if (*it == 'W') // Indoor Wall
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_IndoorWall, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+		}
+		else if (*it == 'C') // Indoor Wall
+		{
+			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Church, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "Door"));
+		}
+		else if (*it == 'E') // Indoor Door
+		{
+			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Church, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - 25), sf::Vector2f(TILESIZE, TILESIZE), "IndoorDoor"));
+		}
+
 		if (iteratorX == INISIZE)
 		{
 			iteratorX = -INISIZE;

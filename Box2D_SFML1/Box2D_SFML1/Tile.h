@@ -15,7 +15,7 @@ public:
 
 	void CreateShape();
 	void DestroyShape();
-	virtual void CreateBody(float _sizeX, float _sizeY, float _posX, float _posY, b2BodyType _type, bool _sensor = false);
+	virtual void CreateBody(float _sizeX, float _sizeY, float _posX, float _posY, b2BodyType _type, bool _sensor = false, int _categoryBits = 0x0002);
 	void DestroyBody();
 
 	sf::Sprite* GetShape();

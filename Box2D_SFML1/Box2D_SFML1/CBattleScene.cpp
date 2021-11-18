@@ -17,6 +17,7 @@ CBattleScene::~CBattleScene()
 
 void CBattleScene::Start()
 {
+	InterceptSceneChange(-1);
 	InitUIView();
 	InitWorldView();
 	InitBackground();
@@ -31,6 +32,7 @@ void CBattleScene::Start()
 
 void CBattleScene::Update()
 {
+	SaveCubemonValues();
 	if (m_EnemyCubemon != nullptr)
 	{
 		m_EnemyCubemon->Update();
@@ -43,7 +45,12 @@ void CBattleScene::Update()
 
 	if (m_FriendlyCubemon->GetCurrentHealth() <= 0)
 	{
-
+		m_GUI->m_bChangePokemon = true;
+		if (IsPlayerDeath())
+		{
+			ResetPlayerPosition();
+			InterceptSceneChange(2);
+		}
 	}
 }
 
@@ -405,4 +412,51 @@ int CBattleScene::GrabCubemonHealthBasedOnType()
 			return m_HPs[i];
 		}
 	}
+}
+
+std::vector<int> CBattleScene::GrabCubemonHealth()
+{
+	std::ifstream file;
+	std::vector<int> m_HPs;
+	int HP = 0;
+	std::string currentLine;
+	file.open("Resources/Output/CubemonHPData.ini");
+	if (file.is_open())
+	{
+		while (std::getline(file, currentLine))
+		{
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_HPs.push_back(std::stoi(value));
+		}
+
+	}
+	file.close();
+	return m_HPs;
+}
+
+bool CBattleScene::IsPlayerDeath()
+{
+	for (auto& item : GrabCubemonHealth())
+	{
+		if (item > 0)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void CBattleScene::ResetPlayerPosition()
+{
+	std::ofstream file;
+
+	file.open("Resources/Output/PlayerData.ini");
+	if (file.is_open())
+	{
+		file.clear();
+		file << "x =" << 0 << std::endl << "y =" << 0;
+	}
+	file.close();
 }

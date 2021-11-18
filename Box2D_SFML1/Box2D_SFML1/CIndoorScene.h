@@ -18,6 +18,7 @@ public:
 
 	inline virtual void Start() override
 	{
+		InterceptSceneChange(2);
 		CreateAudioManager();
 		CreateB2World();
 		CreatePlayer();

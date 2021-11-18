@@ -18,6 +18,9 @@ public:
 	sf::Texture* m_Water = nullptr;
 	sf::Texture* m_Rock = nullptr;
 	sf::Texture* m_CaveEntrance = nullptr;
+	sf::Texture* m_Church = nullptr;
+	sf::Texture* m_IndoorFloor = nullptr;
+	sf::Texture* m_IndoorWall = nullptr;
 
 	sf::Texture* DirtToGrassSheet = nullptr;
 	sf::Texture* GrassToDirtSheet = nullptr;

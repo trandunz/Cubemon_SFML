@@ -87,31 +87,35 @@ void CSceneManager::Render()
 
 void CSceneManager::ChangeScenes()
 {
-	if (m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay && m_LastFramesScene != ReturnSceneChange())
+	if (m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay)
 	{
-		CleanupAllScenes();
-		if (ReturnSceneChange() == 1)
+		if (m_LastFramesScene != ReturnSceneChange())
 		{
-			m_GameSceneVector.push_back(new CGameScene(m_RenderWindow, m_TextureMaster, *m_Event));
-		}
-		else if (ReturnSceneChange() == -1)
-		{
-			m_BattleScene = new CBattleScene(m_RenderWindow, m_TextureMaster, *m_Event);
-		}
-		else if (ReturnSceneChange() == 0)
-		{
-			m_MainMenuSceneVector.push_back(new CMainMenuScene(m_RenderWindow, *m_Event));
-		}
-		else if (ReturnSceneChange() == 2)
-		{
-			m_GameSceneVector.push_back(new CIndoorScene(m_RenderWindow, m_TextureMaster, *m_Event));
-		}
+			CleanupAllScenes();
+			if (ReturnSceneChange() == 1)
+			{
+				m_GameSceneVector.push_back(new CGameScene(m_RenderWindow, m_TextureMaster, *m_Event));
+			}
+			else if (ReturnSceneChange() == -1)
+			{
+				m_BattleScene = new CBattleScene(m_RenderWindow, m_TextureMaster, *m_Event);
+			}
+			else if (ReturnSceneChange() == 0)
+			{
+				m_MainMenuSceneVector.push_back(new CMainMenuScene(m_RenderWindow, *m_Event));
+			}
+			else if (ReturnSceneChange() == 2)
+			{
+				m_GameSceneVector.push_back(new CIndoorScene(m_RenderWindow, m_TextureMaster, *m_Event));
+			}
 
-		Start();
-		m_SceneTimer.restart();
+			Start();
+			m_SceneTimer.restart();
+		}
+		m_LastFramesScene = ReturnSceneChange();
 	}
 
-	m_LastFramesScene = ReturnSceneChange();
+	
 
 	if (sf::Event::KeyPressed && m_Event->key.code == sf::Keyboard::F1 && m_SceneTimer.getElapsedTime().asSeconds() >= m_SceneChangeDelay)
 	{

@@ -154,7 +154,7 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 			item->Update();
 			m_RenderWindow->draw(item->Sprite);
 		}
-		
+
 	}
 
 	if (m_bAttack)
@@ -167,7 +167,14 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 		}
 	}
 
-	HandleButtonInteractions();
+	if (!m_bChangePokemon)
+	{
+		HandleButtonInteractions();
+	}
+	else if (m_bChangePokemon)
+	{
+
+	}
 
 	m_RenderWindow->setView(_worldView);
 }

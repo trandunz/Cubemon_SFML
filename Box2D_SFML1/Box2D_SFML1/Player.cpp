@@ -11,7 +11,10 @@ Player::Player(sf::RenderWindow* _renderWindow, b2World& _world, AudioManager* _
 Player::~Player()
 {
 	WriteCubmonData();
-	WritePlayerData();
+	if (!m_bEnteredRoom)
+	{
+		WritePlayerData();
+	}
 	CleanupCubemon();
 	DestoryShape();
 	DestroyBody();
@@ -29,7 +32,16 @@ void Player::Start()
 	LoadSpriteTexture(LoadTexture(&m_SpriteSheet, "Player/Player_SpriteSheett.png", false), m_Shape, true, false);
 	m_Shape->setScale(10, 10);
 
-	CreateBody(GrabPlayerData().x, GrabPlayerData().y, b2_dynamicBody);
+	if (ReturnSceneChange() == 2)
+	{
+		CreateBody(0.0f, 0.0f, b2_dynamicBody);
+
+	}
+	else
+	{
+		CreateBody(GrabPlayerData().x, GrabPlayerData().y, b2_dynamicBody);
+	}
+	
 
 	GrabCubmonData();
 }
@@ -42,43 +54,67 @@ void Player::Update(sf::Vector2f _mousepos)
 
 	SetShapeToB2Body();
 
-	for (b2Contact* contact = m_World->GetContactList(); contact; contact = contact->GetNext())
+	if (m_InteractionDelayTimer.getElapsedTime().asSeconds() >= 1.0f)
 	{
-		b2Fixture* a = contact->GetFixtureA();
-		b2Fixture* b = contact->GetFixtureB();
-		b2WorldManifold worldManifold;
-		contact->GetWorldManifold(&worldManifold);
-
-		// Bush / Player To Sensor Action
-		if ((a->GetBody() == m_Body || b->GetBody() == m_Body) && (a->GetBody()->GetFixtureList()->IsSensor() || b->GetBody()->GetFixtureList()->IsSensor()))
+		for (b2Contact* contact = m_World->GetContactList(); contact; contact = contact->GetNext())
 		{
-			if (m_EncounterClock.getElapsedTime().asSeconds() >= 5.0f)
-			{
-				srand((unsigned)time(0));
-				int bushEncounter = rand() % 12;
+			b2Fixture* a = contact->GetFixtureA();
+			b2Fixture* b = contact->GetFixtureB();
+			b2WorldManifold worldManifold;
+			contact->GetWorldManifold(&worldManifold);
 
-				if (bushEncounter == 0)
-				{
-					m_Encounter = true;
-					m_EncounterClock.restart();
-					break;
-				}
-				else if (bushEncounter == 6)
-				{
-					m_Encounter = true;
-					m_EncounterClock.restart();
-					break;
-				}
-			}
-			else
+			// Bush / Player To Sensor Action
+			if ((a->GetBody() == m_Body || b->GetBody() == m_Body) && (a->GetBody()->GetFixtureList()->IsSensor() || b->GetBody()->GetFixtureList()->IsSensor()))
 			{
-				break;
+				if (a->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 6 || b->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 6)
+				{
+					InterceptSceneChange(2);
+					std::ofstream file;
+					file.open("Resources/Output/PlayerData.ini");
+					if (file.is_open())
+					{
+						file.clear();
+						file << "x =" << m_Shape->getPosition().x << std::endl << "y =" << m_Shape->getPosition().y + 100;
+					}
+					file.close();
+					m_bEnteredRoom = true;
+					break;
+				}
+				else if (a->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 8 || b->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 8)
+				{
+					InterceptSceneChange(1);
+					break;
+				}
+
+				if (m_EncounterClock.getElapsedTime().asSeconds() >= 5.0f)
+				{
+					srand((unsigned)time(0));
+					int bushEncounter = rand() % 12;
+
+					if (bushEncounter == 0)
+					{
+						m_Encounter = true;
+						m_EncounterClock.restart();
+						break;
+					}
+					else if (bushEncounter == 6)
+					{
+						m_Encounter = true;
+						m_EncounterClock.restart();
+						break;
+					}
+				}
+				else
+				{
+					break;
+				}
 			}
+
+			a = nullptr;
+			b = nullptr;
 		}
-
-		a = nullptr;
-		b = nullptr;
 	}
+	
 
 	if (m_ManaRegen.getElapsedTime().asSeconds() >= m_ManaRegenFrequency)
 	{
@@ -412,15 +448,23 @@ sf::Vector2f Player::GrabPlayerData()
 
 void Player::WritePlayerData()
 {
-	std::ofstream file;
-
-	file.open("Resources/Output/PlayerData.ini");
-	if (file.is_open())
+	if (ReturnSceneChange() == 1)
 	{
-		file.clear();
-		file << "x =" << m_Shape->getPosition().x << std::endl << "y =" << m_Shape->getPosition().y;
+
 	}
-	file.close();
+	else
+	{
+		std::ofstream file;
+
+		file.open("Resources/Output/PlayerData.ini");
+		if (file.is_open())
+		{
+			file.clear();
+			file << "x =" << m_Shape->getPosition().x << std::endl << "y =" << m_Shape->getPosition().y;
+		}
+		file.close();
+	}
+	
 }
 
 void Player::WriteCubmonData()

@@ -13,6 +13,11 @@ Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _textu
 		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody);
 		LoadSpriteTexture(_texture, m_Shape, false);
 	}
+	else if (_tileType == "IndoWall")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody);
+		LoadSpriteTexture(_texture, m_Shape);
+	}
 	else if (_tileType == "Floor")
 	{
 		LoadSpriteTexture(_texture, m_Shape);
@@ -24,7 +29,12 @@ Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _textu
 	}
 	else if (_tileType == "Door")
 	{
-		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true);
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 6);
+		LoadSpriteTexture(_texture, m_Shape);
+	}
+	else if (_tileType == "IndoorDoor")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 8);
 		LoadSpriteTexture(_texture, m_Shape);
 	}
 
@@ -66,7 +76,7 @@ void Tile::DestroyShape()
 	m_Shape = nullptr;
 }
 
-void Tile::CreateBody(float _sizeX, float _sizeY, float _posX, float _posY, b2BodyType _type, bool _sensor)
+void Tile::CreateBody(float _sizeX, float _sizeY, float _posX, float _posY, b2BodyType _type, bool _sensor, int _categoryBits)
 {
 	// Body
 	m_BodyDef = new b2BodyDef;
@@ -85,7 +95,7 @@ void Tile::CreateBody(float _sizeX, float _sizeY, float _posX, float _posY, b2Bo
 	m_FixtureDef = new b2FixtureDef;
 	if (_sensor)
 	{
-		m_FixtureDef->filter.categoryBits = 0x0002;
+		m_FixtureDef->filter.categoryBits = _categoryBits;
 		m_FixtureDef->isSensor = true;
 	}
 	m_FixtureDef->density = 2.0f;

@@ -20,6 +20,7 @@ CGameScene::~CGameScene()
 
 void CGameScene::Start()
 {
+	InterceptSceneChange(1);
 	CreateAudioManager();
 	CreateB2World();
 	CreatePlayer();

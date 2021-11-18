@@ -30,6 +30,9 @@ private:
 	char GrabCubemonLevelBasedOnType();
 
 	int GrabCubemonHealthBasedOnType();
+	std::vector<int> GrabCubemonHealth();
+	bool IsPlayerDeath();
+	void ResetPlayerPosition();
 
 	sf::Event* m_Event = nullptr;
 	sf::View m_UIView;

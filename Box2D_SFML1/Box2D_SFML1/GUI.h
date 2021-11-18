@@ -31,6 +31,7 @@ public:
 
 	sf::Font m_Font;
 
+	bool m_bChangePokemon = false;
 private:
 	sf::RenderWindow* m_RenderWindow = nullptr;
 	TextureMaster* m_TextureMaster = nullptr;
@@ -138,6 +139,14 @@ private:
 		m_EnemyAttackTimer.restart();
 		m_EnemyTurnTimer.restart();
 		m_ButtonRegulator.restart();
+	}
+
+	void HandleChangePokemon()
+	{
+		bool m_bAttack = false;
+		bool m_bBackpack = false;
+		bool m_bCubemon = false;
+		bool m_bFlee = true;
 	}
 };
 #endif

@@ -26,6 +26,9 @@ TextureMaster::TextureMaster()
 	WaterToDirtSheet = new sf::Texture();
 	GrassToWaterSheet = new sf::Texture();
 	WaterToGrassSheet = new sf::Texture();
+	m_Church = new sf::Texture();
+	m_IndoorFloor = new sf::Texture();
+	m_IndoorWall = new sf::Texture();
 
 	if (m_BackgroundTexture->loadFromFile("Resources/Images/Backgrounds/OriBG.jpg"))
 	{
@@ -84,6 +87,19 @@ TextureMaster::TextureMaster()
 	{
 		std::cout << "WaterToGrassSheet Texture Loaded!" << std::endl;
 	}
+
+	if (m_Church->loadFromFile("Resources/Images/Custom Sprites/PokeHospital.png"))
+	{
+		std::cout << "WaterToDirtSheet Texture Loaded!" << std::endl;
+	}
+	if (m_IndoorFloor->loadFromFile("Resources/Images/Custom Sprites/Floor.png"))
+	{
+		std::cout << "GrassToWaterSheet Texture Loaded!" << std::endl;
+	}
+	if (m_IndoorWall->loadFromFile("Resources/Images/Custom Sprites/Wall.png"))
+	{
+		std::cout << "WaterToGrassSheet Texture Loaded!" << std::endl;
+	}
 }
 
 TextureMaster::~TextureMaster()
@@ -117,4 +133,11 @@ TextureMaster::~TextureMaster()
 	GrassToWaterSheet = nullptr;
 	DeletePointer(WaterToGrassSheet);
 	WaterToGrassSheet = nullptr;
+
+	DeletePointer(m_Church);
+	m_Church = nullptr;
+	DeletePointer(m_IndoorFloor);
+	m_IndoorFloor = nullptr;
+	DeletePointer(m_IndoorWall);
+	m_IndoorWall = nullptr;
 }

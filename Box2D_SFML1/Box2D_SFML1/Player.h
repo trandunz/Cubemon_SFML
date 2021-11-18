@@ -81,6 +81,9 @@ private:
 
 	bool m_Encounter = false;
 	sf::Clock m_BattleTimer;
+
+	bool m_bEnteredRoom = false;
+	sf::Clock m_InteractionDelayTimer;
 };
 
 #endif
