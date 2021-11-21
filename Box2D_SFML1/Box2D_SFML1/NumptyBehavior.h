@@ -24,6 +24,29 @@
 class NumptyBehavior
 {
 public:
+	typedef std::pair<int, int> Vector2;
+
+	static inline float Mag(Vector2 _vec1, Vector2 _vec2)
+	{
+		float dx = (float)(_vec2.first - _vec1.first);
+		float dy = (float)(_vec2.second - _vec1.second);
+
+		return sqrt((dx * dx) + (dy * dy));
+	}
+
+	static inline sf::Font& LoadFont(sf::Font& _font, std::string _path)
+	{
+		_font.loadFromFile(_path);
+		return _font;
+	}
+
+	static inline void LoadTextWithFont(sf::Text& _text, sf::Font& _font, sf::Color _colour = sf::Color::White, unsigned _characterSize = 12)
+	{
+		_text.setFont(_font);
+		_text.setCharacterSize(_characterSize);
+		_text.setFillColor(_colour);
+	}
+
 	template <typename T>
 	static inline void DeletePointer(T* _pointer)
 	{

@@ -27,10 +27,11 @@ private:
 	void InitBackground();
 
 	void SaveCubemonValues();
-	char GrabCubemonLevelBasedOnType();
+	int GrabCubemonLevelBasedOnType();
 
 	int GrabCubemonHealthBasedOnType();
 	std::vector<int> GrabCubemonHealth();
+	int GrabCubemonEXPBasedOnType();
 	bool IsPlayerDeath();
 	void ResetPlayerPosition();
 

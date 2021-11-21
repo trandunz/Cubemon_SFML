@@ -138,6 +138,9 @@
     <ClCompile Include="CBrutus.cpp">
       <Filter>Source Files\Entities\Cubermon</Filter>
     </ClCompile>
+    <ClCompile Include="Navigation.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WorldManager.h">
@@ -217,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="CIndoorScene.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Navigation.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\Handlers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

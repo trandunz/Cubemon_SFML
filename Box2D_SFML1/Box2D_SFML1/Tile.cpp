@@ -24,7 +24,7 @@ Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _textu
 	}
 	else if (_tileType == "Event")
 	{
-		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true);
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 2);
 		LoadSpriteTexture(_texture, m_Shape);
 	}
 	else if (_tileType == "Door")
@@ -35,6 +35,11 @@ Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _textu
 	else if (_tileType == "IndoorDoor")
 	{
 		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 8);
+		LoadSpriteTexture(_texture, m_Shape);
+	}
+	else if (_tileType == "Heal")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 4);
 		LoadSpriteTexture(_texture, m_Shape);
 	}
 

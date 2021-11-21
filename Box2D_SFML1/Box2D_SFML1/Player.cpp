@@ -85,8 +85,15 @@ void Player::Update(sf::Vector2f _mousepos)
 					InterceptSceneChange(1);
 					break;
 				}
+				else if ((a->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 4 || b->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 4) && m_HealTimer.getElapsedTime().asSeconds() >= 1.0f)
+				{
+					HealAllPokemon();
+					m_HealTimer.restart();
+					// Some Text Popups
+					break;
+				}
 
-				if (m_EncounterClock.getElapsedTime().asSeconds() >= 5.0f)
+				if ((a->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2 || b->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2) && m_EncounterClock.getElapsedTime().asSeconds() >= 2.5f)
 				{
 					srand((unsigned)time(0));
 					int bushEncounter = rand() % 6;
@@ -580,4 +587,64 @@ void Player::CleanupCubemon()
 	}
 	m_CubemonVector.erase(std::remove(m_CubemonVector.begin(), m_CubemonVector.end(), nullptr), m_CubemonVector.end());
 
+}
+
+void Player::HealAllPokemon()
+{
+	std::ifstream file;
+	std::vector<int> m_HPs{};
+	std::string currentLine;
+	file.open("Resources/Output/CubemonHPData.ini");
+	if (file.is_open())
+	{
+		while (std::getline(file, currentLine))
+		{
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_HPs.push_back(100);
+		}
+
+	}
+	file.close();
+
+	std::ofstream oFile;
+	oFile.open("Resources/Output/CubemonHPData.ini");
+	if (oFile.is_open())
+	{
+		oFile.clear();
+		for (int i = 0; i < m_HPs.size(); i++)
+		{
+			oFile << m_HPs[i] << std::endl;
+		}
+	}
+	oFile.close();
+}
+
+void Player::CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor)
+{
+	// Body
+	m_BodyDef = new b2BodyDef;
+	m_BodyDef->position = b2Vec2(_posX / m_Scale, _posY / m_Scale);
+	m_BodyDef->type = _type;
+	m_BodyDef->fixedRotation = 1;
+	m_BodyDef->linearDamping = 1.0f;
+	m_BodyDef->gravityScale = 0;
+	m_Body = m_World->CreateBody(m_BodyDef);
+
+	// Shape
+	m_b2pShape = new b2PolygonShape;
+	m_b2pShape->SetAsBox((50.0f / 2) / m_Scale, (50.0f / 2) / m_Scale);
+
+	// Fixture
+	m_FixtureDef = new b2FixtureDef;
+	if (_sensor)
+	{
+		m_FixtureDef->isSensor = true;
+	}
+	m_FixtureDef->density = 2.0f;
+	m_FixtureDef->friction = 0.1f;
+	m_FixtureDef->restitution = 0.2f;
+	m_FixtureDef->shape = m_b2pShape;
+	m_Body->CreateFixture(m_FixtureDef);
 }

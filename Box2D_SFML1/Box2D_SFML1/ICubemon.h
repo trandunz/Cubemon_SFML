@@ -49,22 +49,31 @@ public:
 	float GetWeakAttack();
 	float GetStrongAttack();
 
+	inline float GetXP()
+	{
+		return m_EXP;
+	}
+	inline void SetXP(int _amount)
+	{
+		m_EXP = _amount;
+	}
 	inline void AddXP(float _amount)
 	{
 		m_EXP += _amount;
+	}
+
+	inline void EXPLvlUpCheck()
+	{
+		if (m_EXP >= (100 * m_Lvl))
+		{
+			m_EXP = 0;
+			LevelUp();
+		}
 	}
 	
 	CUBEMONTYPE m_CubeType = CUBEMONTYPE::UNASSIGNED;
 
 protected:
-	inline void EXPLvlUpCheck()
-	{
-		if (m_EXP >= 100 * m_Lvl)
-		{
-			m_EXP = 0;
-			m_Lvl++;
-		}
-	}
 
 	CUBEMONSTATE m_CubeState = CUBEMONSTATE::UNASSIGNED;
 

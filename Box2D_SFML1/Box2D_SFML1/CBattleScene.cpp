@@ -85,6 +85,8 @@ void CBattleScene::Render()
 		m_GUI->BattleUI(m_UIView, m_WorldView);
 		m_GUI->HandleCubemonHUD(m_UIView, m_WorldView);
 	}
+
+	m_FriendlyCubemon->EXPLvlUpCheck();
 }
 
 void CBattleScene::CheckForMARKASDESTROY()
@@ -145,17 +147,14 @@ void CBattleScene::InitCubemon(ICubemon::CUBEMONTYPE _friendly, ICubemon::CUBEMO
 		if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::THALLIC)
 		{
 			m_FriendlyCubemon = new CThallic(m_RenderWindow, m_AudioManager);
-			m_FriendlyCubemon->SetCurrentHealth(GrabCubemonHealthBasedOnType());
 		}
 		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::KINDLING)
 		{
 			m_FriendlyCubemon = new CKindling(m_RenderWindow, m_AudioManager);
-			m_FriendlyCubemon->SetCurrentHealth(GrabCubemonHealthBasedOnType());
 		}
 		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BRUTUS)
 		{
 			m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
-			m_FriendlyCubemon->SetCurrentHealth(GrabCubemonHealthBasedOnType());
 		}
 	}
 
@@ -166,7 +165,9 @@ void CBattleScene::InitCubemon(ICubemon::CUBEMONTYPE _friendly, ICubemon::CUBEMO
 	}
 	if (m_FriendlyCubemon != nullptr)
 	{
+		m_FriendlyCubemon->SetCurrentHealth(GrabCubemonHealthBasedOnType());
 		m_FriendlyCubemon->SetLevel(GrabCubemonLevelBasedOnType());
+		m_FriendlyCubemon->SetXP(GrabCubemonEXPBasedOnType());
 		m_FriendlyCubemon->SetSpritePos(sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_RenderWindow->getView().getSize().x / 3.5, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 7));
 		m_FriendlyCubemon->SetSpriteScale(sf::Vector2f(3, 3));
 	}
@@ -233,6 +234,7 @@ void CBattleScene::SaveCubemonValues()
 	std::vector<int> m_Types{};
 	std::vector<int> m_Lvls{};
 	std::vector<int> m_HPs{};
+	std::vector<int> m_XPs{};
 	char type = 0;
 	char lvl = 0;
 	file.open("Resources/Output/CubemonData.ini");
@@ -249,29 +251,49 @@ void CBattleScene::SaveCubemonValues()
 	}
 	file.close();
 
+	std::string currentLine;
 	file.open("Resources/Output/CubemonLvlData.ini");
 	if (file.is_open())
 	{
-		while (file.get(lvl))
+		while (std::getline(file, currentLine))
 		{
-			if (lvl == ',') {}
-			else
-			{
-				m_Lvls.push_back(((int)lvl) - ASCIIOFFSET);
-			}
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_Lvls.push_back(std::stoi(value));
 		}
-		
+
 	}
 	file.close();
 	for (int i = 0; i < m_Types.size(); i++)
 	{
 		if (m_Types[i] == (int)m_FriendlyCubemon->m_CubeType)
 		{
-			m_Lvls[i] = m_FriendlyCubemon->GetLvl();
+			m_Lvls[i] = (int)m_FriendlyCubemon->GetLvl();
 		}
 	}
 
-	std::string currentLine;
+	file.open("Resources/Output/CubemonXPData.ini");
+	if (file.is_open())
+	{
+		while (std::getline(file, currentLine))
+		{
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_XPs.push_back(std::stoi(value));
+		}
+
+	}
+	file.close();
+	for (int i = 0; i < m_Types.size(); i++)
+	{
+		if (m_Types[i] == (int)m_FriendlyCubemon->m_CubeType)
+		{
+			m_XPs[i] = (int) m_FriendlyCubemon->GetXP();
+		}
+	}
+
 	file.open("Resources/Output/CubemonHPData.ini");
 	if (file.is_open())
 	{
@@ -310,9 +332,9 @@ void CBattleScene::SaveCubemonValues()
 	if (oFile.is_open())
 	{
 		oFile.clear();
-		for (auto& cubemon : m_Lvls)
+		for (int i = 0; i < m_Types.size(); i++)
 		{
-			oFile << cubemon << ",";
+			oFile << m_Lvls[i] << std::endl;
 		}
 	}
 	oFile.close();
@@ -327,15 +349,25 @@ void CBattleScene::SaveCubemonValues()
 		}
 	}
 	oFile.close();
+
+	oFile.open("Resources/Output/CubemonXPData.ini");
+	if (oFile.is_open())
+	{
+		oFile.clear();
+		for (int i = 0; i < m_Types.size(); i++)
+		{
+			oFile << m_XPs[i] << std::endl;
+		}
+	}
+	oFile.close();
 }
 
-char CBattleScene::GrabCubemonLevelBasedOnType()
+int CBattleScene::GrabCubemonLevelBasedOnType()
 {
 	std::ifstream file;
 	std::vector<int> m_Types;
 	std::vector<int> m_Lvls;
 	char type = 0;
-	char lvl = 0;
 	file.open("Resources/Output/CubemonData.ini");
 	if (file.is_open())
 	{
@@ -349,20 +381,21 @@ char CBattleScene::GrabCubemonLevelBasedOnType()
 		}
 		file.close();
 	}
+	std::string currentLine;
 	file.open("Resources/Output/CubemonLvlData.ini");
 	if (file.is_open())
 	{
-		while (file.get(lvl))
+		while (std::getline(file, currentLine))
 		{
-			if (lvl == ',') {}
-			else
-			{
-				m_Lvls.push_back(((int)lvl) - ASCIIOFFSET);
-			}
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_Lvls.push_back(std::stoi(value));
 		}
-		file.close();
+
 	}
-	for (int i = 0; i < m_Types.size(); i++)
+	file.close();
+	for (int i = 0; i < m_Lvls.size(); i++)
 	{
 		if (m_Types[i] == (int)m_FriendlyCubemon->m_CubeType)
 		{
@@ -434,6 +467,48 @@ std::vector<int> CBattleScene::GrabCubemonHealth()
 	}
 	file.close();
 	return m_HPs;
+}
+
+int CBattleScene::GrabCubemonEXPBasedOnType()
+{
+	std::ifstream file;
+	std::vector<int> m_Types;
+	std::vector<int> m_XPs;
+	char type = 0;
+	file.open("Resources/Output/CubemonData.ini");
+	if (file.is_open())
+	{
+		while (file.get(type))
+		{
+			if (type == ',') {}
+			else
+			{
+				m_Types.push_back(((int)type) - ASCIIOFFSET);
+			}
+		}
+		file.close();
+	}
+	std::string currentLine;
+	file.open("Resources/Output/CubemonXPData.ini");
+	if (file.is_open())
+	{
+		while (std::getline(file, currentLine))
+		{
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_XPs.push_back(std::stoi(value));
+		}
+
+	}
+	file.close();
+	for (int i = 0; i < m_XPs.size(); i++)
+	{
+		if (m_Types[i] == (int)m_FriendlyCubemon->m_CubeType)
+		{
+			return m_XPs[i];
+		}
+	}
 }
 
 bool CBattleScene::IsPlayerDeath()

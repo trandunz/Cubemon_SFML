@@ -59,6 +59,10 @@ private:
 	void CleanupCubemon();
 	std::vector<ICubemon*> m_CubemonVector;
 
+	void HealAllPokemon();
+
+	virtual void CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor = false);
+
 	sf::Clock m_DamageTakenTimer;
 	sf::Clock m_ManaRegen;
 	float m_ManaRegenFrequency = 1.0f;
@@ -84,6 +88,7 @@ private:
 
 	bool m_bEnteredRoom = false;
 	sf::Clock m_InteractionDelayTimer;
+	sf::Clock m_HealTimer;
 };
 
 #endif

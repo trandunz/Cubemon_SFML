@@ -4,6 +4,7 @@
 
 #include "IScene.h"
 #include "CContactListener.h";
+#include "Navigation.h"
 
 class CGameScene : public IScene
 {
@@ -53,5 +54,8 @@ protected:
 	sf::View m_UIView;
 
 	CContactListener* m_ContactListener = nullptr;
+
+	Navigation* m_AStar = nullptr;
+	sf::Clock m_AStarTimer;
 };
 

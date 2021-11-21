@@ -153,6 +153,7 @@
     <ClCompile Include="IItem.cpp" />
     <ClCompile Include="CPotion.cpp" />
     <ClCompile Include="IScene.cpp" />
+    <ClCompile Include="Navigation.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
@@ -181,6 +182,8 @@
     <ClInclude Include="IItem.h" />
     <ClInclude Include="CPotion.h" />
     <ClInclude Include="IScene.h" />
+    <ClInclude Include="Navigation.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="NumptyBehavior.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="GUI.h" />

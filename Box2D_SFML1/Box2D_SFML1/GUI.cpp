@@ -522,8 +522,8 @@ void GUI::HandleButtonInteractions()
 
 				if (m_EnemyCubemon->GetCurrentHealth() <= 0)
 				{
+					m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
 					InterceptSceneChange(1);
-					m_FriendlyCubemon->AddXP(15 * m_EnemyCubemon->GetLvl());
 				}
 
 				m_PlayerAttackBuff = 0;
@@ -533,7 +533,7 @@ void GUI::HandleButtonInteractions()
 			}
 			else if (m_BattleSceneAttackButtons[2]->m_bIsHovering && !m_bChangePokemon)
 			{
-				m_PlayerAttackBuff = 2;
+				m_PlayerAttackBuff = 15;
 
 				EndTurn();
 			}
@@ -545,8 +545,8 @@ void GUI::HandleButtonInteractions()
 
 				if (m_EnemyCubemon->GetCurrentHealth() <= 0)
 				{
+					m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
 					InterceptSceneChange(1);
-					m_FriendlyCubemon->AddXP(15 * m_EnemyCubemon->GetLvl());
 				}
 
 				m_PlayerAttackBuff = 0;

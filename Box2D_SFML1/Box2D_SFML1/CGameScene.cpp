@@ -39,11 +39,17 @@ void CGameScene::Start()
 	{
 		m_World->SetContactListener(m_ContactListener);
 	}
+
+	//m_AStar = new Navigation(m_RenderWindow);
+	//m_AStar->Start();
 }
 
 void CGameScene::Update()
 {
 	m_MousePos = m_RenderWindow->mapPixelToCoords(sf::Mouse::getPosition(*m_RenderWindow), m_View);
+	
+	//m_AStar->Update(m_MousePos);
+	
 	if (!IsNullptr(m_WorldManager))
 	{
 		m_WorldManager->Update();
@@ -64,6 +70,7 @@ void CGameScene::PolledUpdate()
 {
 	while (m_RenderWindow->pollEvent(*m_Event))
 	{
+		//m_AStar->PolledUpdate(m_Event, m_MousePos);
 		if (m_Event->type == sf::Event::Closed)
 		{
 			m_RenderWindow->close();
@@ -140,6 +147,8 @@ void CGameScene::Render()
 		m_GUI->Render(m_Player);
 		//
 	}
+
+	//m_AStar->Render();
 
 	m_RenderWindow->draw(m_FadeScreen, defaultShader);
 	m_RenderWindow->draw(m_GameOverText, defaultShader);
@@ -264,6 +273,9 @@ void CGameScene::CleanupAllPointers()
 	m_Event = nullptr;
 	NumptyBehavior::DeletePointer(m_ContactListener);
 	m_ContactListener = nullptr;
+
+	DeletePointer(m_AStar);
+	m_AStar = nullptr;
 }
 
 void CGameScene::InitView()

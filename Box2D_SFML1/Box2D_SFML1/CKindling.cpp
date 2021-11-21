@@ -19,7 +19,7 @@ CKindling::CKindling(sf::RenderWindow* _renderWindow, b2World* _world, b2Body& _
 
 	m_SpriteTexture = new sf::Texture();
 
-	CreateBody(_playerBody.GetPosition().x, _playerBody.GetPosition().y + 50, b2_dynamicBody);
+	CreateBody(_playerBody.GetPosition().x, _playerBody.GetPosition().y + 50, b2_dynamicBody, true);
 
 	m_CubeType = CUBEMONTYPE::KINDLING;
 

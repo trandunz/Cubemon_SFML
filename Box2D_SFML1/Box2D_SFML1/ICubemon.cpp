@@ -65,10 +65,7 @@ void ICubemon::SetSpriteScale(sf::Vector2f _scale)
 
 void ICubemon::LevelUp()
 {
-	if (m_Lvl < 99)
-	{
-		m_Lvl++;
-	}
+	m_Lvl++;
 }
 
 void ICubemon::SetLevel(int _value)
