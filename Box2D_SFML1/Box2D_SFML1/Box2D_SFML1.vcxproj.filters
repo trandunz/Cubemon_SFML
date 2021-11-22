@@ -64,6 +64,9 @@
     <Filter Include="Header Files\Items">
       <UniqueIdentifier>{3e5c0c34-916a-4c65-bf3a-9775b2762ef1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Items">
+      <UniqueIdentifier>{1e571d6e-67db-46b1-beca-12ceeabccc3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -126,12 +129,6 @@
     <ClCompile Include="CBattleScene.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="IItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CPotion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CKindling.cpp">
       <Filter>Source Files\Entities\Cubermon</Filter>
     </ClCompile>
@@ -139,6 +136,15 @@
       <Filter>Source Files\Entities\Cubermon</Filter>
     </ClCompile>
     <ClCompile Include="Navigation.cpp">
+      <Filter>Source Files\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="CPotion.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="IItem.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="CDebugWindow.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -209,22 +215,25 @@
     <ClInclude Include="IItem.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
-    <ClInclude Include="CPotion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CKindling.h">
       <Filter>Header Files\Entities\Cubemon</Filter>
     </ClInclude>
     <ClInclude Include="CBrutus.h">
       <Filter>Header Files\Entities\Cubemon</Filter>
     </ClInclude>
-    <ClInclude Include="CIndoorScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Navigation.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
+      <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="CIndoorScene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CPotion.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="CDebugWindow.h">
       <Filter>Header Files\Handlers</Filter>
     </ClInclude>
   </ItemGroup>

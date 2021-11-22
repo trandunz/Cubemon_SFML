@@ -141,6 +141,7 @@
     <ClCompile Include="CBrutus.cpp" />
     <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CContactListener.cpp" />
+    <ClCompile Include="CDebugWindow.cpp" />
     <ClCompile Include="CKindling.cpp" />
     <ClCompile Include="CMainMenuScene.cpp" />
     <ClCompile Include="CThallic.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="CBrutus.h" />
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CContactListener.h" />
+    <ClInclude Include="CDebugWindow.h" />
     <ClInclude Include="CIndoorScene.h" />
     <ClInclude Include="CKindling.h" />
     <ClInclude Include="CMainMenuScene.h" />

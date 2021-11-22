@@ -621,6 +621,22 @@ void Player::HealAllPokemon()
 	oFile.close();
 }
 
+bool Player::ToggleDebugSprint()
+{
+	if (m_iMovementSpeed == (7 * 5))
+	{
+		m_iMovementSpeed = 7;
+	}
+	else if (m_iMovementSpeed == 7)
+	{
+		m_iMovementSpeed *= 5;
+	}
+	else
+	{
+		m_iMovementSpeed = 7;
+	}
+}
+
 void Player::CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor)
 {
 	// Body

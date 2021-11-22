@@ -48,6 +48,9 @@ public:
 	void WriteInventoryData();
 	void ReadInventoryData();
 
+	static void HealAllPokemon();
+	bool ToggleDebugSprint();
+
 private:
 	void Animation(b2Vec2 _movementVector);
 
@@ -58,8 +61,6 @@ private:
 
 	void CleanupCubemon();
 	std::vector<ICubemon*> m_CubemonVector;
-
-	void HealAllPokemon();
 
 	virtual void CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor = false);
 

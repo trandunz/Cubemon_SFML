@@ -1,4 +1,24 @@
-﻿  CGameScene.cpp
+﻿  CBattleScene.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(171,88): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  CDebugWindow.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(3,65): error C2572: 'CDebugWindow::CDebugWindow': redefinition of default argument: parameter 1
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CDebugWindow.h(11): message : see declaration of 'CDebugWindow::CDebugWindow'
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(66,20): error C3867: 'CDebugWindow::IsSceneBattle': non-standard syntax; use '&' to create a pointer to member
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(93,22): error C3867: 'CDebugWindow::IsSceneBattle': non-standard syntax; use '&' to create a pointer to member
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(118,20): error C3867: 'CDebugWindow::IsSceneBattle': non-standard syntax; use '&' to create a pointer to member
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(242,1): error C2059: syntax error: '}'
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(242,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(245,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CDebugWindow.cpp(245,1): error C2447: '{': missing function header (old-style formal list?)
+  CMainMenuScene.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  CGameScene.cpp
 C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CGameScene.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CGameScene.cpp(258,115): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
@@ -37,6 +57,98 @@ C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CGameScene.
           [
               T=float
           ]
-  Navigation.cpp
+  CSceneManager.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CGameScene.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  IScene.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  GUI.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(52,30): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(62,32): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(66,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(92,72): warning C4244: 'argument': conversion from 'float' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(228,187): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(233,174): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(238,174): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(243,174): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(310,192): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(315,179): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(320,179): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(325,179): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(339,82): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(340,88): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(349,164): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(349,76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(360,161): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(360,73): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(520,32): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(525,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(543,32): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(548,34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(594,69): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(598,67): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(617,69): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(618,75): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(630,162): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(630,74): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(631,168): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\GUI.cpp(631,80): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  main.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CGameScene.h(6,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Player.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\Player.cpp(437,21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\Player.cpp(445,21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  WorldManager.cpp
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(58,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Generating Code...
-  Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\Player.cpp(638): error C4716: 'Player::ToggleDebugSprint': must return a value
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(405): warning C4715: 'CBattleScene::GrabCubemonLevelBasedOnType': not all control paths return a value
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(448): warning C4715: 'CBattleScene::GrabCubemonHealthBasedOnType': not all control paths return a value
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(512): warning C4715: 'CBattleScene::GrabCubemonEXPBasedOnType': not all control paths return a value
