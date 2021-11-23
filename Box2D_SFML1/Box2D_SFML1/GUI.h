@@ -113,6 +113,21 @@ private:
 	sf::Texture m_FireEmberAttack;
 	sf::Texture m_FireIncinerateAttack;
 
+	sf::Texture m_AirFFKAttack;
+	sf::Texture m_AirHWAttack;
+	sf::Texture m_AirLevitateAttack;
+	sf::Texture m_AirSBAttack;
+
+	sf::Texture m_WaterJetAttack;
+	sf::Texture m_WaterSplashAttack;
+	sf::Texture m_WaterTsunamiAttack;
+	sf::Texture m_WaterWTAttack;
+
+	sf::Texture m_EarthFOTFAttack;
+	sf::Texture m_EarthHardenAttack;
+	sf::Texture m_EarthOvergrowthAttack;
+	sf::Texture m_EarthShootsAttack;
+
 	sf::Texture m_KindlingCubemon;
 
 	void CleanupBattleSceneButtons();

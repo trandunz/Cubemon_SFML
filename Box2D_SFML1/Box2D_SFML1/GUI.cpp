@@ -395,6 +395,21 @@ void GUI::InitTextures()
 	LoadTexture(&m_FireIncinerateAttack, "GUI/Attacks/FireIncinerate.png", false);
 
 	LoadTexture(&m_KindlingCubemon, "Cubemon/Fire_Elemental.png", false);
+
+	LoadTexture(&m_AirFFKAttack, "GUI/Attacks/AirFFK.png", false);
+	LoadTexture(&m_AirHWAttack, "GUI/Attacks/AirHW.png", false);
+	LoadTexture(&m_AirLevitateAttack, "GUI/Attacks/AirLevitate.png", false);
+	LoadTexture(&m_AirSBAttack, "GUI/Attacks/AirSB.png", false);
+
+	LoadTexture(&m_EarthFOTFAttack, "GUI/Attacks/EarthFOTF.png", false);
+	LoadTexture(&m_EarthHardenAttack, "GUI/Attacks/EarthHardenr.png", false);
+	LoadTexture(&m_EarthOvergrowthAttack, "GUI/Attacks/EarthOvergrowth.png", false);
+	LoadTexture(&m_EarthShootsAttack, "GUI/Attacks/EarthShoots.png", false);
+
+	LoadTexture(&m_WaterJetAttack, "GUI/Attacks/WaterJet.png", false);
+	LoadTexture(&m_WaterSplashAttack, "GUI/Attacks/WaterSplash.png", false);
+	LoadTexture(&m_WaterTsunamiAttack, "GUI/Attacks/WaterTsunami.png", false);
+	LoadTexture(&m_WaterWTAttack, "GUI/Attacks/WaterWT.png", false);
 }
 
 void GUI::SetAllButtonScaling(float _newScale)
