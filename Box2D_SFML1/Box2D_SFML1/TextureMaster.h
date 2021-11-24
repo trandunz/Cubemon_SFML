@@ -23,6 +23,7 @@ public:
 	sf::Texture* m_IndoorWall = nullptr;
 	sf::Texture* m_IndoorDoor = nullptr;
 	sf::Texture* m_BlackBG = nullptr;
+	sf::Texture* m_HealingMachine = nullptr;
 
 	sf::Texture* DirtToGrassSheet = nullptr;
 	sf::Texture* GrassToDirtSheet = nullptr;

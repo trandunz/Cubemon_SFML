@@ -147,6 +147,15 @@
     <ClCompile Include="CDebugWindow.cpp">
       <Filter>Source Files\Handlers</Filter>
     </ClCompile>
+    <ClCompile Include="CDustDevil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CWirlson.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CBlizzardBird.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WorldManager.h">
@@ -235,6 +244,15 @@
     </ClInclude>
     <ClInclude Include="CDebugWindow.h">
       <Filter>Header Files\Handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="CDustDevil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CWirlson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CBlizzardBird.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

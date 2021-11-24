@@ -323,7 +323,8 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 		}
 		else if (*it == 'H') // Healing Pad
 		{
-			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_BlackBG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Heal"));
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_IndoorFloor, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Heal"));
+			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_HealingMachine, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
 		}
 
 		if (iteratorX == INISIZE)

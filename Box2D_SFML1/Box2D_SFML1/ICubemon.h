@@ -20,8 +20,9 @@ public:
 		THALLIC = 1,
 		KINDLING = 2,
 		BRUTUS = 3,
-		DUSTDEVIL = 4,
-
+		WIRLSON = 4,
+		DUSTDEVIL = 5,
+		BLIZZARDBIRD = 6,
 	};
 
 	virtual ~ICubemon() { };

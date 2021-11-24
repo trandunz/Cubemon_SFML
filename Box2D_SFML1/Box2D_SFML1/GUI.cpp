@@ -270,6 +270,8 @@ void GUI::InitCubeBoyAttackUI()
 	// Attacks
 	InitKindlingAttackImages(tempShape);
 	InitBrutusAttackImages(tempShape);
+	InitWirlsonAttackImages(tempShape);
+	InitBlizzardBird(tempShape);
 }
 
 void GUI::InitCubeBoyAttackButtons()
@@ -350,6 +352,9 @@ void GUI::InitTextures()
 	LoadTexture(&m_KindlingCubemon, "Cubemon/Fire_Elemental.png", false);
 	LoadTexture(&m_BrutusCubemon, "Cubemon/Plant_Elemental.png", false);
 	LoadTexture(&m_ThallicCubemon, "Cubemon/Thallic.png", false);
+	LoadTexture(&m_WirlsonCubemon, "Cubemon/Water_Elemental.png", false);
+	LoadTexture(&m_DustDevilCubemon, "Cubemon/Dust_Devil.png", false);
+	LoadTexture(&m_BlizzardBirdCubemon, "Cubemon/Blizzard_Bird.png", false);
 
 	LoadTexture(&m_AirFFKAttack, "GUI/Attacks/AirFFK.png", false);
 	LoadTexture(&m_AirHWAttack, "GUI/Attacks/AirHW.png", false);
@@ -492,6 +497,111 @@ void GUI::HandleGUIShapes(sf::RectangleShape& _item)
 			m_RenderWindow->draw(_item);
 		}
 	}
+	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::WIRLSON)
+	{
+	if (_item.getTexture() == &m_WaterJetAttack)
+	{
+		if (m_BattleSceneAttackButtons[8]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_WaterSplashAttack)
+	{
+		if (m_BattleSceneAttackButtons[9]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_WaterTsunamiAttack)
+	{
+		if (m_BattleSceneAttackButtons[10]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_WaterWTAttack)
+	{
+		if (m_BattleSceneAttackButtons[11]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_WirlsonCubemon)
+	{
+		m_RenderWindow->draw(_item);
+	}
+	}
+	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::DUSTDEVIL)
+	{
+	if (_item.getTexture() == &m_AirFFKAttack)
+	{
+		if (m_BattleSceneAttackButtons[12]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirHWAttack)
+	{
+		if (m_BattleSceneAttackButtons[13]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirLevitateAttack)
+	{
+		if (m_BattleSceneAttackButtons[14]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirSBAttack)
+	{
+		if (m_BattleSceneAttackButtons[15]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_DustDevilCubemon)
+	{
+		m_RenderWindow->draw(_item);
+	}
+	}
+	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
+	{
+	if (_item.getTexture() == &m_AirFFKAttack)
+	{
+		if (m_BattleSceneAttackButtons[12]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirHWAttack)
+	{
+		if (m_BattleSceneAttackButtons[13]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirLevitateAttack)
+	{
+		if (m_BattleSceneAttackButtons[14]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirSBAttack)
+	{
+		if (m_BattleSceneAttackButtons[15]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_DustDevilCubemon)
+	{
+		m_RenderWindow->draw(_item);
+	}
+	}
 }
 
 void GUI::HandleGUIButtons(CButtons* _button)
@@ -513,6 +623,28 @@ void GUI::HandleGUIButtons(CButtons* _button)
 			_button == m_BattleSceneAttackButtons[5] ||
 			_button == m_BattleSceneAttackButtons[6] ||
 			_button == m_BattleSceneAttackButtons[7]
+			)
+		{
+			m_RenderWindow->draw(_button->Sprite);
+		}
+	}
+	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::WIRLSON)
+	{
+		if (_button == m_BattleSceneAttackButtons[8] ||
+			_button == m_BattleSceneAttackButtons[9] ||
+			_button == m_BattleSceneAttackButtons[10] ||
+			_button == m_BattleSceneAttackButtons[11]
+			)
+		{
+			m_RenderWindow->draw(_button->Sprite);
+		}
+	}
+	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::DUSTDEVIL || m_CurrentCubemon == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
+	{
+		if (_button == m_BattleSceneAttackButtons[12] ||
+			_button == m_BattleSceneAttackButtons[13] ||
+			_button == m_BattleSceneAttackButtons[14] ||
+			_button == m_BattleSceneAttackButtons[15]
 			)
 		{
 			m_RenderWindow->draw(_button->Sprite);
@@ -641,6 +773,21 @@ bool GUI::HandleAttackButtons()
 			m_PlayerAttackBuff = 5;
 			m_PlayerArmourBuff = 0;
 		}
+		case ICubemon::CUBEMONTYPE::WIRLSON:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
+		case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
+		case ICubemon::CUBEMONTYPE::DUSTDEVIL:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
 		default:
 			break;
 		}
@@ -677,6 +824,21 @@ bool GUI::HandleAttackButtons()
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 0;
 			std::cout << damage << std::endl;
+		}
+		case ICubemon::CUBEMONTYPE::WIRLSON:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
+		case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
+		case ICubemon::CUBEMONTYPE::DUSTDEVIL:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
 		}
 		default:
 			break;
@@ -726,6 +888,21 @@ bool GUI::HandleAttackButtons()
 		case ICubemon::CUBEMONTYPE::KINDLING:
 		{
 			m_PlayerAttackBuff = 15;
+			m_PlayerArmourBuff = 0;
+		}
+		case ICubemon::CUBEMONTYPE::WIRLSON:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
+		case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
+		case ICubemon::CUBEMONTYPE::DUSTDEVIL:
+		{
+			m_PlayerAttackBuff = 5;
 			m_PlayerArmourBuff = 0;
 		}
 		default:
@@ -790,6 +967,21 @@ bool GUI::HandleAttackButtons()
 			std::cout << damage << std::endl;
 			break;
 		}
+		case ICubemon::CUBEMONTYPE::WIRLSON:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
+		case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
+		case ICubemon::CUBEMONTYPE::DUSTDEVIL:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
 		default:
 			break;
 		}
@@ -824,6 +1016,30 @@ void GUI::InitCubemonImages(sf::RectangleShape& _tempShape)
 	_tempShape.setOrigin(50, 50);
 	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
 	_tempShape.setTexture(&m_ThallicCubemon, true);
+	_tempShape.setScale(1.f, 1.f);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(100, 100));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(50, 50);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	_tempShape.setTexture(&m_BlizzardBirdCubemon, true);
+	_tempShape.setScale(1.f, 1.f);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(100, 100));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(50, 50);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	_tempShape.setTexture(&m_DustDevilCubemon, true);
+	_tempShape.setScale(1.f, 1.f);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(100, 100));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(50, 50);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	_tempShape.setTexture(&m_WirlsonCubemon, true);
 	_tempShape.setScale(1.f, 1.f);
 	m_BattleSceneAttackShapes.push_back(_tempShape);
 }
@@ -910,6 +1126,76 @@ void GUI::InitAttackUIBackgroundImages(sf::RectangleShape& _tempShape)
 	_tempShape.setFillColor(sf::Color(139, 69, 19));
 	_tempShape.setOrigin(55, 55);
 	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+}
+
+void GUI::InitWirlsonAttackImages(sf::RectangleShape& _tempShape)
+{
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_WaterJetAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_WaterSplashAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_WaterTsunamiAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_WaterWTAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+}
+
+void GUI::InitBlizzardBird(sf::RectangleShape& _tempShape)
+{
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_AirFFKAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_AirHWAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_AirLevitateAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_AirSBAttack, true);
+	_tempShape.setScale(1, 1);
 	m_BattleSceneAttackShapes.push_back(_tempShape);
 }
 
@@ -1062,7 +1348,7 @@ void GUI::HandleINISwaps(int _newType)
 
 int GUI::ReturnPokemonChangeType()
 {
-	// some stuff
+	return NULL;
 }
 
 void GUI::HandleCubemonHUD(sf::View& _uiView, sf::View& _worldView)

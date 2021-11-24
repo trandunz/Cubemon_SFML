@@ -31,6 +31,7 @@ TextureMaster::TextureMaster()
 	m_IndoorWall = new sf::Texture();
 	m_IndoorDoor = new sf::Texture();
 	m_BlackBG = new sf::Texture();
+	m_HealingMachine = new sf::Texture();
 
 	if (m_BackgroundTexture->loadFromFile("Resources/Images/Backgrounds/OriBG.jpg"))
 	{
@@ -92,23 +93,27 @@ TextureMaster::TextureMaster()
 
 	if (m_Church->loadFromFile("Resources/Images/Custom Sprites/PokeHospital.png"))
 	{
-		std::cout << "WaterToDirtSheet Texture Loaded!" << std::endl;
+		std::cout << "CubeHospital Texture Loaded!" << std::endl;
 	}
 	if (m_IndoorFloor->loadFromFile("Resources/Images/Custom Sprites/Floor.png"))
 	{
-		std::cout << "GrassToWaterSheet Texture Loaded!" << std::endl;
+		std::cout << "Indoor Floor Texture Loaded!" << std::endl;
 	}
 	if (m_IndoorWall->loadFromFile("Resources/Images/Custom Sprites/Wall.png"))
 	{
-		std::cout << "WaterToGrassSheet Texture Loaded!" << std::endl;
+		std::cout << "Indoor Wall Texture Loaded!" << std::endl;
 	}
 	if (m_IndoorDoor->loadFromFile("Resources/Images/Custom Sprites/FloorDoorway.png"))
 	{
-		std::cout << "WaterToGrassSheet Texture Loaded!" << std::endl;
+		std::cout << "Indoor Doorway Texture Loaded!" << std::endl;
 	}
 	if (m_BlackBG->loadFromFile("Resources/Images/Custom Sprites/Black.png"))
 	{
-		std::cout << "WaterToGrassSheet Texture Loaded!" << std::endl;
+		std::cout << "BlackBG Texture Loaded!" << std::endl;
+	}
+	if (m_HealingMachine->loadFromFile("Resources/Images/Custom Sprites/HealingMachine.png"))
+	{
+		std::cout << "Healing Machine Texture Loaded!" << std::endl;
 	}
 }
 
@@ -154,4 +159,7 @@ TextureMaster::~TextureMaster()
 	m_IndoorDoor = nullptr;
 	DeletePointer(m_BlackBG);
 	m_BlackBG = nullptr;
+
+	DeletePointer(m_HealingMachine);
+	m_HealingMachine = nullptr;
 }

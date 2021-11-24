@@ -137,6 +137,9 @@ private:
 	sf::Texture m_KindlingCubemon;
 	sf::Texture m_BrutusCubemon;
 	sf::Texture m_ThallicCubemon;
+	sf::Texture m_BlizzardBirdCubemon;
+	sf::Texture m_DustDevilCubemon;
+	sf::Texture m_WirlsonCubemon;
 
 	void CleanupBattleSceneButtons();
 
@@ -165,7 +168,8 @@ private:
 	void InitKindlingAttackImages(sf::RectangleShape& _tempShape);
 	void InitBrutusAttackImages(sf::RectangleShape& _tempShape);
 	void InitAttackUIBackgroundImages(sf::RectangleShape& _tempShape);
-
+	void InitWirlsonAttackImages(sf::RectangleShape& _tempShape);
+	void InitBlizzardBird(sf::RectangleShape& _tempShape);
 
 	inline void EndTurn()
 	{

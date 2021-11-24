@@ -11,6 +11,9 @@
 #include "CThallic.h"
 #include "CKindling.h"
 #include "CBrutus.h"
+#include "CBlizzardBird.h"
+#include "CDustDevil.h"
+#include "CWirlson.h"
 
 class Player : public IEntity
 {

@@ -108,12 +108,24 @@ void CBattleScene::InitCubemon(ICubemon::CUBEMONTYPE _friendly, ICubemon::CUBEMO
 	{
 		m_EnemyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
 	}
+	else if (_enemy == ICubemon::CUBEMONTYPE::WIRLSON)
+	{
+		m_EnemyCubemon = new CWirlson(m_RenderWindow, m_AudioManager);
+	}
+	else if (_enemy == ICubemon::CUBEMONTYPE::DUSTDEVIL)
+	{
+		m_EnemyCubemon = new CDustDevil(m_RenderWindow, m_AudioManager);
+	}
+	else if (_enemy == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
+	{
+		m_EnemyCubemon = new CBlizzardBird(m_RenderWindow, m_AudioManager);
+	}
 	else
 	{
 		int ran = INT_MAX;
 		srand((unsigned)time(NULL));
 		srand(rand());
-		ran = rand() % 3;
+		ran = rand() % 6;
 		if (ran == 0)
 		{
 			m_EnemyCubemon = new CThallic(m_RenderWindow, m_AudioManager);
@@ -127,6 +139,21 @@ void CBattleScene::InitCubemon(ICubemon::CUBEMONTYPE _friendly, ICubemon::CUBEMO
 		else if (ran == 2)
 		{
 			m_EnemyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
+			m_EnemyCubemon->SetLevel(ran + 1);
+		}
+		else if (ran == 3)
+		{
+			m_EnemyCubemon = new CWirlson(m_RenderWindow, m_AudioManager);
+			m_EnemyCubemon->SetLevel(ran + 1);
+		}
+		else if (ran == 4)
+		{
+			m_EnemyCubemon = new CDustDevil(m_RenderWindow, m_AudioManager);
+			m_EnemyCubemon->SetLevel(ran + 1);
+		}
+		else if (ran == 5)
+		{
+			m_EnemyCubemon = new CBlizzardBird(m_RenderWindow, m_AudioManager);
 			m_EnemyCubemon->SetLevel(ran + 1);
 		}
 	}
@@ -143,6 +170,18 @@ void CBattleScene::InitCubemon(ICubemon::CUBEMONTYPE _friendly, ICubemon::CUBEMO
 	{
 		m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
 	}
+	else if (_friendly == ICubemon::CUBEMONTYPE::WIRLSON)
+	{
+		m_FriendlyCubemon = new CWirlson(m_RenderWindow, m_AudioManager);
+	}
+	else if (_friendly == ICubemon::CUBEMONTYPE::DUSTDEVIL)
+	{
+		m_FriendlyCubemon = new CDustDevil(m_RenderWindow, m_AudioManager);
+	}
+	else if (_friendly == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
+	{
+		m_FriendlyCubemon = new CBlizzardBird(m_RenderWindow, m_AudioManager);
+	}
 	else
 	{
 		if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::THALLIC)
@@ -156,6 +195,18 @@ void CBattleScene::InitCubemon(ICubemon::CUBEMONTYPE _friendly, ICubemon::CUBEMO
 		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BRUTUS)
 		{
 			m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
+		}
+		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::WIRLSON)
+		{
+			m_FriendlyCubemon = new CWirlson(m_RenderWindow, m_AudioManager);
+		}
+		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::DUSTDEVIL)
+		{
+			m_FriendlyCubemon = new CDustDevil(m_RenderWindow, m_AudioManager);
+		}
+		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
+		{
+			m_FriendlyCubemon = new CBlizzardBird(m_RenderWindow, m_AudioManager);
 		}
 	}
 
@@ -551,6 +602,18 @@ void CBattleScene::CreateNewlyChangedPokemon(int _newType)
 	{
 		m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
 	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::WIRLSON)
+	{
+		m_FriendlyCubemon = new CWirlson(m_RenderWindow, m_AudioManager);
+	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::DUSTDEVIL)
+	{
+		m_FriendlyCubemon = new CDustDevil(m_RenderWindow, m_AudioManager);
+	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
+	{
+		m_FriendlyCubemon = new CBlizzardBird(m_RenderWindow, m_AudioManager);
+	}
 	if (m_FriendlyCubemon != nullptr)
 	{
 		m_FriendlyCubemon->SetCurrentHealth(GrabCubemonHealthBasedOnType());
@@ -588,6 +651,18 @@ void CBattleScene::InitPlayerCubemonFromINI()
 	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BRUTUS)
 	{
 		m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
+	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::WIRLSON)
+	{
+		m_FriendlyCubemon = new CWirlson(m_RenderWindow, m_AudioManager);
+	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::DUSTDEVIL)
+	{
+		m_FriendlyCubemon = new CDustDevil(m_RenderWindow, m_AudioManager);
+	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
+	{
+		m_FriendlyCubemon = new CBlizzardBird(m_RenderWindow, m_AudioManager);
 	}
 	if (m_FriendlyCubemon != nullptr)
 	{

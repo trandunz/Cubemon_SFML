@@ -96,7 +96,7 @@ void Player::Update(sf::Vector2f _mousepos)
 				else if ((a->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2 || b->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2) && m_EncounterClock.getElapsedTime().asSeconds() >= 2.5f)
 				{
 					srand((unsigned)time(0));
-					int bushEncounter = rand() % 5;
+					int bushEncounter = rand() % 4;
 
 					if (bushEncounter == 0)
 					{
@@ -110,11 +110,6 @@ void Player::Update(sf::Vector2f _mousepos)
 					}
 					
 				}
-				else if (m_EncounterClock.getElapsedTime().asSeconds() >= 2.5f)
-				{
-					m_EncounterClock.restart();
-				}
-				else
 				{
 					break;
 				}
@@ -123,8 +118,12 @@ void Player::Update(sf::Vector2f _mousepos)
 			a = nullptr;
 			b = nullptr;
 		}
+
 	}
-	
+	if (m_EncounterClock.getElapsedTime().asSeconds() >= 2.5f)
+	{
+		m_EncounterClock.restart();
+	}
 
 	if (m_ManaRegen.getElapsedTime().asSeconds() >= m_ManaRegenFrequency)
 	{
@@ -518,6 +517,18 @@ void Player::GrabCubmonData()
 			{
 				AddCubemon(new CBrutus(m_RenderWindow, m_World, *m_Body));
 			}
+			else if (m_Type == (int)ICubemon::CUBEMONTYPE::WIRLSON + ASCIIOFFSET)
+			{
+				AddCubemon(new CWirlson(m_RenderWindow, m_World, *m_Body));
+			}
+			else if (m_Type == (int)ICubemon::CUBEMONTYPE::DUSTDEVIL + ASCIIOFFSET)
+			{
+				AddCubemon(new CDustDevil(m_RenderWindow, m_World, *m_Body));
+			}
+			else if (m_Type == (int)ICubemon::CUBEMONTYPE::BLIZZARDBIRD + ASCIIOFFSET)
+			{
+				AddCubemon(new CBlizzardBird(m_RenderWindow, m_World, *m_Body));
+			}
 		}
 		file.close();
 	}
@@ -547,6 +558,18 @@ std::vector<ICubemon::CUBEMONTYPE> Player::ReturnCubemonData()
 			else if (m_Type == (int)ICubemon::CUBEMONTYPE::BRUTUS + ASCIIOFFSET)
 			{
 				cubemon.push_back(ICubemon::CUBEMONTYPE::BRUTUS);
+			}
+			else if (m_Type == (int)ICubemon::CUBEMONTYPE::WIRLSON + ASCIIOFFSET)
+			{
+				cubemon.push_back(ICubemon::CUBEMONTYPE::WIRLSON);
+			}
+			else if (m_Type == (int)ICubemon::CUBEMONTYPE::DUSTDEVIL + ASCIIOFFSET)
+			{
+				cubemon.push_back(ICubemon::CUBEMONTYPE::DUSTDEVIL);
+			}
+			else if (m_Type == (int)ICubemon::CUBEMONTYPE::BLIZZARDBIRD + ASCIIOFFSET)
+			{
+				cubemon.push_back(ICubemon::CUBEMONTYPE::BLIZZARDBIRD);
 			}
 		}
 		file.close();
@@ -670,5 +693,6 @@ void Player::CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor
 	m_FixtureDef->friction = 0.1f;
 	m_FixtureDef->restitution = 0.2f;
 	m_FixtureDef->shape = m_b2pShape;
+	m_FixtureDef->filter.groupIndex = -1;
 	m_Body->CreateFixture(m_FixtureDef);
 }

@@ -138,13 +138,16 @@
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="CBattleScene.cpp" />
+    <ClCompile Include="CBlizzardBird.cpp" />
     <ClCompile Include="CBrutus.cpp" />
     <ClCompile Include="CButtons.cpp" />
     <ClCompile Include="CContactListener.cpp" />
     <ClCompile Include="CDebugWindow.cpp" />
+    <ClCompile Include="CDustDevil.cpp" />
     <ClCompile Include="CKindling.cpp" />
     <ClCompile Include="CMainMenuScene.cpp" />
     <ClCompile Include="CThallic.cpp" />
+    <ClCompile Include="CWirlson.cpp" />
     <ClCompile Include="IEntity.cpp" />
     <ClCompile Include="CInputField.cpp" />
     <ClCompile Include="CMainMenu.cpp" />
@@ -166,14 +169,17 @@
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="CBattleScene.h" />
+    <ClInclude Include="CBlizzardBird.h" />
     <ClInclude Include="CBrutus.h" />
     <ClInclude Include="CButtons.h" />
     <ClInclude Include="CContactListener.h" />
     <ClInclude Include="CDebugWindow.h" />
+    <ClInclude Include="CDustDevil.h" />
     <ClInclude Include="CIndoorScene.h" />
     <ClInclude Include="CKindling.h" />
     <ClInclude Include="CMainMenuScene.h" />
     <ClInclude Include="CThallic.h" />
+    <ClInclude Include="CWirlson.h" />
     <ClInclude Include="IEntity.h" />
     <ClInclude Include="CINIParser.h" />
     <ClInclude Include="CInputField.h" />
