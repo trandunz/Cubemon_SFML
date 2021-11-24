@@ -775,18 +775,51 @@ bool GUI::HandleAttackButtons()
 		}
 		case ICubemon::CUBEMONTYPE::WIRLSON:
 		{
-			m_PlayerAttackBuff = 5;
+			float damage = m_PlayerAttackBuff + (7 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 0;
+			std::cout << damage << std::endl;
 		}
 		case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
 		{
-			m_PlayerAttackBuff = 5;
+			float damage = m_PlayerAttackBuff + (5 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 0;
+			std::cout << damage << std::endl;
 		}
 		case ICubemon::CUBEMONTYPE::DUSTDEVIL:
 		{
-			m_PlayerAttackBuff = 5;
+			float damage = m_PlayerAttackBuff + (5 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 0;
+			std::cout << damage << std::endl;
 		}
 		default:
 			break;
@@ -827,18 +860,18 @@ bool GUI::HandleAttackButtons()
 		}
 		case ICubemon::CUBEMONTYPE::WIRLSON:
 		{
-			m_PlayerAttackBuff = 5;
-			m_PlayerArmourBuff = 0;
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 5;
 		}
 		case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
 		{
 			m_PlayerAttackBuff = 5;
-			m_PlayerArmourBuff = 0;
+			m_PlayerArmourBuff = 5;
 		}
 		case ICubemon::CUBEMONTYPE::DUSTDEVIL:
 		{
 			m_PlayerAttackBuff = 5;
-			m_PlayerArmourBuff = 0;
+			m_PlayerArmourBuff = 5;
 		}
 		default:
 			break;
@@ -892,18 +925,29 @@ bool GUI::HandleAttackButtons()
 		}
 		case ICubemon::CUBEMONTYPE::WIRLSON:
 		{
-			m_PlayerAttackBuff = 5;
-			m_PlayerArmourBuff = 0;
+			float damage = m_PlayerAttackBuff + (15 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 5;
+			std::cout << damage << std::endl;
 		}
 		case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
 		{
-			m_PlayerAttackBuff = 5;
-			m_PlayerArmourBuff = 0;
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 10;
 		}
 		case ICubemon::CUBEMONTYPE::DUSTDEVIL:
 		{
-			m_PlayerAttackBuff = 5;
-			m_PlayerArmourBuff = 0;
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 10;
 		}
 		default:
 			break;
@@ -969,18 +1013,51 @@ bool GUI::HandleAttackButtons()
 		}
 		case ICubemon::CUBEMONTYPE::WIRLSON:
 		{
+			float damage = m_PlayerAttackBuff + (5 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
 			m_PlayerAttackBuff = 5;
 			m_PlayerArmourBuff = 0;
+			std::cout << damage << std::endl;
 		}
 		case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
 		{
-			m_PlayerAttackBuff = 5;
-			m_PlayerArmourBuff = 0;
+			float damage = m_PlayerAttackBuff + (8 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 5;
+			std::cout << damage << std::endl;
 		}
 		case ICubemon::CUBEMONTYPE::DUSTDEVIL:
 		{
-			m_PlayerAttackBuff = 5;
-			m_PlayerArmourBuff = 0;
+			float damage = m_PlayerAttackBuff + (8 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 5;
+			std::cout << damage << std::endl;
 		}
 		default:
 			break;
