@@ -597,7 +597,7 @@ void GUI::HandleGUIShapes(sf::RectangleShape& _item)
 			m_RenderWindow->draw(_item);
 		}
 	}
-	else if (_item.getTexture() == &m_DustDevilCubemon)
+	else if (_item.getTexture() == &m_BlizzardBirdCubemon)
 	{
 		m_RenderWindow->draw(_item);
 	}
