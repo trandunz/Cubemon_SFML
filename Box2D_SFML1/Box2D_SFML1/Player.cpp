@@ -35,13 +35,11 @@ void Player::Start()
 	if (ReturnSceneChange() == 2)
 	{
 		CreateBody(0.0f, 0.0f, b2_dynamicBody);
-
 	}
 	else
 	{
 		CreateBody(GrabPlayerData().x, GrabPlayerData().y, b2_dynamicBody);
 	}
-	
 
 	GrabCubmonData();
 }
@@ -92,9 +90,9 @@ void Player::Update(sf::Vector2f _mousepos)
 					// Some Text Popups
 					break;
 				}
-
 				else if ((a->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2 || b->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2) && m_EncounterClock.getElapsedTime().asSeconds() >= 2.5f)
 				{
+					std::cout << "AIDS" << std::endl;
 					srand((unsigned)time(0));
 					int bushEncounter = rand() % 4;
 
@@ -693,6 +691,6 @@ void Player::CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor
 	m_FixtureDef->friction = 0.1f;
 	m_FixtureDef->restitution = 0.2f;
 	m_FixtureDef->shape = m_b2pShape;
-	m_FixtureDef->filter.groupIndex = -1;
+	m_FixtureDef->filter.groupIndex = -2;
 	m_Body->CreateFixture(m_FixtureDef);
 }

@@ -46,8 +46,7 @@ void IEntity::CreateBody(float _posX, float _posY, b2BodyType _type, bool _senso
 	m_FixtureDef->friction = 0.1f;
 	m_FixtureDef->restitution = 0.2f;
 	m_FixtureDef->shape = m_b2pShape;
-	m_FixtureDef->filter.groupIndex = -1;
-	m_FixtureDef->filter.categoryBits = 0x0001;
+	m_FixtureDef->filter.groupIndex = -2;
 	m_Body->CreateFixture(m_FixtureDef);
 }
 

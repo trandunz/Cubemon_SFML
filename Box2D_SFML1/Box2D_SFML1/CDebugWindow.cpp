@@ -2,7 +2,7 @@
 
 CDebugWindow::CDebugWindow(sf::Event* _event, Player* _player)
 {
-	m_Event = _event;
+	m_Event = new sf::Event;
 	m_Player = _player;
 	Start();
 }
@@ -14,30 +14,28 @@ CDebugWindow::~CDebugWindow()
 		DeletePointer(item);
 		item = nullptr;
 	}
-	m_MiscButtons.clear();
+	m_MiscButtons.erase(std::remove(m_MiscButtons.begin(), m_MiscButtons.end(), nullptr), m_MiscButtons.end());
 
 	for (auto& item : m_InGameButtons)
 	{
 		DeletePointer(item);
 		item = nullptr;
 	}
-	m_InGameButtons.clear();
+	m_InGameButtons.erase(std::remove(m_InGameButtons.begin(), m_InGameButtons.end(), nullptr), m_InGameButtons.end());
 
 	for (auto& item : m_BattleButtons)
 	{
 		DeletePointer(item);
 		item = nullptr;
 	}
-	m_BattleButtons.clear();
-
-	m_InGameButtons.resize(0);	// SUS
-	m_BattleButtons.resize(0);	// SUS
-	m_MiscButtons.resize(0);	// SUS
+	m_BattleButtons.erase(std::remove(m_BattleButtons.begin(), m_BattleButtons.end(), nullptr), m_BattleButtons.end());
 
 	m_Shapes.clear();
 
 	DeletePointer(m_Player);
 	m_Player = nullptr;
+	m_Event = nullptr;
+	DeletePointer(m_Event);
 	m_Event = nullptr;
 	DeletePointer(m_RenderWindow);
 	m_RenderWindow = nullptr;
@@ -46,10 +44,12 @@ CDebugWindow::~CDebugWindow()
 void CDebugWindow::Start()
 {
 	InitWindow(sf::Style::Titlebar);
+	CreateButtons();
 }
 
 void CDebugWindow::Update()
 {
+	PolledUpdate();
 	if (IsSceneGame())
 	{
 		for (auto& item : m_MiscButtons)
@@ -81,7 +81,7 @@ void CDebugWindow::PolledUpdate()
 {
 	while (m_RenderWindow->pollEvent(*m_Event))
 	{
-		if (m_Event->type == sf::Event::MouseButtonPressed)
+		if (m_Event->type == sf::Event::MouseButtonPressed && m_Event->key.code == sf::Mouse::Left)
 		{
 			if (IsSceneGame())
 			{
@@ -102,6 +102,7 @@ void CDebugWindow::PolledUpdate()
 
 void CDebugWindow::Render()
 {
+	m_RenderWindow->clear();
 	if (IsSceneGame())
 	{
 		for (auto& item : m_MiscButtons)
@@ -127,6 +128,7 @@ void CDebugWindow::Render()
 			item->Render();
 		}
 	}
+	m_RenderWindow->display();
 }
 
 void CDebugWindow::InitBackGround()
@@ -144,7 +146,7 @@ void CDebugWindow::InitWindow(sf::Uint32 _style)
 	sf::ContextSettings m_Settings;
 	m_Settings.antialiasingLevel = 8;
 
-	m_RenderWindow->create(sf::VideoMode(100, 200), "DebugConsole", _style, m_Settings);
+	m_RenderWindow->create(sf::VideoMode(300, 600), "DebugConsole", _style, m_Settings);
 	m_RenderWindow->setFramerateLimit(60);
 	m_RenderWindow->setVerticalSyncEnabled(true);
 	m_RenderWindow->setKeyRepeatEnabled(false);
@@ -183,21 +185,21 @@ void CDebugWindow::HandleGameButtons()
 		{
 			HealAllPokemon();
 		}
-		else if(m_InGameButtons[1]->m_bIsHovering == true)
+		/*else if(m_InGameButtons[1]->m_bIsHovering == true)
 		{
 			AddRandomPokemonToParty();
-		}
+		}*/
 		else if (m_InGameButtons[2]->m_bIsHovering == true)
 		{
 			LevelUpFirstCubemon();
 		}
-		else if (m_InGameButtons[3]->m_bIsHovering == true)
-		{
-			if (m_Player != nullptr)
-			{
-				m_Player->ToggleDebugSprint();
-			}
-		}
+		//else if (m_InGameButtons[3]->m_bIsHovering == true)
+		//{
+		//	if (m_Player != nullptr)
+		//	{
+		//		m_Player->ToggleDebugSprint();
+		//	}
+		//}
 	}
 }
 
@@ -205,7 +207,7 @@ void CDebugWindow::HandleMiscButtons()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		if (m_MiscButtons[0]->m_bIsHovering == true)
+		/*if (m_MiscButtons[0]->m_bIsHovering == true)
 		{
 			AddRandomPokemonToParty();
 		}
@@ -220,8 +222,8 @@ void CDebugWindow::HandleMiscButtons()
 		else if (m_MiscButtons[3]->m_bIsHovering == true)
 		{
 			AddBrutusToParty();
-		}
-		else if (m_MiscButtons[4]->m_bIsHovering == true)
+		}*/
+		if (m_MiscButtons[4]->m_bIsHovering == true)
 		{
 			ForceBattleScene();
 		}
@@ -861,4 +863,172 @@ void CDebugWindow::ForceMainMenu()
 void CDebugWindow::ForceGameScene()
 {
 	InterceptSceneChange(1);
+}
+
+void CDebugWindow::CreateIngameButtons()
+{
+	InitButtonTextures();
+
+	m_InGameButtons.push_back(new CButtons(m_RenderWindow));
+	m_InGameButtons.back()->SetFontSize(256);
+	m_InGameButtons.back()->SetLabel("");
+	m_InGameButtons.back()->SetHoverTex(&m_HealHoverTexture);
+	m_InGameButtons.back()->SetIdleTex(&m_HealTexture);
+	m_InGameButtons.back()->SetClickTex(&m_HealHoverTexture);
+	m_InGameButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_InGameButtons.back()->Sprite.getGlobalBounds().width * -2);
+	m_InGameButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x - 80, m_RenderWindow->getView().getCenter().y + 30 + m_InGameButtons.back()->Sprite.getGlobalBounds().width * -2);
+	m_InGameButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	m_InGameButtons.push_back(new CButtons(m_RenderWindow));
+	m_InGameButtons.back()->SetFontSize(256);
+	m_InGameButtons.back()->SetLabel("");
+	m_InGameButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_InGameButtons.back()->Sprite.getGlobalBounds().width * -1);
+	m_InGameButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x - 80, m_RenderWindow->getView().getCenter().y + 30 + m_InGameButtons.back()->Sprite.getGlobalBounds().width * -1);
+	m_InGameButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	m_InGameButtons.push_back(new CButtons(m_RenderWindow));
+	m_InGameButtons.back()->SetFontSize(256);
+	m_InGameButtons.back()->SetLabel("");
+	m_InGameButtons.back()->SetHoverTex(&m_UpgradeHoverTexture);
+	m_InGameButtons.back()->SetIdleTex(&m_UpgradeTexture);
+	m_InGameButtons.back()->SetClickTex(&m_UpgradeHoverTexture);
+	m_InGameButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_InGameButtons.back()->Sprite.getGlobalBounds().width * 1);
+	m_InGameButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x - 80, m_RenderWindow->getView().getCenter().y + 30 + m_InGameButtons.back()->Sprite.getGlobalBounds().width * 1);
+	m_InGameButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	m_InGameButtons.push_back(new CButtons(m_RenderWindow));
+	m_InGameButtons.back()->SetFontSize(256);
+	m_InGameButtons.back()->SetLabel("");
+	m_InGameButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_InGameButtons.back()->Sprite.getGlobalBounds().width * 2);
+	m_InGameButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x - 80, m_RenderWindow->getView().getCenter().y + 30 + m_InGameButtons.back()->Sprite.getGlobalBounds().width * 2);
+	m_InGameButtons.back()->m_tLabel.setOutlineThickness(3);
+}
+
+void CDebugWindow::CreateButtons()
+{
+	CreateIngameButtons();
+	CreateMiscButttons();
+	//CreateBattleButtons();
+}
+
+void CDebugWindow::CreateMiscButttons()
+{
+	m_MiscButtons.push_back(new CButtons(m_RenderWindow));
+	m_MiscButtons.back()->SetFontSize(256);
+	m_MiscButtons.back()->SetLabel("");
+	m_MiscButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_MiscButtons.back()->Sprite.getGlobalBounds().width * -2);
+	m_MiscButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 30 + m_MiscButtons.back()->Sprite.getGlobalBounds().width * -2);
+	m_MiscButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	m_MiscButtons.push_back(new CButtons(m_RenderWindow));
+	m_MiscButtons.back()->SetFontSize(256);
+	m_MiscButtons.back()->SetLabel("");
+	m_MiscButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_MiscButtons.back()->Sprite.getGlobalBounds().width * -1);
+	m_MiscButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 30 + m_MiscButtons.back()->Sprite.getGlobalBounds().width * -1);
+	m_MiscButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	m_MiscButtons.push_back(new CButtons(m_RenderWindow));
+	m_MiscButtons.back()->SetFontSize(256);
+	m_MiscButtons.back()->SetLabel("");
+	m_MiscButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_MiscButtons.back()->Sprite.getGlobalBounds().width * 1);
+	m_MiscButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 30 + m_MiscButtons.back()->Sprite.getGlobalBounds().width * 1);
+	m_MiscButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	m_MiscButtons.push_back(new CButtons(m_RenderWindow));
+	m_MiscButtons.back()->SetFontSize(256);
+	m_MiscButtons.back()->SetLabel("");
+	m_MiscButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_MiscButtons.back()->Sprite.getGlobalBounds().width * 2);
+	m_MiscButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 30 + m_MiscButtons.back()->Sprite.getGlobalBounds().width * 2);
+	m_MiscButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	// Battle
+	m_MiscButtons.push_back(new CButtons(m_RenderWindow));
+	m_MiscButtons.back()->SetFontSize(256);
+	m_MiscButtons.back()->SetLabel("");
+	m_MiscButtons.back()->SetHoverTex(&m_BattleHoverTexture);
+	m_MiscButtons.back()->SetIdleTex(&m_BattleTexture);
+	m_MiscButtons.back()->SetClickTex(&m_BattleHoverTexture);
+	m_MiscButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_MiscButtons.back()->Sprite.getGlobalBounds().width * -6);
+	m_MiscButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 30 + m_MiscButtons.back()->Sprite.getGlobalBounds().width * -6);
+	m_MiscButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	// Medical
+	m_MiscButtons.push_back(new CButtons(m_RenderWindow));
+	m_MiscButtons.back()->SetFontSize(256);
+	m_MiscButtons.back()->SetLabel("");
+	m_MiscButtons.back()->SetHoverTex(&m_HealthHoverTexture);
+	m_MiscButtons.back()->SetIdleTex(&m_HealthTexture);
+	m_MiscButtons.back()->SetClickTex(&m_HealthHoverTexture);
+	m_MiscButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_MiscButtons.back()->Sprite.getGlobalBounds().width * -4);
+	m_MiscButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 30 + m_MiscButtons.back()->Sprite.getGlobalBounds().width * -4);
+	m_MiscButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	// Main
+	m_MiscButtons.push_back(new CButtons(m_RenderWindow));
+	m_MiscButtons.back()->SetFontSize(256);
+	m_MiscButtons.back()->SetLabel("");
+	m_MiscButtons.back()->SetHoverTex(&m_MainMenuHoverTexture);
+	m_MiscButtons.back()->SetIdleTex(&m_MainMenuTexture);
+	m_MiscButtons.back()->SetClickTex(&m_MainMenuHoverTexture);
+	m_MiscButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_MiscButtons.back()->Sprite.getGlobalBounds().width * 4);
+	m_MiscButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 30 + m_MiscButtons.back()->Sprite.getGlobalBounds().width * 4);
+	m_MiscButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	// Game
+	m_MiscButtons.push_back(new CButtons(m_RenderWindow));
+	m_MiscButtons.back()->SetFontSize(256);
+	m_MiscButtons.back()->SetLabel("");
+	m_MiscButtons.back()->SetHoverTex(&m_GameHoverTexture);
+	m_MiscButtons.back()->SetIdleTex(&m_GameTexture);
+	m_MiscButtons.back()->SetClickTex(&m_GameHoverTexture);
+	m_MiscButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_MiscButtons.back()->Sprite.getGlobalBounds().width * 6);
+	m_MiscButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + 30 + m_MiscButtons.back()->Sprite.getGlobalBounds().width * 6);
+	m_MiscButtons.back()->m_tLabel.setOutlineThickness(3);
+}
+
+void CDebugWindow::CreateBattleButtons()
+{
+	m_BattleButtons.push_back(new CButtons(m_RenderWindow));
+	m_BattleButtons.back()->SetFontSize(256);
+	m_BattleButtons.back()->SetLabel("");
+	m_BattleButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_BattleButtons.back()->Sprite.getGlobalBounds().width * -2);
+	m_BattleButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x + 80, m_RenderWindow->getView().getCenter().y + 30 + m_BattleButtons.back()->Sprite.getGlobalBounds().width * -2);
+	m_BattleButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	m_BattleButtons.push_back(new CButtons(m_RenderWindow));
+	m_BattleButtons.back()->SetFontSize(256);
+	m_BattleButtons.back()->SetLabel("");
+	m_BattleButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_BattleButtons.back()->Sprite.getGlobalBounds().width * -1);
+	m_BattleButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x + 80, m_RenderWindow->getView().getCenter().y + 30 + m_BattleButtons.back()->Sprite.getGlobalBounds().width * -1);
+	m_BattleButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	m_BattleButtons.push_back(new CButtons(m_RenderWindow));
+	m_BattleButtons.back()->SetFontSize(256);
+	m_BattleButtons.back()->SetLabel("");
+	m_BattleButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_BattleButtons.back()->Sprite.getGlobalBounds().width * 1);
+	m_BattleButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x + 80, m_RenderWindow->getView().getCenter().y + 30 + m_BattleButtons.back()->Sprite.getGlobalBounds().width * 1);
+	m_BattleButtons.back()->m_tLabel.setOutlineThickness(3);
+
+	m_BattleButtons.push_back(new CButtons(m_RenderWindow));
+	m_BattleButtons.back()->SetFontSize(256);
+	m_BattleButtons.back()->SetLabel("");
+	m_BattleButtons.back()->SetPosition(m_RenderWindow->getView().getCenter().x, m_RenderWindow->getView().getCenter().y + m_BattleButtons.back()->Sprite.getGlobalBounds().width * 2);
+	m_BattleButtons.back()->SetSpritePos(m_RenderWindow->getView().getCenter().x + 80, m_RenderWindow->getView().getCenter().y + 30 + m_BattleButtons.back()->Sprite.getGlobalBounds().width * 2);
+	m_BattleButtons.back()->m_tLabel.setOutlineThickness(3);
+}
+
+void CDebugWindow::InitButtonTextures()
+{
+	m_BattleTexture.loadFromFile("Resources/Images/Debug/Battle.png");
+	m_BattleHoverTexture.loadFromFile("Resources/Images/Debug/Battle_Hover.png");
+	m_GameTexture.loadFromFile("Resources/Images/Debug/Game.png");
+	m_GameHoverTexture.loadFromFile("Resources/Images/Debug/Game_Hover.png");
+	m_HealTexture.loadFromFile("Resources/Images/Debug/Heal.png");
+	m_HealHoverTexture.loadFromFile("Resources/Images/Debug/Heal_Hover.png");
+	m_HealthTexture.loadFromFile("Resources/Images/Debug/Health.png");
+	m_HealthHoverTexture.loadFromFile("Resources/Images/Debug/Health_Hover.png");
+	m_MainMenuTexture.loadFromFile("Resources/Images/Debug/MainMenu.png");
+	m_MainMenuHoverTexture.loadFromFile("Resources/Images/Debug/MainMenu_Hover.png");
+	m_UpgradeTexture.loadFromFile("Resources/Images/Debug/Upgrade.png");
+	m_UpgradeHoverTexture.loadFromFile("Resources/Images/Debug/Upgrade_Hover.png");
 }

@@ -219,7 +219,7 @@ void CMainMenu::ButtonUpdates()
     m_Options->Update();
     m_Exit->Update();
 
-    if (m_ButtonTimer.getElapsedTime().asSeconds() < 0.3f)
+    if (m_ButtonTimer.getElapsedTime().asSeconds() >= 0.1f)
     {
         if (m_Play->bIsinBounds(m_MousePos) && IsMouseLeftPressed())
         {

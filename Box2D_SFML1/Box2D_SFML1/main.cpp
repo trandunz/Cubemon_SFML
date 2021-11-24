@@ -1,5 +1,6 @@
 // Local Includes
 #include "CSceneManager.h"
+#include "CDebugWindow.h"
 
 // Forward Declaration
 void Start();
@@ -19,6 +20,7 @@ static sf::Font m_Font;
 // Main Event
 static sf::Event m_Event;
 CSceneManager* m_SceneManager;
+CDebugWindow* m_DebugWindow;
 
 int main()
 {
@@ -40,6 +42,8 @@ void Start()
 	m_TextureMaster = new TextureMaster;
 	m_SceneManager = new CSceneManager(m_RenderWindow, m_Event, m_TextureMaster);
 	m_SceneManager->Start();
+	m_DebugWindow = new CDebugWindow(&m_Event);
+	m_DebugWindow->Start();
 }
 
 void Update()
@@ -53,6 +57,8 @@ void Update()
 
 		m_SceneManager->PolledUpdate();
 		m_SceneManager->CheckForMARKASDESTROY();
+
+		m_DebugWindow->Update();
 	}
 }
 
@@ -65,6 +71,8 @@ void Render()
 
 	//
 	m_RenderWindow->display();
+
+	m_DebugWindow->Render();
 }
 
 void CreateRenderWindow(sf::Uint32 _style)
@@ -87,6 +95,8 @@ void CreateRenderWindow(sf::Uint32 _style)
 
 void CleanupAllPointers()
 {
+	NumptyBehavior::DeletePointer(m_DebugWindow);
+	m_DebugWindow = nullptr;
 	NumptyBehavior::DeletePointer(m_SceneManager);
 	m_SceneManager = nullptr;
 	NumptyBehavior::DeletePointer(m_TextureMaster);

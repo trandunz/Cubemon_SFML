@@ -19,7 +19,7 @@ CBrutus::CBrutus(sf::RenderWindow* _renderWindow, b2World* _world, b2Body& _play
 
 	m_SpriteTexture = new sf::Texture();
 
-	CreateBody(_playerBody.GetPosition().x, _playerBody.GetPosition().y + 50, b2_dynamicBody, true);
+	CreateBody(_playerBody.GetPosition().x, _playerBody.GetPosition().y + 50, b2_dynamicBody);
 
 	m_CubeType = CUBEMONTYPE::BRUTUS;
 

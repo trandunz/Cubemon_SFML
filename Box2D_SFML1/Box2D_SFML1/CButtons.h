@@ -44,6 +44,8 @@ public:
 
 	sf::Text m_tLabel;
 
+	int m_Key = -1;
+
 	CButtons(sf::RenderWindow* _renderWindow);
 	virtual ~CButtons();
 

@@ -143,6 +143,13 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 			HandleGUIShapes(item);
 		}
 	}
+	if (m_bCubedex)
+	{
+		for (auto& item : m_BattleSceneAttackShapes)
+		{
+			HandleGUIShapes(item);
+		}
+	}
 
 	for (auto& item : m_BattleSceneButtons)
 	{
@@ -162,6 +169,14 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 	if (m_bAttack)
 	{
 		for (auto& item : m_BattleSceneAttackButtons)
+		{
+			item->Update();
+			HandleGUIButtons(item);
+		}
+	}
+	if (m_bCubedex)
+	{
+		for (auto& item : m_BattleSceneCubedexButtons)
 		{
 			item->Update();
 			HandleGUIButtons(item);
@@ -195,6 +210,17 @@ void GUI::CleanupBattleSceneButtons()
 	m_BattleSceneButtons.erase(std::remove(m_BattleSceneButtons.begin(), m_BattleSceneButtons.end(), nullptr), m_BattleSceneButtons.end());
 
 	CleanupBattleSceneAttackButtons();
+	CleanupBattleSceneCubedexButtons();
+}
+
+void GUI::CleanupBattleSceneCubedexButtons()
+{
+	for (auto& item : m_BattleSceneCubedexButtons)
+	{
+		DeletePointer(item);
+		item = nullptr;
+	}
+	m_BattleSceneCubedexButtons.erase(std::remove(m_BattleSceneCubedexButtons.begin(), m_BattleSceneCubedexButtons.end(), nullptr), m_BattleSceneCubedexButtons.end());
 }
 
 void GUI::CleanupBattleSceneAttackButtons()
@@ -228,6 +254,7 @@ void GUI::InitCubeBoyUI()
 	m_BattleSceneMenuShapes.push_back(CubeBoyBackgrounds);
 
 	InitCubeBoyAttackUI();
+	InitCubeBoyCubedexButtons();
 }
 
 void GUI::InitCubeBoyMenuButtons()
@@ -392,262 +419,101 @@ void GUI::InitButtonPosScaleTexture(sf::Vector2f _position, sf::Vector2f _scale,
 
 void GUI::HandleGUIShapes(sf::RectangleShape& _item)
 {
-	if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
+	if (m_bCubedex)
 	{
-		if (_item.getTexture() == &m_FireDeminishAttack)
-		{
-			if (m_BattleSceneAttackButtons[0]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
-		}
-		else if (_item.getTexture() == &m_FireBurnAttack)
-		{
-			if (m_BattleSceneAttackButtons[1]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
-		}
-		else if (_item.getTexture() == &m_FireEmberAttack)
-		{
-			if (m_BattleSceneAttackButtons[2]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
-		}
-		else if (_item.getTexture() == &m_FireIncinerateAttack)
-		{
-			if (m_BattleSceneAttackButtons[3]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
-		}
-		else if (_item.getTexture() == &m_KindlingCubemon)
-		{
-			m_RenderWindow->draw(_item);
-		}
+		
 	}
-	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::THALLIC)
+	else
 	{
-		if (_item.getTexture() == &m_EarthFOTFAttack)
+		switch (m_CurrentCubemon)
 		{
-			if (m_BattleSceneAttackButtons[4]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
-		}
-		else if (_item.getTexture() == &m_EarthHardenAttack)
+		case ICubemon::CUBEMONTYPE::KINDLING:
 		{
-			if (m_BattleSceneAttackButtons[5]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
+			HandleKindlingGUIShapes(_item);
+			break;
 		}
-		else if (_item.getTexture() == &m_EarthOvergrowthAttack)
+		case ICubemon::CUBEMONTYPE::THALLIC:
 		{
-			if (m_BattleSceneAttackButtons[6]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
+			HandleThallicGUIShapes(_item);
+			break;
 		}
-		else if (_item.getTexture() == &m_EarthShootsAttack)
+		case ICubemon::CUBEMONTYPE::BRUTUS:
 		{
-			if (m_BattleSceneAttackButtons[7]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
+			HandleBrutusGUIShapes(_item);
+			break;
 		}
-		else if (_item.getTexture() == &m_ThallicCubemon)
+		case ICubemon::CUBEMONTYPE::WIRLSON:
 		{
-			m_RenderWindow->draw(_item);
+			HandleWirlsonGUIShapes(_item);
+			break;
 		}
-	}
-	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::BRUTUS)
-	{
-		if (_item.getTexture() == &m_EarthFOTFAttack)
+		case ICubemon::CUBEMONTYPE::DUSTDEVIL:
 		{
-			if (m_BattleSceneAttackButtons[4]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
+			HandleDustDevilGUIShapes(_item);
+			break;
 		}
-		else if (_item.getTexture() == &m_EarthHardenAttack)
+		case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
 		{
-			if (m_BattleSceneAttackButtons[5]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
+			HandleBlizzardBirdGUIShapes(_item);
+			break;
 		}
-		else if (_item.getTexture() == &m_EarthOvergrowthAttack)
-		{
-			if (m_BattleSceneAttackButtons[6]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
+		default:
+			break;
 		}
-		else if (_item.getTexture() == &m_EarthShootsAttack)
-		{
-			if (m_BattleSceneAttackButtons[7]->m_bIsHovering && m_PlayersTurn)
-			{
-				m_RenderWindow->draw(_item);
-			}
-		}
-		else if (_item.getTexture() == &m_BrutusCubemon)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::WIRLSON)
-	{
-	if (_item.getTexture() == &m_WaterJetAttack)
-	{
-		if (m_BattleSceneAttackButtons[8]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_WaterSplashAttack)
-	{
-		if (m_BattleSceneAttackButtons[9]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_WaterTsunamiAttack)
-	{
-		if (m_BattleSceneAttackButtons[10]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_WaterWTAttack)
-	{
-		if (m_BattleSceneAttackButtons[11]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_WirlsonCubemon)
-	{
-		m_RenderWindow->draw(_item);
-	}
-	}
-	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::DUSTDEVIL)
-	{
-	if (_item.getTexture() == &m_AirFFKAttack)
-	{
-		if (m_BattleSceneAttackButtons[12]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_AirHWAttack)
-	{
-		if (m_BattleSceneAttackButtons[13]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_AirLevitateAttack)
-	{
-		if (m_BattleSceneAttackButtons[14]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_AirSBAttack)
-	{
-		if (m_BattleSceneAttackButtons[15]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_DustDevilCubemon)
-	{
-		m_RenderWindow->draw(_item);
-	}
-	}
-	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
-	{
-	if (_item.getTexture() == &m_AirFFKAttack)
-	{
-		if (m_BattleSceneAttackButtons[12]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_AirHWAttack)
-	{
-		if (m_BattleSceneAttackButtons[13]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_AirLevitateAttack)
-	{
-		if (m_BattleSceneAttackButtons[14]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_AirSBAttack)
-	{
-		if (m_BattleSceneAttackButtons[15]->m_bIsHovering && m_PlayersTurn)
-		{
-			m_RenderWindow->draw(_item);
-		}
-	}
-	else if (_item.getTexture() == &m_BlizzardBirdCubemon)
-	{
-		m_RenderWindow->draw(_item);
-	}
 	}
 }
 
 void GUI::HandleGUIButtons(CButtons* _button)
 {
-	if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
+	if (m_bCubedex)
 	{
-		if (_button == m_BattleSceneAttackButtons[0] ||
-			_button == m_BattleSceneAttackButtons[1] ||
-			_button == m_BattleSceneAttackButtons[2] ||
-			_button == m_BattleSceneAttackButtons[3]
-			)
-		{
-			m_RenderWindow->draw(_button->Sprite);
-		}
+		HandleCubedexButtons();
 	}
-	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::BRUTUS || m_CurrentCubemon == ICubemon::CUBEMONTYPE::THALLIC)
+	else
 	{
-		if (_button == m_BattleSceneAttackButtons[4] ||
-			_button == m_BattleSceneAttackButtons[5] ||
-			_button == m_BattleSceneAttackButtons[6] ||
-			_button == m_BattleSceneAttackButtons[7]
-			)
+		if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
 		{
-			m_RenderWindow->draw(_button->Sprite);
+			if (_button == m_BattleSceneAttackButtons[0] ||
+				_button == m_BattleSceneAttackButtons[1] ||
+				_button == m_BattleSceneAttackButtons[2] ||
+				_button == m_BattleSceneAttackButtons[3]
+				)
+			{
+				m_RenderWindow->draw(_button->Sprite);
+			}
 		}
-	}
-	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::WIRLSON)
-	{
-		if (_button == m_BattleSceneAttackButtons[8] ||
-			_button == m_BattleSceneAttackButtons[9] ||
-			_button == m_BattleSceneAttackButtons[10] ||
-			_button == m_BattleSceneAttackButtons[11]
-			)
+		else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::BRUTUS || m_CurrentCubemon == ICubemon::CUBEMONTYPE::THALLIC)
 		{
-			m_RenderWindow->draw(_button->Sprite);
+			if (_button == m_BattleSceneAttackButtons[4] ||
+				_button == m_BattleSceneAttackButtons[5] ||
+				_button == m_BattleSceneAttackButtons[6] ||
+				_button == m_BattleSceneAttackButtons[7]
+				)
+			{
+				m_RenderWindow->draw(_button->Sprite);
+			}
 		}
-	}
-	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::DUSTDEVIL || m_CurrentCubemon == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
-	{
-		if (_button == m_BattleSceneAttackButtons[12] ||
-			_button == m_BattleSceneAttackButtons[13] ||
-			_button == m_BattleSceneAttackButtons[14] ||
-			_button == m_BattleSceneAttackButtons[15]
-			)
+		else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::WIRLSON)
 		{
-			m_RenderWindow->draw(_button->Sprite);
+			if (_button == m_BattleSceneAttackButtons[8] ||
+				_button == m_BattleSceneAttackButtons[9] ||
+				_button == m_BattleSceneAttackButtons[10] ||
+				_button == m_BattleSceneAttackButtons[11]
+				)
+			{
+				m_RenderWindow->draw(_button->Sprite);
+			}
+		}
+		else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::DUSTDEVIL || m_CurrentCubemon == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
+		{
+			if (_button == m_BattleSceneAttackButtons[12] ||
+				_button == m_BattleSceneAttackButtons[13] ||
+				_button == m_BattleSceneAttackButtons[14] ||
+				_button == m_BattleSceneAttackButtons[15]
+				)
+			{
+				m_RenderWindow->draw(_button->Sprite);
+			}
 		}
 	}
 }
@@ -659,10 +525,25 @@ void GUI::HandleButtonInteractions()
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			HandleMenuButtons();
-			if (!m_bChangePokemon)
+			if (m_bCubedex)
+			{
+				for (auto& item : m_BattleSceneCubedexButtons)
+				{
+					if (item->m_Key != -1)
+					{
+						if (item->m_bIsHovering == true &&
+							CBattleScene::GrabCubemonHealthBasedOnType(item->m_Key) > 0)
+						{
+							SetPokemonChangeType(item->m_Key);
+						}
+					}
+				}
+			}
+			else if (!m_bChangePokemon)
 			{
 				HandleAttackButtons();
 			}
+			m_ButtonRegulator.restart();
 		}
 	}
 }
@@ -697,9 +578,17 @@ void GUI::HandleEnemyTurn()
 
 bool GUI::HandleMenuButtons()
 {
-	if (m_BattleSceneButtons[0]->m_bIsHovering && !m_bChangePokemon)
+	if (m_BattleSceneButtons[0]->m_bIsHovering)
 	{
 		m_bAttack = !m_bAttack;
+		m_bCubedex = false;
+		m_ButtonRegulator.restart();
+		return true;
+	}
+	else if (m_BattleSceneButtons[2]->m_bIsHovering)
+	{
+		m_bCubedex = !m_bCubedex;
+		m_bAttack = false;
 		m_ButtonRegulator.restart();
 		return true;
 	}
@@ -1276,6 +1165,312 @@ void GUI::InitBlizzardBird(sf::RectangleShape& _tempShape)
 	m_BattleSceneAttackShapes.push_back(_tempShape);
 }
 
+void GUI::InitCubeBoyCubedexButtons()
+{
+	sf::Vector2f pos;
+	sf::Vector2f scale;
+
+	std::vector<int> types = CBattleScene::GrabCubemonTypes();
+
+	for (auto& item : types)
+	{
+		switch (item)
+		{
+		case 1:
+		{
+			m_BattleSceneCubedexButtons.push_back(new CButtons(m_RenderWindow));
+			m_BattleSceneCubedexButtons.back()->m_Key = item;
+			pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 295, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 8.9);
+			scale = sf::Vector2f(0.8f, 0.8f);
+			InitButtonPosScaleTexture(pos, scale, &m_ThallicCubemon, &m_ThallicCubemon, m_BattleSceneCubedexButtons);
+
+			break;
+		}
+		case 2:
+		{
+			m_BattleSceneCubedexButtons.push_back(new CButtons(m_RenderWindow));
+			m_BattleSceneCubedexButtons.back()->m_Key = item;
+			pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 155, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 8.9);
+			scale = sf::Vector2f(0.8f, 0.8f);
+			InitButtonPosScaleTexture(pos, scale, &m_KindlingCubemon, &m_KindlingCubemon, m_BattleSceneCubedexButtons);
+
+			break;
+		}
+		case 3:
+		{
+			m_BattleSceneCubedexButtons.push_back(new CButtons(m_RenderWindow));
+			m_BattleSceneCubedexButtons.back()->m_Key = item;
+			pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 225, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 8.9);
+			scale = sf::Vector2f(0.8f, 0.8f);
+			InitButtonPosScaleTexture(pos, scale, &m_BrutusCubemon, &m_BrutusCubemon, m_BattleSceneCubedexButtons);
+
+			break;
+		}
+		case 4:
+		{
+			m_BattleSceneCubedexButtons.push_back(new CButtons(m_RenderWindow));
+			m_BattleSceneCubedexButtons.back()->m_Key = item;
+			pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 515, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 8.9);
+			scale = sf::Vector2f(0.8f, 0.8f);
+			InitButtonPosScaleTexture(pos, scale, &m_WirlsonCubemon, &m_WirlsonCubemon, m_BattleSceneCubedexButtons);
+
+			break;
+		}
+		case 5:
+		{
+			m_BattleSceneCubedexButtons.push_back(new CButtons(m_RenderWindow));
+			m_BattleSceneCubedexButtons.back()->m_Key = item;
+			pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 435, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 8.9);
+			scale = sf::Vector2f(0.8f, 0.8f);
+			InitButtonPosScaleTexture(pos, scale, &m_DustDevilCubemon, &m_DustDevilCubemon, m_BattleSceneCubedexButtons);
+
+			break;
+		}
+		case 6:
+		{
+			m_BattleSceneCubedexButtons.push_back(new CButtons(m_RenderWindow));
+			m_BattleSceneCubedexButtons.back()->m_Key = item;
+			pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 365, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 8.9);
+			scale = sf::Vector2f(0.8f, 0.8f);
+			InitButtonPosScaleTexture(pos, scale, &m_BlizzardBirdCubemon, &m_BlizzardBirdCubemon, m_BattleSceneCubedexButtons);
+
+			break;
+		}
+		default:
+			break;
+		}
+	}
+}
+
+void GUI::HandleCubedexButtons()
+{
+	std::vector<int> hps = CBattleScene::GrabCubemonHealth();
+	for (int i = 0; i < m_BattleSceneCubedexButtons.size(); i++)
+	{
+		if (hps[i] > 0)
+		{
+			m_BattleSceneCubedexButtons[i]->Update();
+			m_BattleSceneCubedexButtons[i]->Render();
+		}
+	}
+}
+
+void GUI::HandleKindlingGUIShapes(sf::RectangleShape& _item)
+{
+	if (_item.getTexture() == &m_FireDeminishAttack)
+	{
+		if (m_BattleSceneAttackButtons[0]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_FireBurnAttack)
+	{
+		if (m_BattleSceneAttackButtons[1]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_FireEmberAttack)
+	{
+		if (m_BattleSceneAttackButtons[2]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_FireIncinerateAttack)
+	{
+		if (m_BattleSceneAttackButtons[3]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_KindlingCubemon)
+	{
+		m_RenderWindow->draw(_item);
+	}
+}
+
+void GUI::HandleThallicGUIShapes(sf::RectangleShape& _item)
+{
+	if (_item.getTexture() == &m_EarthFOTFAttack)
+	{
+		if (m_BattleSceneAttackButtons[4]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_EarthHardenAttack)
+	{
+		if (m_BattleSceneAttackButtons[5]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_EarthOvergrowthAttack)
+	{
+		if (m_BattleSceneAttackButtons[6]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_EarthShootsAttack)
+	{
+		if (m_BattleSceneAttackButtons[7]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_ThallicCubemon)
+	{
+		m_RenderWindow->draw(_item);
+	}
+}
+
+void GUI::HandleBrutusGUIShapes(sf::RectangleShape& _item)
+{
+	if (_item.getTexture() == &m_EarthFOTFAttack)
+	{
+		if (m_BattleSceneAttackButtons[4]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_EarthHardenAttack)
+	{
+		if (m_BattleSceneAttackButtons[5]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_EarthOvergrowthAttack)
+	{
+		if (m_BattleSceneAttackButtons[6]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_EarthShootsAttack)
+	{
+		if (m_BattleSceneAttackButtons[7]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_BrutusCubemon)
+	{
+		m_RenderWindow->draw(_item);
+	}
+}
+
+void GUI::HandleWirlsonGUIShapes(sf::RectangleShape& _item)
+{
+	if (_item.getTexture() == &m_WaterJetAttack)
+	{
+		if (m_BattleSceneAttackButtons[8]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_WaterSplashAttack)
+	{
+		if (m_BattleSceneAttackButtons[9]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_WaterTsunamiAttack)
+	{
+		if (m_BattleSceneAttackButtons[10]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_WaterWTAttack)
+	{
+		if (m_BattleSceneAttackButtons[11]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_WirlsonCubemon)
+	{
+		m_RenderWindow->draw(_item);
+	}
+}
+
+void GUI::HandleDustDevilGUIShapes(sf::RectangleShape& _item)
+{
+	if (_item.getTexture() == &m_AirFFKAttack)
+	{
+		if (m_BattleSceneAttackButtons[12]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirHWAttack)
+	{
+		if (m_BattleSceneAttackButtons[13]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirLevitateAttack)
+	{
+		if (m_BattleSceneAttackButtons[14]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirSBAttack)
+	{
+		if (m_BattleSceneAttackButtons[15]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_DustDevilCubemon)
+	{
+		m_RenderWindow->draw(_item);
+	}
+}
+
+void GUI::HandleBlizzardBirdGUIShapes(sf::RectangleShape& _item)
+{
+	if (_item.getTexture() == &m_AirFFKAttack)
+	{
+		if (m_BattleSceneAttackButtons[12]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirHWAttack)
+	{
+		if (m_BattleSceneAttackButtons[13]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirLevitateAttack)
+	{
+		if (m_BattleSceneAttackButtons[14]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_AirSBAttack)
+	{
+		if (m_BattleSceneAttackButtons[15]->m_bIsHovering && m_PlayersTurn)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (_item.getTexture() == &m_BlizzardBirdCubemon)
+	{
+		m_RenderWindow->draw(_item);
+	}
+}
+
 void GUI::HandleINISwaps(int _newType)
 {
 	std::ifstream file;
@@ -1425,7 +1620,13 @@ void GUI::HandleINISwaps(int _newType)
 
 int GUI::ReturnPokemonChangeType()
 {
-	return NULL;
+	return m_PokemonChangeValue;
+}
+
+void GUI::SetPokemonChangeType(int _value)
+{
+	m_PokemonChangeValue = _value;
+	m_bChangePokemon = true;
 }
 
 void GUI::HandleCubemonHUD(sf::View& _uiView, sf::View& _worldView)

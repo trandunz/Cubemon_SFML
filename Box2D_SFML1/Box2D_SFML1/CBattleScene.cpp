@@ -32,7 +32,6 @@ void CBattleScene::Start()
 
 void CBattleScene::Update()
 {
-	SaveCubemonValues();
 	if (m_EnemyCubemon != nullptr)
 	{
 		m_EnemyCubemon->Update();
@@ -45,14 +44,26 @@ void CBattleScene::Update()
 
 	if (m_FriendlyCubemon->GetCurrentHealth() <= 0)
 	{
-		m_GUI->m_bChangePokemon = true;
-		ChangePokemon(2);
 		if (IsPlayerDeath())
 		{
 			ResetPlayerPosition();
 			InterceptSceneChange(2);
 		}
+		else if (m_GUI->m_bChangePokemon == true)
+		{
+			ChangePokemon(m_GUI->ReturnPokemonChangeType());
+		}
+		else
+		{
+			m_GUI->m_bCubedex = true;
+		}
 	}
+	else if (m_GUI->m_bChangePokemon == true)
+	{
+		ChangePokemon(m_GUI->ReturnPokemonChangeType());
+	}
+
+	SaveCubemonValues();
 }
 
 void CBattleScene::PolledUpdate()
@@ -521,6 +532,27 @@ std::vector<int> CBattleScene::GrabCubemonHealth()
 	return m_HPs;
 }
 
+std::vector<int> CBattleScene::GrabCubemonTypes()
+{
+	std::ifstream file;
+	std::vector<int> m_Types;
+	char type = 0;
+	file.open("Resources/Output/CubemonData.ini");
+	if (file.is_open())
+	{
+		while (file.get(type))
+		{
+			if (type == ',') {}
+			else
+			{
+				m_Types.push_back(((int)type) - ASCIIOFFSET);
+			}
+		}
+		file.close();
+	}
+	return m_Types;
+}
+
 int CBattleScene::GrabCubemonEXPBasedOnType()
 {
 	std::ifstream file;
@@ -635,7 +667,6 @@ void CBattleScene::ChangePokemon(int _newType)
 	CreateGUI();
 	InitPlayerCubemonFromINI();
 	m_GUI->InitCubemonHUD(m_FriendlyCubemon, m_EnemyCubemon);
-	m_GUI->m_bChangePokemon = false;
 }
 
 void CBattleScene::InitPlayerCubemonFromINI()
@@ -671,5 +702,48 @@ void CBattleScene::InitPlayerCubemonFromINI()
 		m_FriendlyCubemon->SetXP(GrabCubemonEXPBasedOnType());
 		m_FriendlyCubemon->SetSpritePos(sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_RenderWindow->getView().getSize().x / 3.5, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 7));
 		m_FriendlyCubemon->SetSpriteScale(sf::Vector2f(3, 3));
+	}
+}
+
+int CBattleScene::GrabCubemonHealthBasedOnType(int _type)
+{
+	std::ifstream file;
+	std::vector<int> m_Types;
+	std::vector<int> m_HPs;
+	char type = 0;
+	int HP = 0;
+	file.open("Resources/Output/CubemonData.ini");
+	if (file.is_open())
+	{
+		while (file.get(type))
+		{
+			if (type == ',') {}
+			else
+			{
+				m_Types.push_back(((int)type) - ASCIIOFFSET);
+			}
+		}
+		file.close();
+	}
+	std::string currentLine;
+	file.open("Resources/Output/CubemonHPData.ini");
+	if (file.is_open())
+	{
+		while (std::getline(file, currentLine))
+		{
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_HPs.push_back(std::stoi(value));
+		}
+
+	}
+	file.close();
+	for (int i = 0; i < m_HPs.size(); i++)
+	{
+		if (m_Types[i] == _type)
+		{
+			return m_HPs[i];
+		}
 	}
 }

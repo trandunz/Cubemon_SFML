@@ -29,14 +29,23 @@ public:
 
 	ICubemon::CUBEMONTYPE GetCurrentCubemon();
 
+	void CleanupBattleSceneCubedexButtons();
 	void CleanupBattleSceneAttackButtons();
 	void HandleINISwaps(int _newType);
 
 	int ReturnPokemonChangeType();
+	void SetPokemonChangeType(int _value);
+
+	static void InitButtonPosScaleTexture(sf::Vector2f _position, sf::Vector2f _scale, sf::Texture* _idleTexture, sf::Texture* _hoverTexture, std::vector<CButtons*> _vector);
 
 	sf::Font m_Font;
 
 	bool m_bChangePokemon = false;
+
+	bool m_bAttack = false;
+	bool m_bBackpack = false;
+	bool m_bCubedex = false;
+	bool m_bFlee = true;
 
 private:
 	sf::RenderWindow* m_RenderWindow = nullptr;
@@ -72,15 +81,17 @@ private:
 	std::vector<CButtons*> m_BattleSceneAttackButtons{};
 	std::vector<sf::RectangleShape> m_BattleSceneAttackShapes{};
 
-	bool m_bAttack = false;
-	bool m_bBackpack = false;
-	bool m_bCubemon = false;
-	bool m_bFlee = true;
+	std::vector<CButtons*> m_BattleSceneCubedexButtons{};
+	std::vector<sf::RectangleShape> m_BattleSceneCubedexShapes{};
+
+
 
 	int m_PlayerAttackBuff = 0;
 	int m_PlayerArmourBuff = 0;
 
 	bool m_PlayersTurn = true;
+
+	int m_PokemonChangeValue = 1;
 
 	ICubemon* m_FriendlyCubemon = nullptr;
 	ICubemon* m_EnemyCubemon = nullptr;
@@ -151,8 +162,6 @@ private:
 	void InitTextures();
 	void SetAllButtonScaling(float _newScale);
 
-	void InitButtonPosScaleTexture(sf::Vector2f _position, sf::Vector2f _scale, sf::Texture* _idleTexture, sf::Texture* _hoverTexture, std::vector<CButtons*> _vector);
-
 	void HandleGUIShapes(sf::RectangleShape& _item);
 	void HandleGUIButtons(CButtons* _button);
 	void HandleButtonInteractions();
@@ -170,6 +179,16 @@ private:
 	void InitAttackUIBackgroundImages(sf::RectangleShape& _tempShape);
 	void InitWirlsonAttackImages(sf::RectangleShape& _tempShape);
 	void InitBlizzardBird(sf::RectangleShape& _tempShape);
+
+	void InitCubeBoyCubedexButtons();
+	void HandleCubedexButtons();
+
+	void HandleKindlingGUIShapes(sf::RectangleShape& _item);
+	void HandleThallicGUIShapes(sf::RectangleShape& _item);
+	void HandleBrutusGUIShapes(sf::RectangleShape& _item);
+	void HandleWirlsonGUIShapes(sf::RectangleShape& _item);
+	void HandleDustDevilGUIShapes(sf::RectangleShape& _item);
+	void HandleBlizzardBirdGUIShapes(sf::RectangleShape& _item);
 
 	inline void EndTurn()
 	{

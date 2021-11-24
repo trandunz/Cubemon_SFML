@@ -20,6 +20,10 @@ public:
 	int GrabCubemonHealthBasedOnType();
 
 	int GrabCubemonEXPBasedOnType();
+
+	static int GrabCubemonHealthBasedOnType(int _type);
+	static std::vector<int> GrabCubemonHealth();
+	static std::vector<int> GrabCubemonTypes();
 private:
 	void CreateAudioManager();
 	void CreateGUI();
@@ -32,7 +36,7 @@ private:
 
 	void SaveCubemonValues();
 	
-	std::vector<int> GrabCubemonHealth();
+
 	bool IsPlayerDeath();
 	void ResetPlayerPosition();
 
