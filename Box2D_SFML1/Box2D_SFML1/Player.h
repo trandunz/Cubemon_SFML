@@ -49,7 +49,7 @@ public:
 	void ReadInventoryData();
 
 	static void HealAllPokemon();
-	bool ToggleDebugSprint();
+	void ToggleDebugSprint();
 
 private:
 	void Animation(b2Vec2 _movementVector);

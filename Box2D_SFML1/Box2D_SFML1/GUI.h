@@ -29,9 +29,15 @@ public:
 
 	ICubemon::CUBEMONTYPE GetCurrentCubemon();
 
+	void CleanupBattleSceneAttackButtons();
+	void HandleINISwaps(int _newType);
+
+	int ReturnPokemonChangeType();
+
 	sf::Font m_Font;
 
 	bool m_bChangePokemon = false;
+
 private:
 	sf::RenderWindow* m_RenderWindow = nullptr;
 	TextureMaster* m_TextureMaster = nullptr;
@@ -129,8 +135,11 @@ private:
 	sf::Texture m_EarthShootsAttack;
 
 	sf::Texture m_KindlingCubemon;
+	sf::Texture m_BrutusCubemon;
+	sf::Texture m_ThallicCubemon;
 
 	void CleanupBattleSceneButtons();
+
 	void InitCubeBoyUI();
 	void InitCubeBoyMenuButtons();
 	void InitCubeBoyAttackUI();
@@ -141,12 +150,22 @@ private:
 
 	void InitButtonPosScaleTexture(sf::Vector2f _position, sf::Vector2f _scale, sf::Texture* _idleTexture, sf::Texture* _hoverTexture, std::vector<CButtons*> _vector);
 
-	void HandleKindlingGUIShapes(sf::RectangleShape& _item);
-	void HandleKindlingGUIButtons(int _iter, CButtons* _button);
+	void HandleGUIShapes(sf::RectangleShape& _item);
+	void HandleGUIButtons(CButtons* _button);
 	void HandleButtonInteractions();
-	void HandleKindlingButtonInteractions();
 
 	void HandleEnemyTurn();
+
+	bool HandleMenuButtons();
+
+	void CreateAttackButtons(sf::Texture& _idleTexture, sf::Texture& _hoverTexture);
+	bool HandleAttackButtons();
+
+	void InitCubemonImages(sf::RectangleShape& _tempShape);
+	void InitKindlingAttackImages(sf::RectangleShape& _tempShape);
+	void InitBrutusAttackImages(sf::RectangleShape& _tempShape);
+	void InitAttackUIBackgroundImages(sf::RectangleShape& _tempShape);
+
 
 	inline void EndTurn()
 	{
@@ -163,6 +182,8 @@ private:
 		bool m_bCubemon = false;
 		bool m_bFlee = true;
 	}
+
+
 };
 #endif
 

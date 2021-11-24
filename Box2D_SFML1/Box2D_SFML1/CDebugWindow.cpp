@@ -1,6 +1,6 @@
 #include "CDebugWindow.h"
 
-CDebugWindow::CDebugWindow(sf::Event* _event, Player* _player = nullptr)
+CDebugWindow::CDebugWindow(sf::Event* _event, Player* _player)
 {
 	m_Event = _event;
 	m_Player = _player;
@@ -63,7 +63,7 @@ void CDebugWindow::Update()
 	}
 	else
 	{
-		if (IsSceneBattle)
+		if (IsSceneBattle())
 		{
 			for (auto& item : m_BattleButtons)
 			{
@@ -90,7 +90,7 @@ void CDebugWindow::PolledUpdate()
 			}
 			else
 			{
-				if (IsSceneBattle)
+				if (IsSceneBattle())
 				{
 					HandleBattleButtons();
 				}
@@ -115,7 +115,7 @@ void CDebugWindow::Render()
 	}
 	else
 	{
-		if (IsSceneBattle)
+		if (IsSceneBattle())
 		{
 			for (auto& item : m_BattleButtons)
 			{

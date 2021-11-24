@@ -93,10 +93,10 @@ void Player::Update(sf::Vector2f _mousepos)
 					break;
 				}
 
-				if ((a->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2 || b->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2) && m_EncounterClock.getElapsedTime().asSeconds() >= 2.5f)
+				else if ((a->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2 || b->GetBody()->GetFixtureList()->GetFilterData().categoryBits == 2) && m_EncounterClock.getElapsedTime().asSeconds() >= 2.5f)
 				{
 					srand((unsigned)time(0));
-					int bushEncounter = rand() % 6;
+					int bushEncounter = rand() % 5;
 
 					if (bushEncounter == 0)
 					{
@@ -108,6 +108,10 @@ void Player::Update(sf::Vector2f _mousepos)
 						m_Encounter = true;
 						break;
 					}
+					
+				}
+				else if (m_EncounterClock.getElapsedTime().asSeconds() >= 2.5f)
+				{
 					m_EncounterClock.restart();
 				}
 				else
@@ -540,6 +544,10 @@ std::vector<ICubemon::CUBEMONTYPE> Player::ReturnCubemonData()
 			{
 				cubemon.push_back(ICubemon::CUBEMONTYPE::KINDLING);
 			}
+			else if (m_Type == (int)ICubemon::CUBEMONTYPE::BRUTUS + ASCIIOFFSET)
+			{
+				cubemon.push_back(ICubemon::CUBEMONTYPE::BRUTUS);
+			}
 		}
 		file.close();
 	}
@@ -621,7 +629,7 @@ void Player::HealAllPokemon()
 	oFile.close();
 }
 
-bool Player::ToggleDebugSprint()
+void Player::ToggleDebugSprint()
 {
 	if (m_iMovementSpeed == (7 * 5))
 	{

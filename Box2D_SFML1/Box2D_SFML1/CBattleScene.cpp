@@ -46,6 +46,7 @@ void CBattleScene::Update()
 	if (m_FriendlyCubemon->GetCurrentHealth() <= 0)
 	{
 		m_GUI->m_bChangePokemon = true;
+		ChangePokemon(2);
 		if (IsPlayerDeath())
 		{
 			ResetPlayerPosition();
@@ -534,4 +535,66 @@ void CBattleScene::ResetPlayerPosition()
 		file << "x =" << 0 << std::endl << "y =" << 0;
 	}
 	file.close();
+}
+
+void CBattleScene::CreateNewlyChangedPokemon(int _newType)
+{
+	if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::THALLIC)
+	{
+		m_FriendlyCubemon = new CThallic(m_RenderWindow, m_AudioManager);
+	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::KINDLING)
+	{
+		m_FriendlyCubemon = new CKindling(m_RenderWindow, m_AudioManager);
+	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BRUTUS)
+	{
+		m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
+	}
+	if (m_FriendlyCubemon != nullptr)
+	{
+		m_FriendlyCubemon->SetCurrentHealth(GrabCubemonHealthBasedOnType());
+		m_FriendlyCubemon->SetLevel(GrabCubemonLevelBasedOnType());
+		m_FriendlyCubemon->SetXP(GrabCubemonEXPBasedOnType());
+		m_FriendlyCubemon->SetSpritePos(sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_RenderWindow->getView().getSize().x / 3.5, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 7));
+		m_FriendlyCubemon->SetSpriteScale(sf::Vector2f(3, 3));
+	}
+}
+
+void CBattleScene::ChangePokemon(int _newType)
+{
+	m_GUI->HandleINISwaps(_newType);
+	DeletePointer(m_FriendlyCubemon);
+	m_FriendlyCubemon = nullptr;
+	CreateNewlyChangedPokemon(_newType);
+	DeletePointer(m_GUI);
+	m_GUI = nullptr;
+	CreateGUI();
+	InitPlayerCubemonFromINI();
+	m_GUI->InitCubemonHUD(m_FriendlyCubemon, m_EnemyCubemon);
+	m_GUI->m_bChangePokemon = false;
+}
+
+void CBattleScene::InitPlayerCubemonFromINI()
+{
+	if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::THALLIC)
+	{
+		m_FriendlyCubemon = new CThallic(m_RenderWindow, m_AudioManager);
+	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::KINDLING)
+	{
+		m_FriendlyCubemon = new CKindling(m_RenderWindow, m_AudioManager);
+	}
+	else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BRUTUS)
+	{
+		m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
+	}
+	if (m_FriendlyCubemon != nullptr)
+	{
+		m_FriendlyCubemon->SetCurrentHealth(GrabCubemonHealthBasedOnType());
+		m_FriendlyCubemon->SetLevel(GrabCubemonLevelBasedOnType());
+		m_FriendlyCubemon->SetXP(GrabCubemonEXPBasedOnType());
+		m_FriendlyCubemon->SetSpritePos(sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_RenderWindow->getView().getSize().x / 3.5, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 7));
+		m_FriendlyCubemon->SetSpriteScale(sf::Vector2f(3, 3));
+	}
 }

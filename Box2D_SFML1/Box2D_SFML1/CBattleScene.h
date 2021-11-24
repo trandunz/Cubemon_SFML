@@ -15,7 +15,11 @@ public:
 	virtual void CheckForMARKASDESTROY()override;
 
 	void InitCubemon(ICubemon::CUBEMONTYPE _friendly = ICubemon::CUBEMONTYPE::UNASSIGNED, ICubemon::CUBEMONTYPE _enemy = ICubemon::CUBEMONTYPE::UNASSIGNED);
+	int GrabCubemonLevelBasedOnType();
 
+	int GrabCubemonHealthBasedOnType();
+
+	int GrabCubemonEXPBasedOnType();
 private:
 	void CreateAudioManager();
 	void CreateGUI();
@@ -27,13 +31,15 @@ private:
 	void InitBackground();
 
 	void SaveCubemonValues();
-	int GrabCubemonLevelBasedOnType();
-
-	int GrabCubemonHealthBasedOnType();
+	
 	std::vector<int> GrabCubemonHealth();
-	int GrabCubemonEXPBasedOnType();
 	bool IsPlayerDeath();
 	void ResetPlayerPosition();
+
+	void CreateNewlyChangedPokemon(int _newType);
+	void ChangePokemon(int _newType);
+
+	void InitPlayerCubemonFromINI();
 
 	sf::Event* m_Event = nullptr;
 	sf::View m_UIView;

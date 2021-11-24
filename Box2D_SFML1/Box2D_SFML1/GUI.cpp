@@ -1,5 +1,7 @@
 #include "GUI.h"
 
+#include "CBattleScene.h"
+
 
 GUI::GUI(sf::RenderWindow* _renderwindow, TextureMaster* _texturemaster, sf::Font& _font)
 {
@@ -138,7 +140,7 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 	{
 		for (auto& item : m_BattleSceneAttackShapes)
 		{
-			HandleKindlingGUIShapes(item);
+			HandleGUIShapes(item);
 		}
 	}
 
@@ -159,11 +161,10 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 
 	if (m_bAttack)
 	{
-		int iter = 0;
 		for (auto& item : m_BattleSceneAttackButtons)
 		{
-			HandleKindlingGUIButtons(iter, item);
-			iter++;
+			item->Update();
+			HandleGUIButtons(item);
 		}
 	}
 
@@ -191,6 +192,13 @@ void GUI::CleanupBattleSceneButtons()
 		DeletePointer(item);
 		item = nullptr;
 	}
+	m_BattleSceneButtons.erase(std::remove(m_BattleSceneButtons.begin(), m_BattleSceneButtons.end(), nullptr), m_BattleSceneButtons.end());
+
+	CleanupBattleSceneAttackButtons();
+}
+
+void GUI::CleanupBattleSceneAttackButtons()
+{
 	for (auto& item : m_BattleSceneAttackButtons)
 	{
 		DeletePointer(item);
@@ -247,84 +255,29 @@ void GUI::InitCubeBoyMenuButtons()
 
 void GUI::InitCubeBoyAttackUI()
 {
+	sf::RectangleShape tempShape;
+	sf::RectangleShape tempPortrate;
+
+	// Buttons
 	InitCubeBoyAttackButtons();
 
-	sf::RectangleShape CubeBoyBackgrounds;
-	CubeBoyBackgrounds.setSize(sf::Vector2f(315, 255));
-	CubeBoyBackgrounds.setFillColor(sf::Color(90, 90, 90));
-	CubeBoyBackgrounds.setOrigin(200, 255/2);
-	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 370);
-	m_BattleSceneAttackShapes.push_back(CubeBoyBackgrounds);
+	// BG
+	InitAttackUIBackgroundImages(tempShape);
 
-	CubeBoyBackgrounds.setSize(sf::Vector2f(110, 110));
-	CubeBoyBackgrounds.setFillColor(sf::Color(139, 69, 19));
-	CubeBoyBackgrounds.setOrigin(55, 55);
-	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
-	m_BattleSceneAttackShapes.push_back(CubeBoyBackgrounds);
-
-	CubeBoyBackgrounds.setSize(sf::Vector2f(100, 100));
-	CubeBoyBackgrounds.setFillColor(sf::Color::White);
-	CubeBoyBackgrounds.setOrigin(50, 50);
-	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
-	CubeBoyBackgrounds.setTexture(&m_KindlingCubemon);
-	m_BattleSceneAttackShapes.push_back(CubeBoyBackgrounds);
+	// Cubemons
+	InitCubemonImages(tempPortrate);
 
 	// Attacks
-
-	CubeBoyBackgrounds.setSize(sf::Vector2f(315, 255));
-	CubeBoyBackgrounds.setFillColor(sf::Color::White);
-	CubeBoyBackgrounds.setOrigin(200, 255 / 2);
-	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
-	CubeBoyBackgrounds.setTexture(&m_FireDeminishAttack, true);
-	CubeBoyBackgrounds.setScale(1, 1);
-	m_BattleSceneAttackShapes.push_back(CubeBoyBackgrounds);
-
-	CubeBoyBackgrounds.setSize(sf::Vector2f(315, 255));
-	CubeBoyBackgrounds.setFillColor(sf::Color::White);
-	CubeBoyBackgrounds.setOrigin(200, 255 / 2);
-	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
-	CubeBoyBackgrounds.setTexture(&m_FireBurnAttack, true);
-	CubeBoyBackgrounds.setScale(1, 1);
-	m_BattleSceneAttackShapes.push_back(CubeBoyBackgrounds);
-
-	CubeBoyBackgrounds.setSize(sf::Vector2f(315, 255));
-	CubeBoyBackgrounds.setFillColor(sf::Color::White);
-	CubeBoyBackgrounds.setOrigin(200, 255 / 2);
-	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
-	CubeBoyBackgrounds.setTexture(&m_FireEmberAttack, true);
-	CubeBoyBackgrounds.setScale(1, 1);
-	m_BattleSceneAttackShapes.push_back(CubeBoyBackgrounds);
-
-	CubeBoyBackgrounds.setSize(sf::Vector2f(315, 255));
-	CubeBoyBackgrounds.setFillColor(sf::Color::White);
-	CubeBoyBackgrounds.setOrigin(200, 255 / 2);
-	CubeBoyBackgrounds.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
-	CubeBoyBackgrounds.setTexture(&m_FireIncinerateAttack, true);
-	CubeBoyBackgrounds.setScale(1, 1);
-	m_BattleSceneAttackShapes.push_back(CubeBoyBackgrounds);
+	InitKindlingAttackImages(tempShape);
+	InitBrutusAttackImages(tempShape);
 }
 
 void GUI::InitCubeBoyAttackButtons()
 {
-	m_BattleSceneAttackButtons.push_back(new CButtons(m_RenderWindow));
-	sf::Vector2f pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 85, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 12.25);
-	sf::Vector2f scale = sf::Vector2f(0.4f, 0.4f);
-	InitButtonPosScaleTexture(pos, scale, &m_AttackFire, &m_AttackFire_Hover, m_BattleSceneAttackButtons);
-
-	m_BattleSceneAttackButtons.push_back(new CButtons(m_RenderWindow));
-	pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 85, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 13.41);
-	scale = sf::Vector2f(0.4f, 0.4f);
-	InitButtonPosScaleTexture(pos, scale, &m_AttackFire, &m_AttackFire_Hover, m_BattleSceneAttackButtons);
-
-	m_BattleSceneAttackButtons.push_back(new CButtons(m_RenderWindow));
-	pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 85, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 14.58);
-	scale = sf::Vector2f(0.4f, 0.4f);
-	InitButtonPosScaleTexture(pos, scale, &m_AttackFire, &m_AttackFire_Hover, m_BattleSceneAttackButtons);
-
-	m_BattleSceneAttackButtons.push_back(new CButtons(m_RenderWindow));
-	pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 85, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 15.75);
-	scale = sf::Vector2f(0.4f, 0.4f);
-	InitButtonPosScaleTexture(pos, scale, &m_AttackFire, &m_AttackFire_Hover, m_BattleSceneAttackButtons);
+	CreateAttackButtons(m_AttackFire, m_AttackFire_Hover);
+	CreateAttackButtons(m_AttackEarth, m_AttackEarth_Hover);
+	CreateAttackButtons(m_AttackWater, m_AttackWater_Hover);
+	CreateAttackButtons(m_AttackAir, m_AttackAir_Hover);
 }
 
 void GUI::InitCubemonHUD(ICubemon* _friendly, ICubemon* _enemy)
@@ -395,6 +348,8 @@ void GUI::InitTextures()
 	LoadTexture(&m_FireIncinerateAttack, "GUI/Attacks/FireIncinerate.png", false);
 
 	LoadTexture(&m_KindlingCubemon, "Cubemon/Fire_Elemental.png", false);
+	LoadTexture(&m_BrutusCubemon, "Cubemon/Plant_Elemental.png", false);
+	LoadTexture(&m_ThallicCubemon, "Cubemon/Thallic.png", false);
 
 	LoadTexture(&m_AirFFKAttack, "GUI/Attacks/AirFFK.png", false);
 	LoadTexture(&m_AirHWAttack, "GUI/Attacks/AirHW.png", false);
@@ -430,9 +385,9 @@ void GUI::InitButtonPosScaleTexture(sf::Vector2f _position, sf::Vector2f _scale,
 	_vector.back()->Sprite.setScale(_scale.x, _scale.y);
 }
 
-void GUI::HandleKindlingGUIShapes(sf::RectangleShape& _item)
+void GUI::HandleGUIShapes(sf::RectangleShape& _item)
 {
-	if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING )
+	if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
 	{
 		if (_item.getTexture() == &m_FireDeminishAttack)
 		{
@@ -462,53 +417,106 @@ void GUI::HandleKindlingGUIShapes(sf::RectangleShape& _item)
 				m_RenderWindow->draw(_item);
 			}
 		}
-		else
+		else if (_item.getTexture() == &m_KindlingCubemon)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::THALLIC)
+	{
+		if (_item.getTexture() == &m_EarthFOTFAttack)
+		{
+			if (m_BattleSceneAttackButtons[4]->m_bIsHovering && m_PlayersTurn)
+			{
+				m_RenderWindow->draw(_item);
+			}
+		}
+		else if (_item.getTexture() == &m_EarthHardenAttack)
+		{
+			if (m_BattleSceneAttackButtons[5]->m_bIsHovering && m_PlayersTurn)
+			{
+				m_RenderWindow->draw(_item);
+			}
+		}
+		else if (_item.getTexture() == &m_EarthOvergrowthAttack)
+		{
+			if (m_BattleSceneAttackButtons[6]->m_bIsHovering && m_PlayersTurn)
+			{
+				m_RenderWindow->draw(_item);
+			}
+		}
+		else if (_item.getTexture() == &m_EarthShootsAttack)
+		{
+			if (m_BattleSceneAttackButtons[7]->m_bIsHovering && m_PlayersTurn)
+			{
+				m_RenderWindow->draw(_item);
+			}
+		}
+		else if (_item.getTexture() == &m_ThallicCubemon)
+		{
+			m_RenderWindow->draw(_item);
+		}
+	}
+	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::BRUTUS)
+	{
+		if (_item.getTexture() == &m_EarthFOTFAttack)
+		{
+			if (m_BattleSceneAttackButtons[4]->m_bIsHovering && m_PlayersTurn)
+			{
+				m_RenderWindow->draw(_item);
+			}
+		}
+		else if (_item.getTexture() == &m_EarthHardenAttack)
+		{
+			if (m_BattleSceneAttackButtons[5]->m_bIsHovering && m_PlayersTurn)
+			{
+				m_RenderWindow->draw(_item);
+			}
+		}
+		else if (_item.getTexture() == &m_EarthOvergrowthAttack)
+		{
+			if (m_BattleSceneAttackButtons[6]->m_bIsHovering && m_PlayersTurn)
+			{
+				m_RenderWindow->draw(_item);
+			}
+		}
+		else if (_item.getTexture() == &m_EarthShootsAttack)
+		{
+			if (m_BattleSceneAttackButtons[7]->m_bIsHovering && m_PlayersTurn)
+			{
+				m_RenderWindow->draw(_item);
+			}
+		}
+		else if (_item.getTexture() == &m_BrutusCubemon)
 		{
 			m_RenderWindow->draw(_item);
 		}
 	}
 }
 
-void GUI::HandleKindlingGUIButtons(int _iter, CButtons* _button)
+void GUI::HandleGUIButtons(CButtons* _button)
 {
-	switch (_iter)
+	if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
 	{
-	case 0:
-	{
-		if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
+		if (_button == m_BattleSceneAttackButtons[0] ||
+			_button == m_BattleSceneAttackButtons[1] ||
+			_button == m_BattleSceneAttackButtons[2] ||
+			_button == m_BattleSceneAttackButtons[3]
+			)
 		{
-			_button->Update();
 			m_RenderWindow->draw(_button->Sprite);
 		}
-		break;
 	}
-	case 1:
+	else if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::BRUTUS || m_CurrentCubemon == ICubemon::CUBEMONTYPE::THALLIC)
 	{
-		if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
+		if (_button == m_BattleSceneAttackButtons[4] ||
+			_button == m_BattleSceneAttackButtons[5] ||
+			_button == m_BattleSceneAttackButtons[6] ||
+			_button == m_BattleSceneAttackButtons[7]
+			)
 		{
-			_button->Update();
 			m_RenderWindow->draw(_button->Sprite);
 		}
-		break;
-	}
-	case 2:
-	{
-		if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
-		{
-			_button->Update();
-			m_RenderWindow->draw(_button->Sprite);
-		}
-		break;
-	}
-	case 3:
-	{
-		if (m_CurrentCubemon == ICubemon::CUBEMONTYPE::KINDLING)
-		{
-			_button->Update();
-			m_RenderWindow->draw(_button->Sprite);
-		}
-		break;
-	}
 	}
 }
 
@@ -518,81 +526,13 @@ void GUI::HandleButtonInteractions()
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			if (m_BattleSceneButtons[0]->m_bIsHovering && !m_bChangePokemon)
+			HandleMenuButtons();
+			if (!m_bChangePokemon)
 			{
-				m_bAttack = !m_bAttack;
-				m_ButtonRegulator.restart();
-			}
-			else if (m_BattleSceneAttackButtons[0]->m_bIsHovering && !m_bChangePokemon)
-			{
-				m_PlayerAttackBuff = 0;
-
-				EndTurn();
-			}
-			else if (m_BattleSceneAttackButtons[1]->m_bIsHovering && !m_bChangePokemon)
-			{
-				float damage = m_PlayerAttackBuff + (m_FriendlyCubemon->GetWeakAttack() * m_FriendlyCubemon->GetLvl());
-				m_EnemyCubemon->TakeDamage(damage);
-				m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
-
-				if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-				{
-					m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-					InterceptSceneChange(1);
-				}
-
-				m_PlayerAttackBuff = 0;
-				std::cout << damage << std::endl;
-				EndTurn();
-				
-			}
-			else if (m_BattleSceneAttackButtons[2]->m_bIsHovering && !m_bChangePokemon)
-			{
-				m_PlayerAttackBuff = 15;
-
-				EndTurn();
-			}
-			else if (m_BattleSceneAttackButtons[3]->m_bIsHovering && !m_bChangePokemon)
-			{
-				float damage = m_PlayerAttackBuff + (m_FriendlyCubemon->GetStrongAttack() * m_FriendlyCubemon->GetLvl());
-				m_EnemyCubemon->TakeDamage(damage);
-				m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
-
-				if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-				{
-					m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-					InterceptSceneChange(1);
-				}
-
-				m_PlayerAttackBuff = 0;
-				std::cout << damage << std::endl;
-
-				EndTurn();
-			}
-			else if (m_BattleSceneButtons[3]->m_bIsHovering && m_bFlee)
-			{
-				int ran = INT_MAX;
-				srand((unsigned)time(NULL));
-				ran = rand() % 2;
-				if (ran == 0)
-				{
-				}
-				else if (ran == 1)
-				{
-					InterceptSceneChange(1);
-				}
-				m_bFlee = false;
-				m_BattleSceneButtons[3]->m_bIsHovering = false;
-
-				EndTurn();
+				HandleAttackButtons();
 			}
 		}
 	}
-	
-}
-
-void GUI::HandleKindlingButtonInteractions()
-{
 }
 
 void GUI::HandleEnemyTurn()
@@ -621,6 +561,508 @@ void GUI::HandleEnemyTurn()
 			m_PlayersTurn = true;
 		}
 	}
+}
+
+bool GUI::HandleMenuButtons()
+{
+	if (m_BattleSceneButtons[0]->m_bIsHovering && !m_bChangePokemon)
+	{
+		m_bAttack = !m_bAttack;
+		m_ButtonRegulator.restart();
+		return true;
+	}
+	else if (m_BattleSceneButtons[3]->m_bIsHovering && m_bFlee)
+	{
+		int ran = INT_MAX;
+		srand((unsigned)time(NULL));
+		ran = rand() % 2;
+		if (ran == 0)
+		{
+		}
+		else if (ran == 1)
+		{
+			InterceptSceneChange(1);
+		}
+		m_bFlee = false;
+		m_BattleSceneButtons[3]->m_bIsHovering = false;
+
+		EndTurn();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void GUI::CreateAttackButtons(sf::Texture& _idleTexture, sf::Texture& _hoverTexture)
+{
+	m_BattleSceneAttackButtons.push_back(new CButtons(m_RenderWindow));
+	sf::Vector2f pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 85, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 12.25);
+	sf::Vector2f scale = sf::Vector2f(0.4f, 0.4f);
+	InitButtonPosScaleTexture(pos, scale, &_idleTexture, &_hoverTexture, m_BattleSceneAttackButtons);
+
+	m_BattleSceneAttackButtons.push_back(new CButtons(m_RenderWindow));
+	pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 85, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 13.41);
+	scale = sf::Vector2f(0.4f, 0.4f);
+	InitButtonPosScaleTexture(pos, scale, &_idleTexture, &_hoverTexture, m_BattleSceneAttackButtons);
+
+	m_BattleSceneAttackButtons.push_back(new CButtons(m_RenderWindow));
+	pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 85, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 14.58);
+	scale = sf::Vector2f(0.4f, 0.4f);
+	InitButtonPosScaleTexture(pos, scale, &_idleTexture, &_hoverTexture, m_BattleSceneAttackButtons);
+
+	m_BattleSceneAttackButtons.push_back(new CButtons(m_RenderWindow));
+	pos = sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 5 + 85, m_RenderWindow->getView().getCenter().y + m_BattleSceneAttackButtons.back()->Sprite.getGlobalBounds().width * 15.75);
+	scale = sf::Vector2f(0.4f, 0.4f);
+	InitButtonPosScaleTexture(pos, scale, &_idleTexture, &_hoverTexture, m_BattleSceneAttackButtons);
+}
+
+bool GUI::HandleAttackButtons()
+{
+	if (m_BattleSceneAttackButtons[0]->m_bIsHovering && !m_bChangePokemon)
+	{
+		switch (m_FriendlyCubemon->m_CubeType)
+		{
+		case ICubemon::CUBEMONTYPE::THALLIC:
+		{
+			m_PlayerAttackBuff = 15;
+			m_PlayerArmourBuff = 0;
+			break;
+		}
+		case ICubemon::CUBEMONTYPE::BRUTUS:
+		{
+			m_PlayerAttackBuff = 15;
+			m_PlayerArmourBuff = 0;
+			break;
+		}
+		case ICubemon::CUBEMONTYPE::KINDLING:
+		{
+			m_PlayerAttackBuff = 5;
+			m_PlayerArmourBuff = 0;
+		}
+		default:
+			break;
+		}
+
+		EndTurn();
+		return true;
+	}
+	else if (m_BattleSceneAttackButtons[1]->m_bIsHovering && !m_bChangePokemon)
+	{
+		switch (m_FriendlyCubemon->m_CubeType)
+		{
+		case ICubemon::CUBEMONTYPE::THALLIC:
+		{
+			m_PlayerArmourBuff = 10;
+			break;
+		}
+		case ICubemon::CUBEMONTYPE::BRUTUS:
+		{
+			m_PlayerArmourBuff = 10;
+			break;
+		}
+		case ICubemon::CUBEMONTYPE::KINDLING:
+		{
+			float damage = m_PlayerAttackBuff + (m_FriendlyCubemon->GetWeakAttack() * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 0;
+			std::cout << damage << std::endl;
+		}
+		default:
+			break;
+		}
+
+		EndTurn();
+		return true;
+	}
+	else if (m_BattleSceneAttackButtons[2]->m_bIsHovering && !m_bChangePokemon)
+	{
+		switch (m_FriendlyCubemon->m_CubeType)
+		{
+		case ICubemon::CUBEMONTYPE::THALLIC:
+		{
+			float damage = m_PlayerAttackBuff + (10 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 5;
+			std::cout << damage << std::endl;
+			break;
+		}
+		case ICubemon::CUBEMONTYPE::BRUTUS:
+		{
+			float damage = m_PlayerAttackBuff + (10 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 5;
+			std::cout << damage << std::endl;
+			break;
+		}
+		case ICubemon::CUBEMONTYPE::KINDLING:
+		{
+			m_PlayerAttackBuff = 15;
+			m_PlayerArmourBuff = 0;
+		}
+		default:
+			break;
+		}
+
+		EndTurn();
+		return true;
+	}
+	else if (m_BattleSceneAttackButtons[3]->m_bIsHovering && !m_bChangePokemon)
+	{
+		switch (m_FriendlyCubemon->m_CubeType)
+		{
+		case ICubemon::CUBEMONTYPE::THALLIC:
+		{
+			float damage = m_PlayerAttackBuff + (5 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 0;
+			std::cout << damage << std::endl;
+			break;
+		}
+		case ICubemon::CUBEMONTYPE::BRUTUS:
+		{
+			float damage = m_PlayerAttackBuff + (5 * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 0;
+			std::cout << damage << std::endl;
+			break;
+		}
+		case ICubemon::CUBEMONTYPE::KINDLING:
+		{
+			float damage = m_PlayerAttackBuff + (m_FriendlyCubemon->GetStrongAttack() * m_FriendlyCubemon->GetLvl());
+			m_EnemyCubemon->TakeDamage(damage);
+			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
+
+			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
+			{
+				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+				InterceptSceneChange(1);
+			}
+
+			m_PlayerAttackBuff = 0;
+			m_PlayerArmourBuff = 0;
+			std::cout << damage << std::endl;
+			break;
+		}
+		default:
+			break;
+		}
+
+		EndTurn();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void GUI::InitCubemonImages(sf::RectangleShape& _tempShape)
+{
+	_tempShape.setSize(sf::Vector2f(100, 100));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(50, 50);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	_tempShape.setTexture(&m_KindlingCubemon);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(100, 100));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(50, 50);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	_tempShape.setTexture(&m_BrutusCubemon);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(100, 100));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(50, 50);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	_tempShape.setTexture(&m_ThallicCubemon, true);
+	_tempShape.setScale(1.f, 1.f);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+}
+
+void GUI::InitKindlingAttackImages(sf::RectangleShape& _tempShape)
+{
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_FireDeminishAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_FireBurnAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_FireEmberAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_FireIncinerateAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+}
+
+void GUI::InitBrutusAttackImages(sf::RectangleShape& _tempShape)
+{
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_EarthFOTFAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_EarthHardenAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_EarthOvergrowthAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color::White);
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 365);
+	_tempShape.setTexture(&m_EarthShootsAttack, true);
+	_tempShape.setScale(1, 1);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+}
+
+void GUI::InitAttackUIBackgroundImages(sf::RectangleShape& _tempShape)
+{
+	_tempShape.setSize(sf::Vector2f(315, 255));
+	_tempShape.setFillColor(sf::Color(90, 90, 90));
+	_tempShape.setOrigin(200, 255 / 2);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x + 240, m_RenderWindow->getView().getCenter().y + 370);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+
+	_tempShape.setSize(sf::Vector2f(110, 110));
+	_tempShape.setFillColor(sf::Color(139, 69, 19));
+	_tempShape.setOrigin(55, 55);
+	_tempShape.setPosition(m_RenderWindow->getView().getCenter().x - 30, m_RenderWindow->getView().getCenter().y + 300);
+	m_BattleSceneAttackShapes.push_back(_tempShape);
+}
+
+void GUI::HandleINISwaps(int _newType)
+{
+	std::ifstream file;
+	std::vector<int> m_Types{};
+	std::vector<int> m_Lvls{};
+	std::vector<int> m_HPs{};
+	std::vector<int> m_XPs{};
+	char type = 0;
+	char lvl = 0;
+	file.open("Resources/Output/CubemonData.ini");
+	if (file.is_open())
+	{
+		while (file.get(type))
+		{
+			if (type == ',') {}
+			else
+			{
+				m_Types.push_back(((int)type) - ASCIIOFFSET);
+			}
+		}
+	}
+	file.close();
+
+	std::string currentLine;
+	file.open("Resources/Output/CubemonLvlData.ini");
+	if (file.is_open())
+	{
+		while (std::getline(file, currentLine))
+		{
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_Lvls.push_back(std::stoi(value));
+		}
+
+	}
+	file.close();
+	for (int i = 0; i < m_Types.size(); i++)
+	{
+		if (m_Types[i] == (int)m_FriendlyCubemon->m_CubeType)
+		{
+			m_Lvls[i] = (int)m_FriendlyCubemon->GetLvl();
+		}
+	}
+
+	file.open("Resources/Output/CubemonXPData.ini");
+	if (file.is_open())
+	{
+		while (std::getline(file, currentLine))
+		{
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_XPs.push_back(std::stoi(value));
+		}
+
+	}
+	file.close();
+	for (int i = 0; i < m_Types.size(); i++)
+	{
+		if (m_Types[i] == (int)m_FriendlyCubemon->m_CubeType)
+		{
+			m_XPs[i] = (int)m_FriendlyCubemon->GetXP();
+		}
+	}
+
+	file.open("Resources/Output/CubemonHPData.ini");
+	if (file.is_open())
+	{
+		while (std::getline(file, currentLine))
+		{
+			std::size_t pos = currentLine.find('=');
+			std::string value = currentLine.substr(pos + 1);
+
+			m_HPs.push_back(std::stoi(value));
+		}
+
+	}
+	file.close();
+	for (int i = 0; i < m_HPs.size(); i++)
+	{
+		if (m_Types[i] == (int)m_FriendlyCubemon->m_CubeType)
+		{
+			m_HPs[i] = (int)m_FriendlyCubemon->GetCurrentHealth();
+		}
+	}
+
+	// Change
+	for (int i = 0; i < m_Types.size(); i++)
+	{
+		if (m_Types[i] == _newType)
+		{
+			std::swap(m_Types.front(), m_Types[i]);
+			std::swap(m_XPs.front(), m_XPs[i]);
+			std::swap(m_HPs.front(), m_HPs[i]);
+			std::swap(m_Lvls.front(), m_Lvls[i]);
+		}
+	}
+
+	// Push Values To File
+	std::ofstream oFile;
+
+	oFile.open("Resources/Output/CubemonData.ini");
+	if (oFile.is_open())
+	{
+		oFile.clear();
+		for (auto& cubemon : m_Types)
+		{
+			oFile << cubemon << ",";
+		}
+	}
+	oFile.close();
+
+	oFile.open("Resources/Output/CubemonLvlData.ini");
+	if (oFile.is_open())
+	{
+		oFile.clear();
+		for (int i = 0; i < m_Types.size(); i++)
+		{
+			oFile << m_Lvls[i] << std::endl;
+		}
+	}
+	oFile.close();
+
+	oFile.open("Resources/Output/CubemonHPData.ini");
+	if (oFile.is_open())
+	{
+		oFile.clear();
+		for (int i = 0; i < m_Types.size(); i++)
+		{
+			oFile << m_HPs[i] << std::endl;
+		}
+	}
+	oFile.close();
+
+	oFile.open("Resources/Output/CubemonXPData.ini");
+	if (oFile.is_open())
+	{
+		oFile.clear();
+		for (int i = 0; i < m_Types.size(); i++)
+		{
+			oFile << m_XPs[i] << std::endl;
+		}
+	}
+	oFile.close();
+}
+
+int GUI::ReturnPokemonChangeType()
+{
+	// some stuff
 }
 
 void GUI::HandleCubemonHUD(sf::View& _uiView, sf::View& _worldView)
