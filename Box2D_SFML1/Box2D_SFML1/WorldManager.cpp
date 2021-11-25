@@ -56,7 +56,7 @@ void WorldManager::Render(sf::Shader* _defaultshader)
 		dx = m_Tiles[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
 		dy = m_Tiles[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
 		Mag1 = Mag(dx, dy);
-		if (Mag1 < 1200)
+		if (Mag1 < m_RenderWindow->getSize().x / 1.35f)
 		{
 			m_RenderWindow->draw(*m_Tiles[i]->GetShape(), _defaultshader);
 		}
@@ -68,7 +68,7 @@ void WorldManager::Render(sf::Shader* _defaultshader)
 		dx = m_Grass[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
 		dy = m_Grass[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
 		Mag1 = Mag(dx, dy);
-		if (Mag1 < 1200)
+		if (Mag1 < m_RenderWindow->getSize().x / 1.35f)
 		{
 			m_RenderWindow->draw(*m_Grass[i]->GetShape(), _defaultshader);
 		}
@@ -80,7 +80,7 @@ void WorldManager::Render(sf::Shader* _defaultshader)
 		dx = m_Trees[i]->GetShape()->getPosition().x - m_RenderWindow->getView().getCenter().x;
 		dy = m_Trees[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
 		Mag1 = Mag(dx, dy);
-		if (Mag1 < 1200)
+		if (Mag1 < m_RenderWindow->getSize().x / 1.35f)
 		{
 			m_RenderWindow->draw(*m_Trees[i]->GetShape(), _defaultshader);
 		}
@@ -100,7 +100,7 @@ void WorldManager::RenderOnTop()
 		dy = m_Grass[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
 		Mag1 = Mag(dx, dy);
 		
-		if (Mag1 < 1200 && dy >= 0)
+		if (Mag1 < m_RenderWindow->getSize().x / 1.35f && dy >= 0)
 		{
 			m_RenderWindow->draw(*m_Grass[i]->GetShape(), _defaultshader);
 		}
@@ -113,7 +113,7 @@ void WorldManager::RenderOnTop()
 		dy = m_Trees[i]->GetShape()->getPosition().y - m_RenderWindow->getView().getCenter().y;
 		Mag1 = Mag(dx, dy);
 
-		if (Mag1 < 1200 && dy >= 0)
+		if (Mag1 < m_RenderWindow->getSize().x / 1.35f && dy >= 0)
 		{
 			m_RenderWindow->draw(*m_Trees[i]->GetShape(), _defaultshader);
 		}
@@ -198,7 +198,7 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 		}
 		else if (*it == '~') // -- Water
 		{
-			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Water, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Water, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Water"));
 		}
 		else if (*it == 'i') // -- Tree
 		{
@@ -233,7 +233,7 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
 			SelectRandomTypeFrom3(m_Tiles.back());
-			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_Grass, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(1, 1), "Event"));
+			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DustyBush, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(1, 1), "DustyBush"));
 			SelectFirstFromSheet(m_Grass.back());
 		}
 		else if (*it == '^') // -- Rockface
@@ -325,6 +325,20 @@ void WorldManager::ProcessTileTypes(std::vector<char>& _tileTypes)
 		{
 			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_IndoorFloor, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Heal"));
 			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_HealingMachine, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE) - TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Wall"));
+		}
+		else if (*it == 'K') // Old Man
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX* TILESIZE, (float)iteratorY* TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Boots"));
+			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_OldMan, sf::Vector2f((float)iteratorX* TILESIZE, ((float)iteratorY* TILESIZE)), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+		}
+		else if (*it == 'G') // Gym Leader
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "Floor"));
+			m_Grass.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_GymLeader, sf::Vector2f((float)iteratorX * TILESIZE, ((float)iteratorY * TILESIZE)), sf::Vector2f(TILESIZE, TILESIZE), "Boss"));
+		}
+		else if (*it == 'T') // WaterBootsTrigger
+		{
+			m_Tiles.push_back(new Tile(m_RenderWindow, *m_World, m_TextureMaster->m_DirtBlock_BG, sf::Vector2f((float)iteratorX * TILESIZE, (float)iteratorY * TILESIZE), sf::Vector2f(TILESIZE, TILESIZE), "BootsTrigger"));
 		}
 
 		if (iteratorX == INISIZE)

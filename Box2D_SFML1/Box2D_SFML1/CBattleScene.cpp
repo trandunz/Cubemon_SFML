@@ -1,23 +1,37 @@
 #include "CBattleScene.h"
+#include "CDebugWindow.h"
 
-CBattleScene::CBattleScene(sf::RenderWindow* _renderWindow, TextureMaster* _textureMaster, sf::Event& _event)
+CBattleScene::CBattleScene(sf::RenderWindow* _renderWindow, TextureMaster* _textureMaster, sf::Event& _event, ICubemon::CUBEMONTYPE  _enemyType1, ICubemon::CUBEMONTYPE  _enemyType2, ICubemon::CUBEMONTYPE  _enemyType3, bool _custom)
 {
 	m_RenderWindow = _renderWindow;
 	m_TextureMaster = _textureMaster;
 	m_Event = &_event;
 	m_Font.loadFromFile("Resources/Fonts/ANDYB.TTF");
+	m_PreDefEnemyType1 = _enemyType1;
+	m_PreDefEnemyType2 = _enemyType2;
+	m_PreDefEnemyType3 = _enemyType3;
+	m_bCustom = _custom;
 }
 
 CBattleScene::~CBattleScene()
 {
 	SaveCubemonValues();
 	
+	if (IsPlayerDeath())
+	{
+		Player::HealAllPokemon();
+	}
+
 	CleanupAllPointers();
 }
 
 void CBattleScene::Start()
 {
-	InterceptSceneChange(-1);
+	if (!m_bCustom)
+	{
+		InterceptSceneChange(-1);
+	}
+
 	InitUIView();
 	InitWorldView();
 	InitBackground();
@@ -26,15 +40,72 @@ void CBattleScene::Start()
 	m_AudioManager->PlayMusic(-1);
 
 	CreateGUI();
-	InitCubemon();
-	m_GUI->InitCubemonHUD(m_FriendlyCubemon, m_EnemyCubemon);
+	if (m_bCustom)
+	{
+		if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::THALLIC)
+		{
+			m_FriendlyCubemon = new CThallic(m_RenderWindow, m_AudioManager);
+		}
+		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::KINDLING)
+		{
+			m_FriendlyCubemon = new CKindling(m_RenderWindow, m_AudioManager);
+		}
+		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BRUTUS)
+		{
+			m_FriendlyCubemon = new CBrutus(m_RenderWindow, m_AudioManager);
+		}
+		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::WIRLSON)
+		{
+			m_FriendlyCubemon = new CWirlson(m_RenderWindow, m_AudioManager);
+		}
+		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::DUSTDEVIL)
+		{
+			m_FriendlyCubemon = new CDustDevil(m_RenderWindow, m_AudioManager);
+		}
+		else if (m_GUI->GetCurrentCubemon() == ICubemon::CUBEMONTYPE::BLIZZARDBIRD)
+		{
+			m_FriendlyCubemon = new CBlizzardBird(m_RenderWindow, m_AudioManager);
+		}
+		if (m_FriendlyCubemon != nullptr)
+		{
+			m_FriendlyCubemon->SetCurrentHealth(GrabCubemonHealthBasedOnType());
+			m_FriendlyCubemon->SetLevel(GrabCubemonLevelBasedOnType());
+			m_FriendlyCubemon->SetXP(GrabCubemonEXPBasedOnType());
+			m_FriendlyCubemon->SetSpritePos(sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_RenderWindow->getView().getSize().x / 3.5, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 7));
+			m_FriendlyCubemon->SetSpriteScale(sf::Vector2f(3, 3));
+		}
+
+		InitCustomBattleTypeOne();
+		InitCustomBattleTypeTwo();
+		InitCustomBattleTypeThree();
+
+		if (m_EnemyCubemonVector.back() != nullptr)
+		{
+			m_EnemyCubemonVector.back()->SetSpritePos(sf::Vector2f(m_RenderWindow->getView().getCenter().x + m_RenderWindow->getView().getSize().x / 6, m_RenderWindow->getView().getCenter().y - m_RenderWindow->getView().getSize().y / 6));
+			m_EnemyCubemonVector.back()->SetSpriteScale(sf::Vector2f(1.5, 1.5));
+		}
+
+		m_GUI->InitCubemonHUD(m_FriendlyCubemon, m_EnemyCubemonVector.back());
+	}
+	else
+	{
+		InitCubemon();
+		m_GUI->InitCubemonHUD(m_FriendlyCubemon, m_EnemyCubemon);
+	}
 }
 
 void CBattleScene::Update()
 {
-	if (m_EnemyCubemon != nullptr)
+	if (m_bCustom)
 	{
-		m_EnemyCubemon->Update();
+		m_EnemyCubemonVector.back()->Update();
+	}
+	else
+	{
+		if (m_EnemyCubemon)
+		{
+			m_EnemyCubemon->Update();
+		}
 	}
 
 	if (m_FriendlyCubemon != nullptr)
@@ -47,7 +118,8 @@ void CBattleScene::Update()
 		if (IsPlayerDeath())
 		{
 			ResetPlayerPosition();
-			InterceptSceneChange(2);
+
+			InterceptSceneChange(1);
 		}
 		else if (m_GUI->m_bChangePokemon == true)
 		{
@@ -58,9 +130,23 @@ void CBattleScene::Update()
 			m_GUI->m_bCubedex = true;
 		}
 	}
-	else if (m_GUI->m_bChangePokemon == true)
+	if (m_GUI)
 	{
-		ChangePokemon(m_GUI->ReturnPokemonChangeType());
+		if (m_GUI->m_bChangePokemon == true)
+		{
+			ChangePokemon(m_GUI->ReturnPokemonChangeType());
+		}
+		else if (m_bCustom)
+		{
+			if (m_EnemyCubemonVector.size() > 0)
+			{
+				m_EnemyCubemon = m_EnemyCubemonVector.back();
+			}
+			else
+			{
+				m_EnemyCubemon = nullptr;
+			}
+		}
 	}
 
 	SaveCubemonValues();
@@ -82,9 +168,16 @@ void CBattleScene::Render()
 {
 	m_RenderWindow->draw(m_Background);
 
-	if (m_EnemyCubemon != nullptr)
+	if (m_bCustom)
 	{
-		m_EnemyCubemon->Render();
+		m_EnemyCubemonVector.back()->Render();
+	}
+	else
+	{
+		if (m_EnemyCubemon != nullptr)
+		{
+			m_EnemyCubemon->Render();
+		}
 	}
 
 	if (m_FriendlyCubemon != nullptr)
@@ -94,7 +187,15 @@ void CBattleScene::Render()
 
 	if (m_GUI != nullptr)
 	{
-		m_GUI->BattleUI(m_UIView, m_WorldView);
+		if (m_bCustom)
+		{
+			m_GUI->BattleUI(m_UIView, m_WorldView, &m_EnemyCubemonVector);
+		}
+		else
+		{
+			m_GUI->BattleUI(m_UIView, m_WorldView);
+		}
+		
 		m_GUI->HandleCubemonHUD(m_UIView, m_WorldView);
 	}
 
@@ -255,8 +356,24 @@ void CBattleScene::CleanupAllPointers()
 {
 	DeletePointer(m_AudioManager);
 	DeletePointer(m_GUI);
-	DeletePointer(m_EnemyCubemon);
+
+
+	if (!m_bCustom)
+	{
+		DeletePointer(m_EnemyCubemon);
+	}
+	else
+	{
+		for (auto& item : m_EnemyCubemonVector)
+		{
+			DeletePointer(item);
+			item = nullptr;
+		}
+		m_EnemyCubemonVector.erase(std::remove(m_EnemyCubemonVector.begin(), m_EnemyCubemonVector.end(), nullptr), m_EnemyCubemonVector.end());
+	}
+
 	DeletePointer(m_FriendlyCubemon);
+
 	m_EnemyCubemon = nullptr;
 	m_FriendlyCubemon = nullptr;
 	m_GUI = nullptr;
@@ -656,6 +773,126 @@ void CBattleScene::CreateNewlyChangedPokemon(int _newType)
 	}
 }
 
+void CBattleScene::InitCustomBattleTypeOne()
+{
+	switch (m_PreDefEnemyType1)
+	{
+	case ICubemon::CUBEMONTYPE::THALLIC:
+	{
+		m_EnemyCubemonVector.push_back(new CThallic(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::KINDLING:
+	{
+		m_EnemyCubemonVector.push_back(new CKindling(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::BRUTUS:
+	{
+		m_EnemyCubemonVector.push_back(new CBrutus(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::WIRLSON:
+	{
+		m_EnemyCubemonVector.push_back(new CWirlson(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::DUSTDEVIL:
+	{
+		m_EnemyCubemonVector.push_back(new CDustDevil(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
+	{
+		m_EnemyCubemonVector.push_back(new CBlizzardBird(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	default:
+		break;
+	}
+	m_EnemyCubemonVector.back()->SetLevel(m_FriendlyCubemon->GetLvl() + 3);
+}
+
+void CBattleScene::InitCustomBattleTypeTwo()
+{
+	switch (m_PreDefEnemyType2)
+	{
+	case ICubemon::CUBEMONTYPE::THALLIC:
+	{
+		m_EnemyCubemonVector.push_back(new CThallic(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::KINDLING:
+	{
+		m_EnemyCubemonVector.push_back(new CKindling(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::BRUTUS:
+	{
+		m_EnemyCubemonVector.push_back(new CBrutus(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::WIRLSON:
+	{
+		m_EnemyCubemonVector.push_back(new CWirlson(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::DUSTDEVIL:
+	{
+		m_EnemyCubemonVector.push_back(new CDustDevil(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
+	{
+		m_EnemyCubemonVector.push_back(new CBlizzardBird(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	default:
+		break;
+	}
+	m_EnemyCubemonVector.back()->SetLevel(m_FriendlyCubemon->GetLvl() + 2);
+}
+
+void CBattleScene::InitCustomBattleTypeThree()
+{
+	switch (m_PreDefEnemyType3)
+	{
+	case ICubemon::CUBEMONTYPE::THALLIC:
+	{
+		m_EnemyCubemonVector.push_back(new CThallic(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::KINDLING:
+	{
+		m_EnemyCubemonVector.push_back(new CKindling(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::BRUTUS:
+	{
+		m_EnemyCubemonVector.push_back(new CBrutus(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::WIRLSON:
+	{
+		m_EnemyCubemonVector.push_back(new CWirlson(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::DUSTDEVIL:
+	{
+		m_EnemyCubemonVector.push_back(new CDustDevil(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	case ICubemon::CUBEMONTYPE::BLIZZARDBIRD:
+	{
+		m_EnemyCubemonVector.push_back(new CBlizzardBird(m_RenderWindow, m_AudioManager));
+		break;
+	}
+	default:
+		break;
+	}
+	m_EnemyCubemonVector.back()->SetLevel(m_FriendlyCubemon->GetLvl() + 1);
+}
+
 void CBattleScene::ChangePokemon(int _newType)
 {
 	m_GUI->HandleINISwaps(_newType);
@@ -747,3 +984,4 @@ int CBattleScene::GrabCubemonHealthBasedOnType(int _type)
 		}
 	}
 }
+

@@ -1,5 +1,3 @@
-﻿  Player.cpp
+﻿  WorldManager.cpp
 C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(61,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\Player.cpp(438,21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\Player.cpp(446,21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\x64\Debug\Box2D_SFML1.exe

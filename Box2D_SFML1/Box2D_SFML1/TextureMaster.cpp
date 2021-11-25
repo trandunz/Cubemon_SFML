@@ -32,6 +32,9 @@ TextureMaster::TextureMaster()
 	m_IndoorDoor = new sf::Texture();
 	m_BlackBG = new sf::Texture();
 	m_HealingMachine = new sf::Texture();
+	m_OldMan = new sf::Texture();
+	m_GymLeader = new sf::Texture();
+	m_DustyBush = new sf::Texture();
 
 	if (m_BackgroundTexture->loadFromFile("Resources/Images/Backgrounds/OriBG.jpg"))
 	{
@@ -115,6 +118,18 @@ TextureMaster::TextureMaster()
 	{
 		std::cout << "Healing Machine Texture Loaded!" << std::endl;
 	}
+	if (m_OldMan->loadFromFile("Resources/Images/Player/Old_Man.png"))
+	{
+		std::cout << "Old Man Texture Loaded!" << std::endl;
+	}
+	if (m_GymLeader->loadFromFile("Resources/Images/Player/RedGymGuy.png"))
+	{
+		std::cout << "Gym Leader Texture Loaded!" << std::endl;
+	}
+	if (m_DustyBush->loadFromFile("Resources/Images/Custom Sprites/DustyBush.png"))
+	{
+		std::cout << "Dusty Bush Texture Loaded!" << std::endl;
+	}
 }
 
 TextureMaster::~TextureMaster()
@@ -162,4 +177,13 @@ TextureMaster::~TextureMaster()
 
 	DeletePointer(m_HealingMachine);
 	m_HealingMachine = nullptr;
+
+	DeletePointer(m_OldMan);
+	m_OldMan = nullptr;
+
+	DeletePointer(m_GymLeader);
+	m_GymLeader = nullptr;
+	DeletePointer(m_DustyBush);
+	m_DustyBush = nullptr;
+
 }

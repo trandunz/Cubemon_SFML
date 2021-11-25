@@ -22,7 +22,7 @@ public:
 
 	void InitCubemonHUD(ICubemon* _friendly, ICubemon* _enemy);
 	void InitBattleUI();
-	void BattleUI(sf::View& _uiView, sf::View& _worldView);
+	void BattleUI(sf::View& _uiView, sf::View& _worldView, std::vector<ICubemon*>* _enemyCubemonVector = nullptr);
 	void HandleCubemonHUD(sf::View& _uiView, sf::View& _worldView);
 
 	void InitButton(CButtons* _button, sf::Texture* _idleTexture, sf::Texture* _hoverTexture);
@@ -37,6 +37,9 @@ public:
 	void SetPokemonChangeType(int _value);
 
 	static void InitButtonPosScaleTexture(sf::Vector2f _position, sf::Vector2f _scale, sf::Texture* _idleTexture, sf::Texture* _hoverTexture, std::vector<CButtons*> _vector);
+
+	ICubemon* GetEnemyCubemon();
+	ICubemon* GetFriendlyCubemon();
 
 	sf::Font m_Font;
 

@@ -11,16 +11,18 @@ void CreateRenderWindow(sf::Uint32 _style);
 void CleanupAllPointers();
 
 // Main Render Window
-static sf::RenderWindow* m_RenderWindow;
+static sf::RenderWindow* m_RenderWindow = nullptr;
 
-static TextureMaster* m_TextureMaster;
+static TextureMaster* m_TextureMaster = nullptr;
 
 static sf::Font m_Font;
 
 // Main Event
 static sf::Event m_Event;
-CSceneManager* m_SceneManager;
-CDebugWindow* m_DebugWindow;
+CSceneManager* m_SceneManager = nullptr;
+CDebugWindow* m_DebugWindow = nullptr;
+
+sf::Clock m_DebugWindowOpenTimer;
 
 int main()
 {
@@ -42,37 +44,60 @@ void Start()
 	m_TextureMaster = new TextureMaster;
 	m_SceneManager = new CSceneManager(m_RenderWindow, m_Event, m_TextureMaster);
 	m_SceneManager->Start();
-	m_DebugWindow = new CDebugWindow(&m_Event);
-	m_DebugWindow->Start();
 }
 
 void Update()
 {
 	while (m_RenderWindow->isOpen())
 	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && m_DebugWindowOpenTimer.getElapsedTime().asSeconds() >= 0.25f)
+		{
+			if (m_DebugWindow != nullptr)
+			{
+				NumptyBehavior::DeletePointer(m_DebugWindow);
+				m_DebugWindow = nullptr;
+			}
+			else if (m_DebugWindow == nullptr)
+			{
+				m_DebugWindow = new CDebugWindow(&m_Event);
+				m_DebugWindow->Start();
+			}
+			m_DebugWindowOpenTimer.restart();
+		}
+		
 		m_SceneManager->Update();
+
+		m_SceneManager->PolledUpdate();
+
+		m_SceneManager->CheckForMARKASDESTROY();
+
+		if (m_DebugWindow)
+		{
+			m_DebugWindow->Update();
+		}
 
 		// Render
 		Render();
-
-		m_SceneManager->PolledUpdate();
-		m_SceneManager->CheckForMARKASDESTROY();
-
-		m_DebugWindow->Update();
 	}
 }
 
 void Render()
 {
-	m_RenderWindow->clear();
 	//
+	m_RenderWindow->clear();
 
 	m_SceneManager->Render();
 
-	//
 	m_RenderWindow->display();
+	//
 
-	m_DebugWindow->Render();
+
+	//
+	if (m_DebugWindow)
+	{
+		m_DebugWindow->Render();
+	}
+	//
 }
 
 void CreateRenderWindow(sf::Uint32 _style)

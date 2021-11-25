@@ -51,8 +51,8 @@ void GUI::InitHealthAndManaUI()
 	m_ManaSprite.setTexture(m_ManaTexture, true);
 	m_ManaBorderSprite.setTexture(m_ManaBorderTexture, true);
 	m_ManaSprite.setOrigin(-3, -3);
-	m_ManaSprite.scale(1.51, 1.5);
-	m_ManaBorderSprite.scale(1.5, 1.5);
+	m_ManaSprite.setScale(1.51, 1.5);
+	m_ManaBorderSprite.setScale(1.5, 1.5);
 
 	m_HealthTexture.loadFromFile("Resources/Images/HealthBar.png");
 	m_HealthBorderTexture.loadFromFile("Resources/Images/HealthBarBorder.png");
@@ -61,12 +61,12 @@ void GUI::InitHealthAndManaUI()
 	m_EnemyHealthBorderSprite.setTexture(m_HealthBorderTexture, true);
 	m_HealthBorderSprite.setTexture(m_HealthBorderTexture, true);
 	m_HealthSprite.setOrigin(-3, -3);
-	m_HealthSprite.scale(1.51, 1.5);
-	m_HealthBorderSprite.scale(1.5, 1.5);
+	m_HealthSprite.setScale(1.51, 1.5);
+	m_HealthBorderSprite.setScale(1.5, 1.5);
 
 	m_EnemyHealthSprite.setOrigin(-3, -3);
-	m_EnemyHealthSprite.scale(1.51, 1.5);
-	m_EnemyHealthBorderSprite.scale(1.5, 1.5);
+	m_EnemyHealthSprite.setScale(1.51, 1.5);
+	m_EnemyHealthBorderSprite.setScale(1.5, 1.5);
 }
 
 void GUI::HealthAndManaUI(sf::RenderWindow* _renderWindow, sf::View& _uiView, Player* _player)
@@ -118,7 +118,7 @@ void GUI::InitBattleUI()
 	InitCubeBoyUI();
 }
 
-void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
+void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView, std::vector<ICubemon*>* _enemyCubemonVector)
 {
 	m_RenderWindow->setView(_uiView);
 
@@ -184,6 +184,62 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView)
 	}
 
 	HandleButtonInteractions();
+
+
+	if (m_EnemyCubemon->GetCurrentHealth() <= 0 && _enemyCubemonVector != nullptr)
+	{
+		m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+		DeletePointer(_enemyCubemonVector->back());
+		_enemyCubemonVector->back() = nullptr;
+		_enemyCubemonVector->pop_back();
+
+
+		if (_enemyCubemonVector->size() <= 0)
+		{
+			InterceptSceneChange(0);
+		}
+		else
+		{
+			if (_enemyCubemonVector->back() != nullptr)
+			{
+				_enemyCubemonVector->back()->SetLevel(m_FriendlyCubemon->GetLvl() - (rand() % 5) + (rand() % 10));
+				if (_enemyCubemonVector->back()->GetLvl() <= 0)
+				{
+					_enemyCubemonVector->back()->SetLevel(3);
+				}
+				_enemyCubemonVector->back()->SetSpritePos(sf::Vector2f(m_RenderWindow->getView().getCenter().x + m_RenderWindow->getView().getSize().x / 6, m_RenderWindow->getView().getCenter().y - m_RenderWindow->getView().getSize().y / 6));
+				_enemyCubemonVector->back()->SetSpriteScale(sf::Vector2f(1.5, 1.5));
+			}
+
+			InitCubemonHUD(m_FriendlyCubemon, _enemyCubemonVector->back());
+
+			std::cout << "Meme" << std::endl;
+			m_EnemyCubemon = _enemyCubemonVector->back();
+
+			m_EnemyHealthSprite.setPosition(sf::Vector2f(m_RenderWindow->getView().getCenter().x + m_RenderWindow->getView().getSize().x / 6, m_RenderWindow->getView().getCenter().y - m_RenderWindow->getView().getSize().y / 6));
+			m_EnemyHealthBorderSprite.setPosition(sf::Vector2f(m_RenderWindow->getView().getCenter().x + m_RenderWindow->getView().getSize().x / 6, m_RenderWindow->getView().getCenter().y - m_RenderWindow->getView().getSize().y / 6));
+			m_HealthSprite.setPosition(sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_RenderWindow->getView().getSize().x / 3.5, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 7));
+			m_HealthBorderSprite.setPosition(sf::Vector2f(m_RenderWindow->getView().getCenter().x - m_RenderWindow->getView().getSize().x / 3.5, m_RenderWindow->getView().getCenter().y + m_RenderWindow->getView().getSize().y / 7));
+
+			std::string nameLvl = m_EnemyCubemon->GetName();
+
+			m_EnemyCubemonName.setFont(m_Font);
+			m_EnemyCubemonName.setCharacterSize(18);
+			nameLvl = m_EnemyCubemon->GetName();
+			nameLvl += "      Lvl: ";
+			nameLvl += std::to_string(m_EnemyCubemon->GetLvl());
+			m_EnemyCubemonName.setString(nameLvl);
+			m_EnemyCubemonName.setOrigin(m_EnemyCubemonName.getGlobalBounds().width / 2, m_EnemyCubemonName.getGlobalBounds().height / 2);
+			m_EnemyCubemonName.setPosition(m_RenderWindow->getView().getCenter().x + m_RenderWindow->getView().getSize().x / 5.55, m_RenderWindow->getView().getCenter().y - m_RenderWindow->getView().getSize().y / 4.225);
+			m_EnemyCubemonName.setOutlineColor(sf::Color::Black);
+			m_EnemyCubemonName.setOutlineThickness(2);
+		}
+	}
+	else if (m_EnemyCubemon->GetCurrentHealth() <= 0 && _enemyCubemonVector == nullptr)
+	{
+		m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
+		InterceptSceneChange(1);
+	}
 
 	m_RenderWindow->setView(_worldView);
 }
@@ -414,7 +470,18 @@ void GUI::InitButtonPosScaleTexture(sf::Vector2f _position, sf::Vector2f _scale,
 	_vector.back()->SetIdleTex(_idleTexture);
 	_vector.back()->SetHoverTex(_hoverTexture);
 	_vector.back()->SetClickTex(_hoverTexture);
+	_vector.back()->SetLabel("");
 	_vector.back()->Sprite.setScale(_scale.x, _scale.y);
+}
+
+ICubemon* GUI::GetEnemyCubemon()
+{
+	return m_EnemyCubemon;
+}
+
+ICubemon* GUI::GetFriendlyCubemon()
+{
+	return m_FriendlyCubemon;
 }
 
 void GUI::HandleGUIShapes(sf::RectangleShape& _item)
@@ -559,11 +626,11 @@ void GUI::HandleEnemyTurn()
 			ran = rand() % 2;
 			if (ran == 0)
 			{
-				m_FriendlyCubemon->TakeDamage(m_EnemyCubemon->GetStrongAttack() * m_EnemyCubemon->GetLvl());
+				m_FriendlyCubemon->TakeDamage((m_EnemyCubemon->GetStrongAttack() * m_EnemyCubemon->GetLvl()) - m_PlayerArmourBuff);
 			}
 			else if (ran == 1)
 			{
-				m_FriendlyCubemon->TakeDamage(m_EnemyCubemon->GetWeakAttack() * m_EnemyCubemon->GetLvl());
+				m_FriendlyCubemon->TakeDamage((m_EnemyCubemon->GetWeakAttack() * m_EnemyCubemon->GetLvl()) - m_PlayerArmourBuff) ;
 			}
 			
 			m_EnemyAttackTimer.restart();
@@ -684,12 +751,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
-
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 0;
 			std::cout << damage << std::endl;
@@ -700,11 +761,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
 
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 0;
@@ -737,13 +793,7 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
-
-			m_PlayerAttackBuff = 0;
+			m_PlayerAttackBuff = 5;
 			m_PlayerArmourBuff = 0;
 			std::cout << damage << std::endl;
 		}
@@ -779,12 +829,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
-
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 5;
 			std::cout << damage << std::endl;
@@ -796,11 +840,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
 
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 5;
@@ -809,7 +848,7 @@ bool GUI::HandleAttackButtons()
 		}
 		case ICubemon::CUBEMONTYPE::KINDLING:
 		{
-			m_PlayerAttackBuff = 15;
+			m_PlayerAttackBuff = 12;
 			m_PlayerArmourBuff = 0;
 		}
 		case ICubemon::CUBEMONTYPE::WIRLSON:
@@ -818,11 +857,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
 
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 5;
@@ -855,11 +889,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
 
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 0;
@@ -872,11 +901,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
 
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 0;
@@ -889,12 +913,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
-
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 0;
 			std::cout << damage << std::endl;
@@ -906,11 +924,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
 
 			m_PlayerAttackBuff = 5;
 			m_PlayerArmourBuff = 0;
@@ -922,11 +935,6 @@ bool GUI::HandleAttackButtons()
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
 
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
 
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 5;
@@ -937,12 +945,6 @@ bool GUI::HandleAttackButtons()
 			float damage = m_PlayerAttackBuff + (8 * m_FriendlyCubemon->GetLvl());
 			m_EnemyCubemon->TakeDamage(damage);
 			m_FriendlyCubemon->GetAudioManager()->PlayFireAttack();
-
-			if (m_EnemyCubemon->GetCurrentHealth() <= 0)
-			{
-				m_FriendlyCubemon->AddXP(50 * m_EnemyCubemon->GetLvl());
-				InterceptSceneChange(1);
-			}
 
 			m_PlayerAttackBuff = 0;
 			m_PlayerArmourBuff = 5;

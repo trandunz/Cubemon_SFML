@@ -108,6 +108,10 @@ void CSceneManager::ChangeScenes()
 			{
 				m_GameSceneVector.push_back(new CIndoorScene(m_RenderWindow, m_TextureMaster, *m_Event));
 			}
+			else if (ReturnSceneChange() == -2)
+			{
+				m_BattleScene = new CBattleScene(m_RenderWindow, m_TextureMaster, *m_Event, ICubemon::CUBEMONTYPE::BLIZZARDBIRD, ICubemon::CUBEMONTYPE::DUSTDEVIL, ICubemon::CUBEMONTYPE::WIRLSON, true);
+			}
 
 			Start();
 			m_SceneTimer.restart();

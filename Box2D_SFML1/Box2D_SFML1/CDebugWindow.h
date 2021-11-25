@@ -19,14 +19,13 @@ public:
 
 	void InitBackGround();
 	void InitWindow(sf::Uint32 _style);
-
 private:
 	bool IsSceneGame();
 	bool IsSceneBattle();
 
 	void HandleGameButtons();
 	void HandleMiscButtons();
-	void HandleBattleButtons();
+	void HandleBattleButtons(GUI* _gui = nullptr);
 
 	void HealAllPokemon();
 	void AddRandomPokemonToParty();
@@ -39,15 +38,18 @@ private:
 	void ForceMedicalScene();
 	void ForceMainMenu();
 	void ForceGameScene();
+	void ForceEndGameBattle();
 
 	void CreateIngameButtons();
 	void CreateButtons();
 	void CreateMiscButttons();
 	void CreateBattleButtons();
 
+
 	sf::RenderWindow* m_RenderWindow = nullptr;
 	sf::Event* m_Event = nullptr;
 	Player* m_Player = nullptr;
+
 
 	std::vector<CButtons*> m_InGameButtons;
 	std::vector<CButtons*> m_MiscButtons;
@@ -67,5 +69,7 @@ private:
 	sf::Texture m_MainMenuHoverTexture;
 	sf::Texture m_UpgradeTexture;
 	sf::Texture m_UpgradeHoverTexture;
+	sf::Texture m_EndGameTexture;
+	sf::Texture m_EndGameHoverTexture;
 };
 

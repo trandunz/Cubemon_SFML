@@ -5,7 +5,7 @@
 class CBattleScene : public IScene
 {
 public:
-	CBattleScene(sf::RenderWindow* _renderWindow, TextureMaster* _textureMaster, sf::Event& _event);
+	CBattleScene(sf::RenderWindow* _renderWindow, TextureMaster* _textureMaster, sf::Event& _event, ICubemon::CUBEMONTYPE  _enemyType1 = ICubemon::CUBEMONTYPE::UNASSIGNED, ICubemon::CUBEMONTYPE  _enemyType2 = ICubemon::CUBEMONTYPE::UNASSIGNED, ICubemon::CUBEMONTYPE  _enemyType3 = ICubemon::CUBEMONTYPE::UNASSIGNED, bool _custom = false);
 	virtual ~CBattleScene();
 
 	virtual void Start()override;
@@ -35,7 +35,6 @@ private:
 	void InitBackground();
 
 	void SaveCubemonValues();
-	
 
 	bool IsPlayerDeath();
 	void ResetPlayerPosition();
@@ -44,6 +43,10 @@ private:
 	void ChangePokemon(int _newType);
 
 	void InitPlayerCubemonFromINI();
+
+	void InitCustomBattleTypeOne();
+	void InitCustomBattleTypeTwo();
+	void InitCustomBattleTypeThree();
 
 	sf::Event* m_Event = nullptr;
 	sf::View m_UIView;
@@ -54,5 +57,12 @@ private:
 
 	sf::RectangleShape m_Background;
 	sf::Texture m_BackgroundTex;
+
+	ICubemon::CUBEMONTYPE m_PreDefEnemyType1 = ICubemon::CUBEMONTYPE::UNASSIGNED;
+	ICubemon::CUBEMONTYPE m_PreDefEnemyType2 = ICubemon::CUBEMONTYPE::UNASSIGNED;
+	ICubemon::CUBEMONTYPE m_PreDefEnemyType3 = ICubemon::CUBEMONTYPE::UNASSIGNED;
+	bool m_bCustom = false;
+
+	std::vector<ICubemon*> m_EnemyCubemonVector{};
 };
 

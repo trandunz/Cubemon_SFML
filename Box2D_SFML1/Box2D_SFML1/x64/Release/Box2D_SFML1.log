@@ -1,8 +1,28 @@
-﻿  CDebugWindow.cpp
+﻿  CBattleScene.cpp
 C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\ICubemon.h(61,11): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(64,89): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(308,88): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(735,88): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\Box2D_SFML1\CBattleScene.cpp(904,88): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
   Generating code
-  1 of 1611 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 1624 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    11 functions had inline decision re-evaluated but remain unchanged
+    7 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Box2D_SFML1.vcxproj -> C:\Users\trand\Documents\GITHUB\Cubemon_SFML\Box2D_SFML1\x64\Release\Box2D_SFML1.exe

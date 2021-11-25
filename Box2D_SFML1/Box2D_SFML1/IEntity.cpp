@@ -52,7 +52,7 @@ void IEntity::CreateBody(float _posX, float _posY, b2BodyType _type, bool _senso
 
 void IEntity::DestroyBody()
 {
-	if (m_World != nullptr && m_Body != nullptr)
+	if (m_World != nullptr)
 	{
 		m_World->DestroyBody(m_Body);
 		m_Body = nullptr;

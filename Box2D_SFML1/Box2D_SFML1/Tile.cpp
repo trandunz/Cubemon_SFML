@@ -42,6 +42,31 @@ Tile::Tile(sf::RenderWindow* _renderWindow, b2World& _world, sf::Texture* _textu
 		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 4);
 		LoadSpriteTexture(_texture, m_Shape);
 	}
+	else if (_tileType == "Boots")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 5);
+		LoadSpriteTexture(_texture, m_Shape);
+	}
+	else if (_tileType == "Boss")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 7);
+		LoadSpriteTexture(_texture, m_Shape);
+	}
+	else if (_tileType == "Water")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, false, 3);
+		LoadSpriteTexture(_texture, m_Shape);
+	}
+	else if (_tileType == "DustyBush")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 1);
+		LoadSpriteTexture(_texture, m_Shape);
+	}
+	else if (_tileType == "BootsTrigger")
+	{
+		CreateBody(_size.x, _size.y, _position.x, _position.y, b2_staticBody, true, 9);
+		LoadSpriteTexture(_texture, m_Shape);
+	}
 
 	if (m_Shape != nullptr)
 	{

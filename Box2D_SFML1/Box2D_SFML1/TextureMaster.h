@@ -14,6 +14,7 @@ public:
 	sf::Texture* m_GrassTexture = nullptr;
 	sf::Texture* m_DirtBlock_BG = nullptr;
 	sf::Texture* m_Grass = nullptr;
+	sf::Texture* m_DustyBush = nullptr;
 	sf::Texture* m_Tree = nullptr;
 	sf::Texture* m_Water = nullptr;
 	sf::Texture* m_Rock = nullptr;
@@ -24,6 +25,8 @@ public:
 	sf::Texture* m_IndoorDoor = nullptr;
 	sf::Texture* m_BlackBG = nullptr;
 	sf::Texture* m_HealingMachine = nullptr;
+	sf::Texture* m_OldMan = nullptr;
+	sf::Texture* m_GymLeader = nullptr;
 
 	sf::Texture* DirtToGrassSheet = nullptr;
 	sf::Texture* GrassToDirtSheet = nullptr;

@@ -219,19 +219,25 @@ void CMainMenu::ButtonUpdates()
     m_Options->Update();
     m_Exit->Update();
 
-    if (m_ButtonTimer.getElapsedTime().asSeconds() >= 0.1f)
+    if (m_Play->bIsinBounds(m_MousePos) && IsMouseLeftPressed())
     {
-        if (m_Play->bIsinBounds(m_MousePos) && IsMouseLeftPressed())
+        if (m_ButtonTimer.getElapsedTime().asSeconds() >= 0.1f)
         {
             InterceptSceneChange(1);
+
+            m_ButtonTimer.restart();
         }
-        else if (m_Exit->bIsinBounds(m_MousePos) && IsMouseLeftPressed())
+    }
+    else if (m_Exit->bIsinBounds(m_MousePos) && IsMouseLeftPressed())
+    {
+        if (m_ButtonTimer.getElapsedTime().asSeconds() >= 0.1f)
         {
             m_RenderWindow->close();
-        }
 
-        m_ButtonTimer.restart();
+            m_ButtonTimer.restart();
+        }
     }
+    
 }
 
 /// <summary>

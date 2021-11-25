@@ -25,7 +25,6 @@ public:
 	virtual void Update(sf::Vector2f _mousepos);
 	virtual void Render(sf::Shader* _defaultshader = NULL);
 
-	void PollMovement(sf::Event& _event);
 	void Movement();
 
 	void SetCurrentMana(float _mana);
@@ -67,6 +66,10 @@ private:
 
 	virtual void CreateBody(float _posX, float _posY, b2BodyType _type, bool _sensor = false);
 
+	void GrabWaterBootsData();
+
+	void HandleInteractions();
+
 	sf::Clock m_DamageTakenTimer;
 	sf::Clock m_ManaRegen;
 	float m_ManaRegenFrequency = 1.0f;
@@ -93,6 +96,8 @@ private:
 	bool m_bEnteredRoom = false;
 	sf::Clock m_InteractionDelayTimer;
 	sf::Clock m_HealTimer;
+
+	bool m_WaterBoots = false;
 };
 
 #endif

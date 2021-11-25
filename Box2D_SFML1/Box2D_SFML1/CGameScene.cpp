@@ -80,11 +80,7 @@ void CGameScene::PolledUpdate()
 		{
 			if (m_Player != nullptr && !m_Player->m_MARKASDESTROY)
 			{
-				m_Player->PollMovement(*m_Event);
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Tab))
-				{
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
 				{
 					m_Player->m_MARKASDESTROY = true;
 					break;
