@@ -193,7 +193,6 @@ void GUI::BattleUI(sf::View& _uiView, sf::View& _worldView, std::vector<ICubemon
 		_enemyCubemonVector->back() = nullptr;
 		_enemyCubemonVector->pop_back();
 
-
 		if (_enemyCubemonVector->size() <= 0)
 		{
 			InterceptSceneChange(0);

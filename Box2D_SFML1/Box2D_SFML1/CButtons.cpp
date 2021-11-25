@@ -29,7 +29,6 @@ CButtons::CButtons(sf::RenderWindow* _renderWindow)
 		// Load Textures And Fonts
 		m_IdleTexture->loadFromFile("Resources/Images/ItemSpacer.png");
 		m_HoverTexture->loadFromFile("Resources/Images/ItemSpacer-Hover.png");
-		m_ClickTexture->loadFromFile("Resources/Images/CurrentItem.png");
 
 		// Make Them Smooth
 		m_IdleTexture->setSmooth(true);

@@ -37,6 +37,8 @@ void CSceneManager::Start()
 
 void CSceneManager::Update()
 {
+	ChangeScenes();
+
 	if (!m_GameScene && m_MainMenuSceneVector.size() > 0 && m_BattleScene == nullptr)
 	{
 		m_MainMenuSceneVector.back()->Update();
@@ -65,8 +67,6 @@ void CSceneManager::PolledUpdate()
 	{
 		m_BattleScene->PolledUpdate();
 	}
-
-	ChangeScenes();
 }
 
 void CSceneManager::Render()

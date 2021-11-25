@@ -34,11 +34,11 @@ void Player::Start()
 
 	if (ReturnSceneChange() == 2)
 	{
-		CreateBody(0.0f, 0.0f, b2_dynamicBody);
+		Player::CreateBody(0.0f, 0.0f, b2_dynamicBody);
 	}
 	else
 	{
-		CreateBody(GrabPlayerData().x, GrabPlayerData().y, b2_dynamicBody);
+		Player::CreateBody(GrabPlayerData().x, GrabPlayerData().y, b2_dynamicBody);
 	}
 
 	GrabWaterBootsData();
